@@ -1,0 +1,56 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "Telehealth Resources Project"
+		}
+	],
+	"settings": {
+		"workbench.colorTheme": "Default Dark+",
+		"editor.tabSize": 2,
+		"editor.insertSpaces": true,
+		"editor.formatOnSave": true,
+		"files.autoSave": "afterDelay",
+		"files.autoSaveDelay": 1000,
+		"explorer.confirmDelete": false,
+		"explorer.confirmDragAndDrop": false,
+		"git.enableSmartCommit": true,
+		"git.confirmSync": false,
+		"powerapps.enableIntelliSense": true,
+		"powerapps.enableCodeLens": true,
+		"powerapps.enableHover": true,
+		"powerquery.enableIntelliSense": true,
+		"mssql.enableIntelliSense": true,
+		"files.associations": {
+			"*.yml": "yaml",
+			"*.yaml": "yaml",
+			"*.md": "markdown",
+			"*.fx": "powerfx"
+		},
+		"workbench.editorAssociations": {
+			"*.msapp": "default",
+			"*.pbix": "default"
+		},
+		"terminal.integrated.defaultProfile.windows": "PowerShell"
+	},
+	"extensions": {
+		"recommendations": [
+			"microsoft-isvexptools.powerplatform-vscode",
+			"powerappstools.powerfx",
+			"powerquery.vscode-powerquery",
+			"daniellaskewitz.power-platform-connectors",
+			"danish-naglekar.dataverse-devtools",
+			"ms-mssql.mssql",
+			"gerhardbrueckl.powerbi-vscode",
+			"github.copilot",
+			"github.copilot-chat",
+			"docsmsft.docs-markdown",
+			"redhat.vscode-yaml",
+			"christian-kohler.path-intellisense"
+		],
+		"unwantedRecommendations": [
+			"ms-python.python",
+			"ms-toolsai.jupyter"
+		]
+	}
+}

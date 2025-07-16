@@ -1,0 +1,87 @@
+# Power Platform & Microsoft Development .gitignore
+
+# PowerApps
+*.msapp.backup
+*.msapp.bak
+**/temp/**
+**/temp/*
+**/.tmp/**
+**/.tmp/*
+
+# Power BI
+*.pbix.backup
+*.pbix.bak
+*.pbit.backup
+*.pbit.bak
+
+# Excel temporary files
+~$*.xlsx
+~$*.xls
+*.tmp
+.~lock.*
+
+# SharePoint Designer
+*.stp
+*.dwt
+
+# Visual Studio Code
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/.ropeproject
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Microsoft Office
+~$*.doc*
+~$*.xls*
+~$*.ppt*
+*.tmp
+*.temp
+~*.tmp
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Personal/Sensitive Information
+appsettings.local.json
+*.secrets
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# Power Automate
+*.zip.export
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Test files
+**/test-data/**
+**/sample-data/**
+
+# Build outputs
+dist/
+build/
+out/

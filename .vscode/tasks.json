@@ -1,0 +1,107 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Initialize Git Repository",
+            "type": "shell",
+            "command": "git",
+            "args": ["init"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Git Add All Changes",
+            "type": "shell",
+            "command": "git",
+            "args": ["add", "."],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Git Commit",
+            "type": "shell",
+            "command": "git",
+            "args": ["commit", "-m", "${input:commitMessage}"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Open PowerApps Studio",
+            "type": "shell",
+            "command": "start",
+            "args": ["https://make.powerapps.com/"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Open SharePoint Admin",
+            "type": "shell",
+            "command": "start",
+            "args": ["https://admin.microsoft.com/sharepoint"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Open Power Automate",
+            "type": "shell",
+            "command": "start",
+            "args": ["https://make.powerautomate.com/"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Create Project Backup",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-Command",
+                "Compress-Archive -Path '.\\*' -DestinationPath \".\\backups\\TelehealthProject-$(Get-Date -Format 'yyyy-MM-dd-HHmm').zip\" -Force"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "commitMessage",
+            "description": "Enter commit message",
+            "default": "Update project files",
+            "type": "promptString"
+        }
+    ]
+}
