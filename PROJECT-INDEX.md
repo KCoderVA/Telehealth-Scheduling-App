@@ -35,7 +35,7 @@ Welcome to the comprehensive project index for the Telehealth Resources Project.
 
 ### Project Planning & Analysis
 - **[Migration Implementation Plan](docs/migration-implementation-plan.md)** - 12-week development roadmap
-- **[Technical Analysis v1.0.0](docs/technical-analysis-v1.0.0.md)** - Comprehensive system analysis
+- **[Technical Analysis v0.1.1](docs/technical-analysis-v0.1.1.md)** - Comprehensive system analysis
 - **[Requirements Specification](docs/requirements.md)** - Functional and non-functional requirements
 - **[Git Workflow Guide](docs/git-workflow-guide.md)** - Version control best practices
 
@@ -130,7 +130,7 @@ sharepoint/
 1. **Read Documentation**: Start with [README.md](README.md) and [CONTRIBUTING.md](CONTRIBUTING.md)
 2. **Setup Environment**: Follow [Setup Guide](docs/setup.md)
 3. **Run Daily Workflow**: Execute VS Code task "🚀 Daily Workflow Start"
-4. **Review Architecture**: Study [Technical Analysis](docs/technical-analysis-v1.0.0.md)
+4. **Review Architecture**: Study [Technical Analysis](docs/technical-analysis-v0.1.1.md)
 5. **Begin Development**: Use PowerApps HTML Previewer for rapid iteration
 
 ### For Project Managers

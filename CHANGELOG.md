@@ -75,7 +75,7 @@ This project is currently in **pre-release development** (0.x.x versions). The f
 - HIPAA-compliant data handling patterns implemented
 
 ### Technical Notes
-- See `docs/technical-analysis-v1.0.0.md` for detailed technical findings
+- See `docs/technical-analysis-v0.1.1.md` for detailed technical findings
 - Git commit history provides granular change tracking
 - 17 technical debt items identified for future releases
 

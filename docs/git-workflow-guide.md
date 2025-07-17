@@ -4,11 +4,13 @@
 
 ### **1. CHANGELOG.md - High-Level Only**
 Keep CHANGELOG.md for:
-- Major releases (1.0.0, 2.0.0)
-- Minor features (1.1.0, 1.2.0)
-- Bug fixes (1.0.1, 1.0.2)
+- Major releases (1.0.0, 2.0.0) - *Future production versions*
+- Minor features (0.2.0, 0.3.0) - *Pre-release feature additions*
+- Bug fixes (0.1.1, 0.1.2) - *Pre-release patches*
 - Breaking changes
 - Deprecations
+
+**Note**: This project is currently in pre-release (0.x.x versions). First production release will be 1.0.0.
 
 ### **2. Git Commit Messages - Detailed Changes**
 Use **Conventional Commits** format for all detailed tracking:
@@ -53,19 +55,26 @@ test: update integration test data
 ### **3. Semantic Versioning Strategy**
 
 ```
-MAJOR.MINOR.PATCH (e.g., 1.2.3)
+MAJOR.MINOR.PATCH (e.g., 0.1.2 for pre-release, 1.2.3 for production)
 
-MAJOR (1.0.0 → 2.0.0): Breaking changes
+PRE-RELEASE (0.x.x): Development versions before first stable release
+- 0.1.0: Initial project setup
+- 0.1.1: PowerApps implementation
+- 0.1.2: Documentation and automation improvements
+- 0.2.0: Major feature additions
+- 1.0.0: First production-ready release
+
+PRODUCTION MAJOR (1.0.0 → 2.0.0): Breaking changes
 - Complete UI redesign
 - Data model changes requiring migration
 - API changes that break existing integrations
 
-MINOR (1.1.0 → 1.2.0): New features, backward compatible
+PRODUCTION MINOR (1.1.0 → 1.2.0): New features, backward compatible
 - New booking approval workflow
 - Teams integration
 - Additional report features
 
-PATCH (1.2.0 → 1.2.1): Bug fixes, backward compatible
+PRODUCTION PATCH (1.2.0 → 1.2.1): Bug fixes, backward compatible
 - Calendar sync fixes
 - UI display issues
 - Performance improvements
@@ -77,7 +86,7 @@ PATCH (1.2.0 → 1.2.1): Bug fixes, backward compatible
 telehealth-resources-project/
 ├── CHANGELOG.md                    # High-level releases only
 ├── docs/
-│   ├── technical-analysis-v1.0.0.md    # Detailed technical docs per version
+│   ├── technical-analysis-v0.1.1.md    # Detailed technical docs per version
 │   ├── migration-plan.md               # Implementation strategy
 │   ├── api-documentation.md            # Technical reference
 │   └── architecture-decisions/         # ADRs for major decisions
@@ -115,14 +124,14 @@ git commit -m "feat: add room capacity validation"
 git commit -m "fix: handle timezone conversion for bookings"
 git commit -m "docs: update SharePoint setup guide"
 
-# Weekly minor releases
-git tag v1.1.0
-git push origin v1.1.0
+# Weekly minor releases (pre-release development)
+git tag v0.1.3
+git push origin v0.1.3
 ```
 
 #### **CHANGELOG.md Updates (Only for releases):**
 ```markdown
-## [1.1.0] - 2025-07-20
+## [0.1.3] - 2025-07-20
 ### Added
 - Room capacity validation during booking
 - Enhanced timezone support for multi-location bookings
@@ -133,7 +142,7 @@ git push origin v1.1.0
 ```
 
 #### **Detailed Documentation (Separate files):**
-- `docs/technical-analysis-v1.1.0.md` - Technical details
+- `docs/technical-analysis-v0.1.3.md` - Technical details
 - Git commit history - All individual changes
 - Pull requests - Feature development context
 
@@ -150,11 +159,11 @@ git push origin v1.1.0
 
 #### **PowerShell Scripts for Automation:**
 ```powershell
-# Auto-generate changelog from git commits
-./scripts/Generate-Changelog.ps1 -FromVersion "v1.0.0" -ToVersion "v1.1.0"
+# Auto-generate changelog from git commits (example for future use)
+./scripts/Generate-Changelog.ps1 -FromVersion "v0.1.0" -ToVersion "v0.1.3"
 
-# Create release with notes
-./scripts/Create-Release.ps1 -Version "1.1.0" -ReleaseNotes "Enhanced booking features"
+# Create release with notes (pre-release example)
+./scripts/Create-Release.ps1 -Version "0.1.3" -ReleaseNotes "Enhanced booking features"
 ```
 
 This approach keeps your CHANGELOG.md clean and user-focused while maintaining complete technical detail in the appropriate places (git history, technical docs, and automated tools).

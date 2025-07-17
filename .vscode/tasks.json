@@ -260,8 +260,10 @@
 			"type": "shell",
 			"command": "powershell",
 			"args": [
-				"-ExecutionPolicy", "Bypass",
-				"-File", ".\\scripts\\Pre-Commit-Cleanup.ps1"
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				".\\scripts\\Pre-Commit-Cleanup.ps1"
 			],
 			"group": "build",
 			"presentation": {

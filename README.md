@@ -84,7 +84,7 @@ telehealth-resources-project/
 - **[Contributing Guidelines](CONTRIBUTING.md)** - Development workflow and coding standards
 - **[Security Policy](SECURITY.md)** - Security requirements and compliance guidelines
 - **[Project Setup](docs/setup.md)** - Development environment configuration
-- **[Technical Analysis](docs/technical-analysis-v1.0.0.md)** - Comprehensive system analysis
+- **[Technical Analysis](docs/technical-analysis-v0.1.1.md)** - Comprehensive system analysis
 
 ### 🛠️ Development Tools
 - **VS Code Tasks**: Use `Ctrl+Shift+P → Tasks: Run Task` for common operations
