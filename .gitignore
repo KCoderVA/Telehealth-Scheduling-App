@@ -3,34 +3,96 @@
 # PowerApps
 *.msapp.backup
 *.msapp.bak
+*.msapp.tmp
 **/temp/**
 **/temp/*
 **/.tmp/**
 **/.tmp/*
+**/.cache/**
+**/.cache/*
+**/node_modules/**
+**/package-lock.json
+**/yarn.lock
+
+# Power Platform Development
+**/.pcf/
+**/obj/
+**/bin/
+*.user
+*.suo
+*.cache
+*.log
+
+# PowerApps HTML Previewer Generated Files
+**/*_preview.html
+**/*_preview_*.html
+**/preview_output/
+**/generated_previews/
 
 # Power BI
 *.pbix.backup
 *.pbix.bak
 *.pbit.backup
 *.pbit.bak
+*.pbids
+*.rpt
+*.rdl.backup
 
-# Excel temporary files
+# Excel and Office Files
 ~$*.xlsx
 ~$*.xls
+~$*.pptx
+~$*.docx
 *.tmp
+*.temp
 .~lock.*
+*.xlk
+*.xlsm.backup
 
-# SharePoint Designer
+# SharePoint Designer & Development
 *.stp
 *.dwt
+*.wsp
+*.app
+**/.sharepoint/
 
 # Visual Studio Code
 .vscode/settings.json
 .vscode/launch.json
 .vscode/extensions.json
 .vscode/.ropeproject
+.code-workspace
+**/.vscode/ipch/
 
-# Windows
+# Development Tools & Logs
+*.log
+*.log.*
+logs/
+debug.log
+error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment & Configuration
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+config.local.json
+settings.local.json
+
+# Security & Credentials (NEVER commit these)
+*.pfx
+*.p12
+*.key
+*.pem
+credentials.json
+secrets.json
+**/appsettings.local.json
+
+# Windows System Files
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
@@ -45,9 +107,109 @@ $RECYCLE.BIN/
 *.msp
 *.lnk
 
-# Microsoft Office
+# Windows Network Drives & Shortcuts
+*.url
+*.website
+
+# Microsoft Office Auto-Recovery & Temporary Files
 ~$*.doc*
 ~$*.xls*
+~$*.ppt*
+*.backup
+*_backup*
+AutoRecovery save of*
+
+# Healthcare Compliance (NEVER commit PHI)
+**/patient_data/**
+**/phi/**
+**/protected_health_info/**
+**/*_phi_*
+**/*_patient_*
+**/*_confidential_*
+
+# Backup & Archive Files
+*.bak
+*.backup
+*.old
+*.orig
+*.archive
+*.zip.backup
+backups/
+archives/
+old_versions/
+
+# Generated Documentation
+docs/generated/
+**/*_generated.md
+**/api_docs_generated/
+
+# Database Files (if any local development)
+*.mdb
+*.accdb
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+
+# Package Managers & Dependencies
+node_modules/
+packages/
+.nuget/
+*.nupkg
+package-lock.json
+yarn.lock
+.pnpm-lock.yaml
+
+# IDE & Editor Files
+.idea/
+.vs/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+
+# Build Outputs & Compilation
+bin/
+obj/
+out/
+dist/
+build/
+target/
+*.dll
+*.exe
+*.pdb
+*.obj
+*.o
+*.a
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+.AppleDouble
+.LSOverride
+
+# Network & Cloud Sync
+.dropbox
+.dropbox.attr
+.onedrive
+.googledrive
+**/conflict_*
+
+# Power Platform CLI & Tools
+**/.pcf/cache/
+**/.pcf/temp/
+**/.pcf/node_modules/
+**/bin/Debug/
+**/bin/Release/
+**/obj/Debug/
+**/obj/Release/
 ~$*.ppt*
 *.tmp
 *.temp

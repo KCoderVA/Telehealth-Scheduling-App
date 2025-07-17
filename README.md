@@ -1,5 +1,9 @@
 # Telehealth Resources Project
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Platform](https://img.shields.io/badge/Platform-Microsoft%20Power%20Platform-orange.svg)](https://powerplatform.microsoft.com/)
+[![Healthcare](https://img.shields.io/badge/Healthcare-VA%20Compliant-green.svg)](https://www.va.gov/)
+
 ## Overview
 A comprehensive PowerApps-based solution for booking and managing telehealth conference rooms across hospital outlying buildings. This system enables staff to view current room schedules, check availability, and submit reservation requests through an intuitive canvas app interface.
 
@@ -68,17 +72,33 @@ telehealth-resources-project/
 - **Development Infrastructure**: VS Code tasks, PowerShell utilities, automated workflows
 
 ## Getting Started
-1. Review detailed analysis in `/docs/migration-implementation-plan.md`
-2. Examine unpacked PowerApps structure in `/src/powerapps/`
-3. Review SharePoint data architecture in `/src/sharepoint/current-data-sources.md`
-4. Follow Phase 1 implementation tasks for immediate improvements
+
+### 🚀 Quick Start
+1. **Review Project Documentation**: See detailed implementation plan in `/docs/migration-implementation-plan.md`
+2. **Examine PowerApps Structure**: Navigate to `/src/powerapps/` for unpacked application components
+3. **Review Data Architecture**: Check SharePoint integration details in `/src/sharepoint/current-data-sources.md`
+4. **Setup Development Environment**: Follow comprehensive setup guide in `/docs/setup.md`
+5. **Start Development**: Run VS Code task "🚀 Daily Workflow Start" to begin
+
+### 📋 Project Documentation
+- **[Contributing Guidelines](CONTRIBUTING.md)** - Development workflow and coding standards
+- **[Security Policy](SECURITY.md)** - Security requirements and compliance guidelines
+- **[Project Setup](docs/setup.md)** - Development environment configuration
+- **[Technical Analysis](docs/technical-analysis-v1.0.0.md)** - Comprehensive system analysis
+
+### 🛠️ Development Tools
+- **VS Code Tasks**: Use `Ctrl+Shift+P → Tasks: Run Task` for common operations
+- **PowerShell Profile**: Enhanced commands loaded automatically (see `powershell-profile.ps1`)
+- **HTML Previewer**: Complete toolchain in `/src/powerapps/PowerApps_HTML_Previewer/`
+- **Project Validation**: Automated structure and quality checks
 
 ## Contributors
-- Hospital Informatics Team
-- Telehealth Managers (Stakeholders)
+- **Repository**: [GitHub - Telehealth Scheduling App](https://github.com/KCoderVA/Telehealth-Scheduling-App.git)
+- **Lead Developer**: Hospital Informatics Team
+- **Stakeholders**: Telehealth Managers (VA Hospital)
 
 ## License
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
 ---
-*Last Updated: July 16, 2025*
+*Last Updated: July 17, 2025

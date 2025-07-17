@@ -67,7 +67,7 @@
 			}
 		},
 		{
-			"label": "Open PowerApps Studio",
+			"label": "🚀 Open PowerApps Studio",
 			"type": "shell",
 			"command": "start",
 			"args": [
@@ -82,7 +82,7 @@
 			}
 		},
 		{
-			"label": "Open SharePoint Admin",
+			"label": "📊 Open SharePoint Admin",
 			"type": "shell",
 			"command": "start",
 			"args": [
@@ -97,7 +97,7 @@
 			}
 		},
 		{
-			"label": "Open Power Automate",
+			"label": "⚡ Open Power Automate",
 			"type": "shell",
 			"command": "start",
 			"args": [
@@ -112,7 +112,7 @@
 			}
 		},
 		{
-			"label": "Open Power Platform Admin Center",
+			"label": "🔧 Open Power Platform Admin Center",
 			"type": "shell",
 			"command": "start",
 			"args": [
@@ -127,23 +127,23 @@
 			}
 		},
 		{
-			"label": "Open All Power Platform Tools",
+			"label": "🌐 Open All Power Platform Tools",
 			"dependsOrder": "parallel",
 			"dependsOn": [
-				"Open PowerApps Studio",
-				"Open SharePoint Admin",
-				"Open Power Automate",
-				"Open Power Platform Admin Center"
+				"🚀 Open PowerApps Studio",
+				"📊 Open SharePoint Admin",
+				"⚡ Open Power Automate",
+				"🔧 Open Power Platform Admin Center"
 			],
 			"group": "build"
 		},
 		{
-			"label": "Create Project Backup",
+			"label": "📦 Create Project Backup",
 			"type": "shell",
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"if (!(Test-Path '.\\backups')) { New-Item -ItemType Directory -Path '.\\backups' }; Compress-Archive -Path @('.\\src', '.\\docs', '.\\data', '.\\legacy', '.\\README.md', '.\\CHANGELOG.md', '.\\LICENSE', '.\\.github') -DestinationPath \".\\backups\\TelehealthProject-$(Get-Date -Format 'yyyy-MM-dd-HHmm').zip\" -Force; Write-Host 'Backup created successfully!'"
+				"if (!(Test-Path '.\\backups')) { New-Item -ItemType Directory -Path '.\\backups' -Force | Out-Null }; $timestamp = Get-Date -Format 'yyyy-MM-dd-HHmm'; $backupFile = \".\\backups\\TelehealthProject-$timestamp.zip\"; try { Compress-Archive -Path @('.\\src', '.\\docs', '.\\data', '.\\legacy', '.\\README.md', '.\\CHANGELOG.md', '.\\CONTRIBUTING.md', '.\\SECURITY.md', '.\\LICENSE', '.\\.github', '.\\.vscode\\tasks.json', '.\\Telehealth Resources Project.code-workspace') -DestinationPath $backupFile -Force; $size = [math]::Round((Get-Item $backupFile).Length / 1MB, 2); Write-Host '✅ Backup created successfully!' -ForegroundColor Green; Write-Host \"   File: TelehealthProject-$timestamp.zip\" -ForegroundColor Cyan; Write-Host \"   Size: $size MB\" -ForegroundColor Cyan; Write-Host '   Location: .\\backups\\' -ForegroundColor Cyan } catch { Write-Error \"Backup failed: $_\" }"
 			],
 			"group": "build",
 			"presentation": {
@@ -151,15 +151,16 @@
 				"reveal": "always",
 				"focus": false,
 				"panel": "shared"
-			}
+			},
+			"problemMatcher": []
 		},
 		{
-			"label": "Clean Temp Files",
+			"label": "🧹 Clean Temp Files",
 			"type": "shell",
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"Get-ChildItem -Path . -Recurse -Include '~$*', '*.tmp', '*.temp', '*.bak' | Remove-Item -Force -ErrorAction SilentlyContinue; Write-Host 'Temporary files cleaned!'"
+				"$patterns = @('~$*', '*.tmp', '*.temp', '*.bak', '*.backup', '*_preview.html', '*_preview_*.html'); $removed = 0; foreach ($pattern in $patterns) { $files = Get-ChildItem -Path . -Recurse -Include $pattern -ErrorAction SilentlyContinue; foreach ($file in $files) { try { Remove-Item $file.FullName -Force; $removed++ } catch { Write-Warning \"Could not remove: $($file.Name)\" } } }; Write-Host \"✅ Cleaned $removed temporary files!\" -ForegroundColor Green"
 			],
 			"group": "build",
 			"presentation": {
@@ -167,15 +168,16 @@
 				"reveal": "always",
 				"focus": false,
 				"panel": "shared"
-			}
+			},
+			"problemMatcher": []
 		},
 		{
-			"label": "Update Project Documentation",
+			"label": "📄 Update Project Documentation",
 			"type": "shell",
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"$date = Get-Date -Format 'MMMM dd, yyyy'; (Get-Content README.md) -replace 'Last Updated: .*', \"Last Updated: $date\" | Set-Content README.md; Write-Host 'Documentation updated with current date!'"
+				"$date = Get-Date -Format 'MMMM dd, yyyy'; try { if (Test-Path 'README.md') { (Get-Content 'README.md') -replace 'Last Updated: .*', \"Last Updated: $date\" | Set-Content 'README.md'; Write-Host '✅ README.md updated with current date' -ForegroundColor Green } else { Write-Warning 'README.md not found' }; if (Test-Path 'CONTRIBUTING.md') { (Get-Content 'CONTRIBUTING.md') -replace 'Last Updated: .*', \"Last Updated: $date\" | Set-Content 'CONTRIBUTING.md'; Write-Host '✅ CONTRIBUTING.md updated with current date' -ForegroundColor Green }; if (Test-Path 'SECURITY.md') { (Get-Content 'SECURITY.md') -replace 'Last Updated: .*', \"Last Updated: $date\" | Set-Content 'SECURITY.md'; Write-Host '✅ SECURITY.md updated with current date' -ForegroundColor Green } } catch { Write-Error \"Documentation update failed: $_\" }"
 			],
 			"group": "build",
 			"presentation": {
@@ -183,7 +185,8 @@
 				"reveal": "always",
 				"focus": false,
 				"panel": "shared"
-			}
+			},
+			"problemMatcher": []
 		},
 		{
 			"label": "Export PowerApps Solutions",
@@ -202,12 +205,12 @@
 			}
 		},
 		{
-			"label": "Project Status Check",
+			"label": "📈 Project Status Check",
 			"type": "shell",
 			"command": "powershell",
 			"args": [
 				"-Command",
-				"Write-Host '=== Telehealth Project Status ===' -ForegroundColor Green; Write-Host 'Git Status:' -ForegroundColor Yellow; git status --porcelain; Write-Host ''; Write-Host 'Recent Commits:' -ForegroundColor Yellow; git log --oneline -5; Write-Host ''; Write-Host 'Project Structure:' -ForegroundColor Yellow; Get-ChildItem -Recurse -Directory | Select-Object -First 10 | Format-Table Name, FullName"
+				"Write-Host '=== 🏥 Telehealth Project Status ===' -ForegroundColor Green; Write-Host \"Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')\" -ForegroundColor Gray; Write-Host ''; if (Get-Command git -ErrorAction SilentlyContinue) { Write-Host '📊 Git Repository Status:' -ForegroundColor Yellow; $branch = git branch --show-current; Write-Host \"   Branch: $branch\" -ForegroundColor Cyan; $status = git status --porcelain; if ($status) { Write-Host \"   Uncommitted changes: $($status.Count) files\" -ForegroundColor Red; $status | Select-Object -First 5 | ForEach-Object { Write-Host \"     $_\" -ForegroundColor Gray } } else { Write-Host '   Working directory clean ✅' -ForegroundColor Green }; Write-Host ''; Write-Host '📝 Recent Commits:' -ForegroundColor Yellow; git log --oneline -5 | ForEach-Object { Write-Host \"   $_\" -ForegroundColor Gray } } else { Write-Host '⚠️  Git not available' -ForegroundColor Red }; Write-Host ''; Write-Host '📁 Project Structure:' -ForegroundColor Yellow; @('src', 'docs', 'data', 'legacy', '.github', '.vscode') | ForEach-Object { if (Test-Path $_) { $count = (Get-ChildItem $_ -Recurse -File).Count; Write-Host \"   $_/: $count files ✅\" -ForegroundColor Green } else { Write-Host \"   $_/: Missing ❌\" -ForegroundColor Red } }; Write-Host ''"
 			],
 			"group": "test",
 			"presentation": {
@@ -215,15 +218,95 @@
 				"reveal": "always",
 				"focus": false,
 				"panel": "shared"
-			}
+			},
+			"problemMatcher": []
 		},
 		{
-			"label": "Daily Workflow Start",
+			"label": "🔍 Validate Project Structure",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"Write-Host '🔍 Validating Project Structure...' -ForegroundColor Yellow; $errors = 0; $warnings = 0; $requiredFiles = @('README.md', 'CHANGELOG.md', 'LICENSE', 'CONTRIBUTING.md', 'SECURITY.md'); $requiredDirs = @('src', 'docs', 'data', 'legacy', '.github', '.vscode'); Write-Host ''; Write-Host '📄 Required Files:' -ForegroundColor Cyan; foreach ($file in $requiredFiles) { if (Test-Path $file) { Write-Host \"   ✅ $file\" -ForegroundColor Green } else { Write-Host \"   ❌ $file (missing)\" -ForegroundColor Red; $errors++ } }; Write-Host ''; Write-Host '📁 Required Directories:' -ForegroundColor Cyan; foreach ($dir in $requiredDirs) { if (Test-Path $dir) { $count = (Get-ChildItem $dir -Recurse -File -ErrorAction SilentlyContinue).Count; Write-Host \"   ✅ $dir/ ($count files)\" -ForegroundColor Green } else { Write-Host \"   ❌ $dir/ (missing)\" -ForegroundColor Red; $errors++ } }; Write-Host ''; if ($errors -eq 0) { Write-Host '✅ Project structure validation passed!' -ForegroundColor Green } else { Write-Host \"❌ Project structure validation failed: $errors errors, $warnings warnings\" -ForegroundColor Red }"
+			],
+			"group": "test",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "📋 Generate Project Report",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"$reportFile = \"Project-Report-$(Get-Date -Format 'yyyy-MM-dd-HHmm').md\"; Write-Host \"📋 Generating project report: $reportFile\" -ForegroundColor Yellow; $content = @(); $content += '# Telehealth Project Report'; $content += \"Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')\"; $content += ''; $content += '## Project Structure'; if (Test-Path 'src') { $srcCount = (Get-ChildItem 'src' -Recurse -File).Count; $content += \"- src/: $srcCount files\" }; if (Test-Path 'docs') { $docCount = (Get-ChildItem 'docs' -File -Filter '*.md').Count; $content += \"- docs/: $docCount documentation files\" }; if (Test-Path 'data') { $dataCount = (Get-ChildItem 'data' -File).Count; $dataSize = [math]::Round(((Get-ChildItem 'data' -File | Measure-Object -Property Length -Sum).Sum / 1MB), 2); $content += \"- data/: $dataCount files ($dataSize MB)\" }; if (Get-Command git -ErrorAction SilentlyContinue) { $content += ''; $content += '## Git Status'; $branch = git branch --show-current; $content += \"- Current branch: $branch\"; $commits = git rev-list --count HEAD; $content += \"- Total commits: $commits\"; $lastCommit = git log -1 --format='%h - %s (%cr)'; $content += \"- Last commit: $lastCommit\" }; $content += ''; $content += '---'; $content += '*Report generated by VS Code task*'; $content | Out-File $reportFile -Encoding UTF8; Write-Host \"✅ Report generated: $reportFile\" -ForegroundColor Green"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "🧹 Pre-Commit Cleanup & Validation",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-ExecutionPolicy", "Bypass",
+				"-File", ".\\scripts\\Pre-Commit-Cleanup.ps1"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "� Push to GitHub Repository",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"Write-Host '📤 Preparing to push to GitHub...' -ForegroundColor Yellow; if (!(git remote)) { Write-Host 'Adding GitHub remote...' -ForegroundColor Cyan; git remote add origin https://github.com/KCoderVA/Telehealth-Scheduling-App.git } else { Write-Host 'Remote already configured' -ForegroundColor Green }; Write-Host 'Pushing to GitHub...' -ForegroundColor Cyan; git push -u origin master; if ($LASTEXITCODE -eq 0) { Write-Host '✅ Successfully pushed to GitHub!' -ForegroundColor Green; Write-Host 'Repository URL: https://github.com/KCoderVA/Telehealth-Scheduling-App' -ForegroundColor Cyan } else { Write-Host '❌ Push failed. Check your GitHub credentials and network connection.' -ForegroundColor Red }"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "🔄 Full GitHub Workflow",
 			"dependsOrder": "sequence",
 			"dependsOn": [
-				"Project Status Check",
-				"Clean Temp Files",
-				"Open All Power Platform Tools"
+				"🧹 Pre-Commit Cleanup & Validation",
+				"Git Add All Changes",
+				"Git Commit with Message",
+				"📤 Push to GitHub Repository"
+			],
+			"group": "build"
+		},
+		{
+			"label": "🚀 Daily Workflow Start",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"📈 Project Status Check",
+				"🧹 Clean Temp Files",
+				"🌐 Open All Power Platform Tools"
 			],
 			"group": "build"
 		}
