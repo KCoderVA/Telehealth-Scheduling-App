@@ -4,7 +4,14 @@ All notable changes to the Telehealth Resources Project will be documented in th
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2025-07-17
+## Versioning Strategy
+This project is currently in **pre-release development** (0.x.x versions). The first public release will be version 1.0.0 when the application is ready for production deployment at Edward Hines Jr. VA Hospital.
+
+- **0.x.x** - Pre-release development versions
+- **1.0.0** - First production-ready release
+- **1.x.x** - Production releases with new features and bug fixes
+
+## [0.1.2] - 2025-07-17
 ### Added
 - Comprehensive project documentation suite (CONTRIBUTING.md, SECURITY.md)
 - Enhanced README files for all major directories (src/, data/, legacy/, src/sharepoint/)
@@ -35,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Automation**: VS Code tasks and PowerShell scripts for development workflow
 - **Compliance**: VA hospital and healthcare industry standards
 
-## [1.0.1] - 2025-07-17
+## [0.1.1] - 2025-07-17
 ### Added
 - Initial telehealth room booking PowerApps application (578 Telehealth Resource App)
 - SharePoint integration with 3 lists (Desks, Reservations, Admin)
