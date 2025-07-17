@@ -5,7 +5,7 @@
 ### **1. CHANGELOG.md - High-Level Only**
 Keep CHANGELOG.md for:
 - Major releases (1.0.0, 2.0.0)
-- Minor features (1.1.0, 1.2.0) 
+- Minor features (1.1.0, 1.2.0)
 - Bug fixes (1.0.1, 1.0.2)
 - Breaking changes
 - Deprecations
@@ -19,7 +19,7 @@ feat: add room booking approval workflow
 feat(ui): implement mobile-responsive design
 feat(api): add SharePoint integration
 
-# Bug Fixes  
+# Bug Fixes
 fix: resolve calendar synchronization issues
 fix(auth): correct Office 365 login redirect
 fix(data): handle empty SharePoint list responses
@@ -60,7 +60,7 @@ MAJOR (1.0.0 → 2.0.0): Breaking changes
 - Data model changes requiring migration
 - API changes that break existing integrations
 
-MINOR (1.1.0 → 1.2.0): New features, backward compatible  
+MINOR (1.1.0 → 1.2.0): New features, backward compatible
 - New booking approval workflow
 - Teams integration
 - Additional report features
