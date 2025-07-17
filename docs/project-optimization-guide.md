@@ -175,7 +175,7 @@ $workbook = $excel.Workbooks.Open("path\to\TeleHealth Master Schedule.xlsx")
 foreach ($worksheet in $workbook.Worksheets) {
     Write-Host "Worksheet: $($worksheet.Name)"
     Write-Host "Used Range: $($worksheet.UsedRange.Address)"
-    
+
     # Export each sheet structure
     $worksheet.UsedRange.ExportAsFixedFormat(
         [Microsoft.Office.Interop.Excel.XlFixedFormatType]::xlTypePDF,
@@ -428,7 +428,7 @@ foreach ($booking in $approvedBookings) {
         Body = $booking.FieldValues.Purpose
         RequiredAttendees = $booking.FieldValues.RequesterEmail
     }
-    
+
     # Create calendar entry via Graph API
     Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/me/events" -Method POST -Body ($appointment | ConvertTo-Json) -Headers $headers
 }
@@ -463,16 +463,16 @@ ClearCollect(
 #### **App Loading Optimization**
 ```powerfx
 // OnStart formula optimization
-OnStart = 
+OnStart =
 Concurrent(
     // Load reference data
     ClearCollect(colRooms, RoomMasterData),
     ClearCollect(colBuildings, Distinct(RoomMasterData, BuildingLocation)),
-    
+
     // Set default values
     Set(varSelectedDate, Today()),
     Set(varCurrentUser, User()),
-    
+
     // Initialize app state
     Set(varAppLoaded, true)
 )
@@ -578,7 +578,7 @@ ApprovalStatusDropdown.Visible = IsInRole("Telehealth Managers")
 #### **PowerApps Audit Logging**
 ```powerfx
 // Log user actions
-OnSelect = 
+OnSelect =
 Patch(
     AuditLog,
     Defaults(AuditLog),
@@ -605,22 +605,22 @@ describe('Booking Form Tests', () => {
     test('Required field validation', async () => {
         // Navigate to booking form
         await page.goto('/booking-form');
-        
+
         // Try to submit without required fields
         await page.click('#btnSubmit');
-        
+
         // Verify error messages appear
         expect(await page.isVisible('#roomError')).toBe(true);
         expect(await page.isVisible('#dateError')).toBe(true);
     });
-    
+
     test('Conflict detection', async () => {
         // Select room and time that conflicts with existing booking
         await page.selectOption('#roomDropdown', 'Conference Room A');
         await page.fill('#dateInput', '2025-07-20');
         await page.fill('#startTime', '09:00');
         await page.fill('#endTime', '10:00');
-        
+
         // Verify conflict warning appears
         expect(await page.isVisible('#conflictWarning')).toBe(true);
     });
@@ -637,7 +637,7 @@ $jobs = @()
 for ($i = 1; $i -le $concurrent; $i++) {
     $jobs += Start-Job -ScriptBlock {
         param($userIndex)
-        
+
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         while ($stopwatch.Elapsed.TotalSeconds -lt $using:testDuration) {
             # Simulate user actions
@@ -697,10 +697,10 @@ Development → Testing → Pre-Production → Production
 param(
     [Parameter(Mandatory=$true)]
     [string]$SourceEnvironment,
-    
+
     [Parameter(Mandatory=$true)]
     [string]$TargetEnvironment,
-    
+
     [Parameter(Mandatory=$true)]
     [string]$SolutionName
 )

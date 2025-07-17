@@ -28,11 +28,11 @@ function git-quick($message = "Quick save") {
 function backup-project {
     $timestamp = Get-Date -Format "yyyy-MM-dd-HHmm"
     $backupPath = ".\backups\TelehealthProject-$timestamp.zip"
-    
+
     if (!(Test-Path ".\backups")) {
         New-Item -ItemType Directory -Path ".\backups" | Out-Null
     }
-    
+
     Compress-Archive -Path @(".\src", ".\docs", ".\data", ".\legacy", ".\README.md", ".\CHANGELOG.md", ".\LICENSE", ".\.github") -DestinationPath $backupPath -Force
     Write-Host "✅ Backup created: $backupPath" -ForegroundColor Green
 }

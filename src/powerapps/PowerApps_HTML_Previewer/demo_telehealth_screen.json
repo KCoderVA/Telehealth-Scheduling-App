@@ -1,0 +1,125 @@
+{
+  "TopParent": {
+    "Type": "Screen",
+    "Name": "TelehealthBookingScreen",
+    "Template": "BlankScreen",
+    "Properties": {
+      "BackgroundColor": "RGBA(227, 242, 253, 1)",
+      "Fill": "RGBA(227, 242, 253, 1)"
+    },
+    "Children": [
+      {
+        "Type": "Label",
+        "Name": "lblWelcome",
+        "Properties": {
+          "Text": "\"Welcome to the Telehealth Room Booking System\"",
+          "X": "50",
+          "Y": "50",
+          "Width": "600",
+          "Height": "60",
+          "Font": "Font.'Open Sans'",
+          "Size": "24",
+          "FontWeight": "FontWeight.Bold",
+          "Color": "RGBA(25, 118, 210, 1)",
+          "Align": "Align.Center"
+        }
+      },
+      {
+        "Type": "Label",
+        "Name": "lblSubtitle",
+        "Properties": {
+          "Text": "\"Select a room and time for your telehealth appointment\"",
+          "X": "50",
+          "Y": "120",
+          "Width": "600",
+          "Height": "40",
+          "Font": "Font.'Open Sans'",
+          "Size": "16",
+          "Color": "RGBA(66, 66, 66, 1)",
+          "Align": "Align.Center"
+        }
+      },
+      {
+        "Type": "Button",
+        "Name": "btnBookRoom",
+        "Properties": {
+          "Text": "\"Book Conference Room\"",
+          "X": "200",
+          "Y": "200",
+          "Width": "200",
+          "Height": "50",
+          "Fill": "RGBA(76, 175, 80, 1)",
+          "Color": "RGBA(255, 255, 255, 1)",
+          "Font": "Font.'Open Sans'",
+          "Size": "14",
+          "RadiusTopLeft": "5",
+          "RadiusTopRight": "5",
+          "RadiusBottomLeft": "5",
+          "RadiusBottomRight": "5"
+        }
+      },
+      {
+        "Type": "Button",
+        "Name": "btnViewSchedule",
+        "Properties": {
+          "Text": "\"View Room Schedule\"",
+          "X": "200",
+          "Y": "270",
+          "Width": "200",
+          "Height": "50",
+          "Fill": "RGBA(33, 150, 243, 1)",
+          "Color": "RGBA(255, 255, 255, 1)",
+          "Font": "Font.'Open Sans'",
+          "Size": "14",
+          "RadiusTopLeft": "5",
+          "RadiusTopRight": "5",
+          "RadiusBottomLeft": "5",
+          "RadiusBottomRight": "5"
+        }
+      },
+      {
+        "Type": "Gallery",
+        "Name": "galRooms",
+        "Properties": {
+          "X": "50",
+          "Y": "350",
+          "Width": "600",
+          "Height": "200",
+          "TemplateSize": "80",
+          "BorderColor": "RGBA(224, 224, 224, 1)",
+          "BorderThickness": "1"
+        },
+        "Children": [
+          {
+            "Type": "Label",
+            "Name": "lblRoomName",
+            "Properties": {
+              "Text": "\"Conference Room A\"",
+              "X": "10",
+              "Y": "10",
+              "Width": "200",
+              "Height": "30",
+              "Font": "Font.'Open Sans'",
+              "Size": "14",
+              "FontWeight": "FontWeight.Bold"
+            }
+          },
+          {
+            "Type": "Label",
+            "Name": "lblAvailability",
+            "Properties": {
+              "Text": "\"Available: 2:00 PM - 4:00 PM\"",
+              "X": "10",
+              "Y": "45",
+              "Width": "250",
+              "Height": "25",
+              "Font": "Font.'Open Sans'",
+              "Size": "12",
+              "Color": "RGBA(76, 175, 80, 1)"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

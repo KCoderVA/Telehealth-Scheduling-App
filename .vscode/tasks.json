@@ -1,228 +1,245 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Initialize Git Repository",
-            "type": "shell",
-            "command": "git",
-            "args": ["init"],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Git Add All Changes",
-            "type": "shell",
-            "command": "git",
-            "args": ["add", "."],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Git Commit with Message",
-            "type": "shell",
-            "command": "git",
-            "args": ["commit", "-m", "${input:commitMessage}"],
-            "group": "build",
-            "dependsOn": "Git Add All Changes",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Quick Commit and Push",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-Command",
-                "git add . ; git commit -m '${input:quickCommitMessage}' ; Write-Host 'Commit completed successfully!'"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Open PowerApps Studio",
-            "type": "shell",
-            "command": "start",
-            "args": ["https://make.powerapps.com/"],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Open SharePoint Admin",
-            "type": "shell",
-            "command": "start",
-            "args": ["https://admin.microsoft.com/sharepoint"],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Open Power Automate",
-            "type": "shell",
-            "command": "start",
-            "args": ["https://make.powerautomate.com/"],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Open Power Platform Admin Center",
-            "type": "shell",
-            "command": "start",
-            "args": ["https://admin.powerplatform.microsoft.com/"],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Open All Power Platform Tools",
-            "dependsOrder": "parallel",
-            "dependsOn": [
-                "Open PowerApps Studio",
-                "Open SharePoint Admin",
-                "Open Power Automate",
-                "Open Power Platform Admin Center"
-            ],
-            "group": "build"
-        },
-        {
-            "label": "Create Project Backup",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-Command",
-                "if (!(Test-Path '.\\backups')) { New-Item -ItemType Directory -Path '.\\backups' }; Compress-Archive -Path @('.\\src', '.\\docs', '.\\data', '.\\legacy', '.\\README.md', '.\\CHANGELOG.md', '.\\LICENSE', '.\\.github') -DestinationPath \".\\backups\\TelehealthProject-$(Get-Date -Format 'yyyy-MM-dd-HHmm').zip\" -Force; Write-Host 'Backup created successfully!'"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Clean Temp Files",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-Command",
-                "Get-ChildItem -Path . -Recurse -Include '~$*', '*.tmp', '*.temp', '*.bak' | Remove-Item -Force -ErrorAction SilentlyContinue; Write-Host 'Temporary files cleaned!'"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Update Project Documentation",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-Command",
-                "$date = Get-Date -Format 'MMMM dd, yyyy'; (Get-Content README.md) -replace 'Last Updated: .*', \"Last Updated: $date\" | Set-Content README.md; Write-Host 'Documentation updated with current date!'"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Export PowerApps Solutions",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-Command",
-                "Write-Host 'Opening PowerApps Studio for manual solution export...'; Write-Host 'Remember to:'; Write-Host '1. Export your canvas app as .msapp to /src/powerapps/'; Write-Host '2. Export Power Automate flows as JSON to /src/power-automate/'; Write-Host '3. Document any SharePoint list changes in /src/sharepoint/'; start https://make.powerapps.com/"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Project Status Check",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-Command",
-                "Write-Host '=== Telehealth Project Status ===' -ForegroundColor Green; Write-Host 'Git Status:' -ForegroundColor Yellow; git status --porcelain; Write-Host ''; Write-Host 'Recent Commits:' -ForegroundColor Yellow; git log --oneline -5; Write-Host ''; Write-Host 'Project Structure:' -ForegroundColor Yellow; Get-ChildItem -Recurse -Directory | Select-Object -First 10 | Format-Table Name, FullName"
-            ],
-            "group": "test",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Daily Workflow Start",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "Project Status Check",
-                "Clean Temp Files",
-                "Open All Power Platform Tools"
-            ],
-            "group": "build"
-        }
-    ],
-    "inputs": [
-        {
-            "id": "commitMessage",
-            "description": "Enter detailed commit message",
-            "default": "Update project files",
-            "type": "promptString"
-        },
-        {
-            "id": "quickCommitMessage",
-            "description": "Enter quick commit message",
-            "default": "Quick save progress",
-            "type": "promptString"
-        }
-    ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Initialize Git Repository",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"init"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Git Add All Changes",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"add",
+				"."
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Git Commit with Message",
+			"type": "shell",
+			"command": "git",
+			"args": [
+				"commit",
+				"-m",
+				"${input:commitMessage}"
+			],
+			"group": "build",
+			"dependsOn": "Git Add All Changes",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Quick Commit and Push",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"git add . ; git commit -m '${input:quickCommitMessage}' ; Write-Host 'Commit completed successfully!'"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open PowerApps Studio",
+			"type": "shell",
+			"command": "start",
+			"args": [
+				"https://make.powerapps.com/"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open SharePoint Admin",
+			"type": "shell",
+			"command": "start",
+			"args": [
+				"https://admin.microsoft.com/sharepoint"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open Power Automate",
+			"type": "shell",
+			"command": "start",
+			"args": [
+				"https://make.powerautomate.com/"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open Power Platform Admin Center",
+			"type": "shell",
+			"command": "start",
+			"args": [
+				"https://admin.powerplatform.microsoft.com/"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Open All Power Platform Tools",
+			"dependsOrder": "parallel",
+			"dependsOn": [
+				"Open PowerApps Studio",
+				"Open SharePoint Admin",
+				"Open Power Automate",
+				"Open Power Platform Admin Center"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Create Project Backup",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"if (!(Test-Path '.\\backups')) { New-Item -ItemType Directory -Path '.\\backups' }; Compress-Archive -Path @('.\\src', '.\\docs', '.\\data', '.\\legacy', '.\\README.md', '.\\CHANGELOG.md', '.\\LICENSE', '.\\.github') -DestinationPath \".\\backups\\TelehealthProject-$(Get-Date -Format 'yyyy-MM-dd-HHmm').zip\" -Force; Write-Host 'Backup created successfully!'"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Clean Temp Files",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"Get-ChildItem -Path . -Recurse -Include '~$*', '*.tmp', '*.temp', '*.bak' | Remove-Item -Force -ErrorAction SilentlyContinue; Write-Host 'Temporary files cleaned!'"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Update Project Documentation",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"$date = Get-Date -Format 'MMMM dd, yyyy'; (Get-Content README.md) -replace 'Last Updated: .*', \"Last Updated: $date\" | Set-Content README.md; Write-Host 'Documentation updated with current date!'"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Export PowerApps Solutions",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"Write-Host 'Opening PowerApps Studio for manual solution export...'; Write-Host 'Remember to:'; Write-Host '1. Export your canvas app as .msapp to /src/powerapps/'; Write-Host '2. Export Power Automate flows as JSON to /src/power-automate/'; Write-Host '3. Document any SharePoint list changes in /src/sharepoint/'; start https://make.powerapps.com/"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Project Status Check",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"Write-Host '=== Telehealth Project Status ===' -ForegroundColor Green; Write-Host 'Git Status:' -ForegroundColor Yellow; git status --porcelain; Write-Host ''; Write-Host 'Recent Commits:' -ForegroundColor Yellow; git log --oneline -5; Write-Host ''; Write-Host 'Project Structure:' -ForegroundColor Yellow; Get-ChildItem -Recurse -Directory | Select-Object -First 10 | Format-Table Name, FullName"
+			],
+			"group": "test",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Daily Workflow Start",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"Project Status Check",
+				"Clean Temp Files",
+				"Open All Power Platform Tools"
+			],
+			"group": "build"
+		}
+	],
+	"inputs": [
+		{
+			"id": "commitMessage",
+			"description": "Enter detailed commit message",
+			"default": "Update project files",
+			"type": "promptString"
+		},
+		{
+			"id": "quickCommitMessage",
+			"description": "Enter quick commit message",
+			"default": "Quick save progress",
+			"type": "promptString"
+		}
+	]
 }
