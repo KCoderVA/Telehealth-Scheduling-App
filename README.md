@@ -95,7 +95,7 @@ telehealth-resources-project/
 5. **Start Development**: Run VS Code task "🚀 Daily Workflow Start" to begin
 
 ### 📋 Project Documentation
-- **[Weekly Progress Summary](index.html)** - Professional web summary with technical metrics and accomplishments
+- **[Weekly Progress Summary](https://kcoderva.github.io/Telehealth-Scheduling-App/index.html)** - Professional web summary with technical metrics and accomplishments
 - **[Contributing Guidelines](CONTRIBUTING.md)** - Development workflow and coding standards
 - **[Security Policy](SECURITY.md)** - Security requirements and compliance guidelines
 - **[Project Setup](docs/setup.md)** - Development environment configuration
