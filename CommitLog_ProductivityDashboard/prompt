@@ -1,7 +1,0 @@
-You have made the "Commit Log Productivity Dashboard" sub-project much more complicated than it needed to be. You are fixing an error in one row by creating a different error in another row, resulting in going in an indefinte loop in your attempts to assist. I think you've made the solution too complicated to be resolved as it has now been created.
-
-Therefore, I want you to take the following actions in order:
-
-1.   Delete the entire contents and the folder called "S:\Informatics\Data Team\Coder - Informatics\App Programing\Telehealth Schedule & Booking\Commit Log Productivity Dashboard\".
-2.   Create a new empty sub-folder within my active workspace's root folder, and call this new sub-folder "CommitLog_ProductivityDashboard".
-3.   Within this new subfolder, create all of the subfolders or organizational structure that is needed to enable this "CommitLog_ProductivityDashboard" sub-project to be it's own entirely independent and self-contained computer program. I want all of the various scripts, power shells, tasks, components, files, and actions to be stored once we create them. 

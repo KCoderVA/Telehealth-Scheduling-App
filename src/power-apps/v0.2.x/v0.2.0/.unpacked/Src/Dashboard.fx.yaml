@@ -1,0 +1,421 @@
+Dashboard As screen:
+    Fill: |-
+        =If(varTheme="Dark", RGBA(6, 7, 9, 1),ColorValue("#D8D2D6"))
+    Height: =Max(App.Height, App.DesignHeight)
+    OnHidden: |-
+        =// App.OnStart — silent log to SharePoint 'AppLoadAudit' (no de-dupe)
+        Set(varUser, User());
+        Set(varNow, Now());
+        Set(varAppSessionID, GUID());
+        Set(varEmail, Lower(varUser.Email));
+        Set(varEntraID, User().EntraObjectId);
+        Set(varUPN, Office365Users.MyProfileV2(User()).userPrincipalName);
+        Set(varDwellSec, DateDiff(varHomeEnterTime, Now(), TimeUnit.Seconds));
+        
+        
+        
+        IfError(
+            Patch(
+                AppLoadAudit,
+                Defaults(AppLoadAudit),
+                {
+                    Title: Concatenate(varUPN, " loaded app on ", varHomeEnterTime, " & exited home screen on ", varHomeExitTime, " to the ", varExitTargetScreen, " screen via the ", varExitButtonName, " control/object/button"),
+                    Email: varEmail,
+                    FullName: varUser.FullName,
+                    EntraObjectID: varEntraID,
+                    LoadTime: varNow,
+                    MyProfileV2_ID: varEntraID,
+                    UserPrincipleName: varUPN,
+                    Enter_DateTime: varHomeEnterTime,
+                    Exit_DateTime: varHomeExitTime,
+                    DwellSeconds: varDwellSec,
+                    AppSessionID: varAppSessionID,
+                    ExitTargetScreen: varExitTargetScreen,
+                    ExitTargetButtonName: varExitButtonName
+                }
+            ),
+            Blank()
+        );
+    OnVisible: |-
+        =Set(varCurrentDate,Text(Today()));
+        
+        // App.OnStart — silent log to SharePoint 'AppLoadAudit' (no de-dupe)
+        Set(varUser, User());
+        Set(varNow, Now());
+        Set(varHomeEnterTime, Now());
+        Set(varExitTargetScreen, Blank());
+        Set(varExitButtonName, Blank());
+        Set(varHomeExitTime, Now());
+        Set(varAppSessionID, GUID());
+        Set(varEmail, Lower(varUser.Email));
+        //Set(varProfile, IfError(Office365Users.MyProfileV2(), Blank()));
+        Set(varEntraID, User().EntraObjectId);
+        //Set(varEntraID, Coalesce(varProfile.id, Blank()));
+        Set(varUPN, Office365Users.MyProfileV2(User()).userPrincipalName);
+        Set(varDisplayName, Office365Users.MyProfileV2(User()).displayName);
+        //Set(varUPN, Coalesce(varProfile.userPrincipalName, varEmail));
+        Set(varDwellSec, DateDiff(varHomeEnterTime, Now(), TimeUnit.Seconds));
+        //Set(varAppSessionID, Coalesce(varAppSessionID, GUID()));
+        
+        
+        
+        IfError(
+            Patch(
+                AppLoadAudit,
+                Defaults(AppLoadAudit),
+                {
+                    Title: Concatenate(varUPN, " loaded app on ", varNow),
+                    Email: varEmail,
+                    FullName: varUser.FullName,
+                    EntraObjectID: varEntraID,
+                    LoadTime: varNow,
+                    MyProfileV2_ID: varDisplayName,
+                    UserPrincipleName: varUPN,
+                    Enter_DateTime: varHomeEnterTime,
+                    Exit_DateTime: varHomeExitTime,
+                    DwellSeconds: varDwellSec,
+                    AppSessionID: varAppSessionID,
+                    ExitTargetScreen: varExitTargetScreen,
+                    ExitTargetButtonName: varExitButtonName
+                }
+            ),
+            Blank()
+        );
+    Width: =Max(App.Width, App.DesignWidth)
+
+    imgDashboardBG_1 As image:
+        Fill: =RGBA(209, 209, 209, 0)
+        Height: =456
+        Image: ='pexels-photo-273238'
+        ImagePosition: =ImagePosition.Fill
+        Width: =640
+        ZIndex: =1
+
+    bgRounded_14 As htmlViewer:
+        Height: =572
+        HtmlText: |-
+            =If(
+                varTheme = "Dark",
+                "<div style='border:1px gray;border-radius:10%;height:450px;width:100%;background-color:#1D1F23'></div>",
+                "<div style='border:1px gray;border-radius:10%;height:450px;width:100%;background-color:#ECECEC'></div>"
+            )
+        Width: =610
+        X: =15
+        Y: =456
+        ZIndex: =2
+
+    lblName_1 As label:
+        Color: =If(varTheme = "Dark",RGBA(255, 255, 255, 1), Color.Black)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Height: =80
+        Size: =28
+        Text: |-
+            ="Hi " & Trim(Last(FirstN(ForAll(Split(currentUser.FullName," "), {Result: ThisRecord.Value}), 1)).Result) &","
+        Width: =310
+        X: =54
+        Y: =456
+        ZIndex: =4
+
+    lblMyUpcomingRes_1 As label:
+        Color: =If(varTheme = "Dark",RGBA(255, 255, 255, 1), Color.Black)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Height: =61
+        Size: =30
+        Text: ="Upcoming bookings"
+        Visible: |-
+            =//true
+            If(
+                lblNoResDashboard_1.Visible,
+                false,
+                true)
+        Width: =532
+        X: =54
+        Y: =526
+        ZIndex: =5
+
+    "gallMyReservationsPreview_1 As gallery.'BrowseLayout_Vertical_OneTextVariant_ver4.0'":
+        '#CopilotOverlayLabel': ="Filtered"
+        AccessibleLabel: ="Upcoming Reservations"
+        Height: =273
+        Items: |-
+            =FirstN(
+                SortByColumns(
+                    Filter(
+                        List_DeskReservations,
+                        //ReservedBy.Email = currentUser.Email && 'CheckOutFrom_Number' >= Value(
+                        ReservedBy_Person.Email = currentUser.Email && CheckOutFrom_Number >= Value(
+                            Text(
+                                Today(),
+                                "yyyymmddhmm"
+                            )
+                        )
+                    ),
+                    "CheckOutFrom_Number",
+                    SortOrder.Descending
+                ),
+                2
+            )
+        Layout: =Layout.Vertical
+        TabIndex: =5
+        TemplatePadding: =0
+        TemplateSize: =251
+        Visible: =!lblNoResDashboard_1.Visible
+        Width: =612
+        WrapCount: =2
+        X: =28
+        Y: =618
+        ZIndex: =6
+
+        bgRounded_15 As htmlViewer:
+            Height: =240
+            HtmlText: |-
+                =If(
+                    varTheme = "Dark",
+                    "<div style='border:1px gray;border-radius:10%;height:200px;width:100%;background-color:#2A2B33'></div>",
+                    "<div style='border:1px gray;border-radius:10%;height:200px;width:100%;background-color:#FFF'></div>"
+                )
+            Width: =282
+            ZIndex: =1
+
+        Title2_16 As label:
+            Color: =RGBA(135, 78, 181, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =41
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =24
+            Text: |-
+                =Upper(Text(DateTimeValue(ThisItem.CheckOutFrom_Text),"[$-en-US]mmm")) & " " & Upper(
+                    Text(
+                        DateTimeValue(ThisItem.CheckOutFrom_Text),
+                        "[$-en-US]dd"
+                    )
+                )
+            VerticalAlign: =VerticalAlign.Top
+            Width: =230
+            X: =27
+            Y: =8
+            ZIndex: =2
+
+        Title2_24 As label:
+            Color: =If(varTheme = "Dark",RGBA(255, 255, 255, 1), Color.Black)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Normal
+            Height: =42
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =0
+            Size: =16
+            Text: =Text(DateTimeValue(ThisItem.CheckOutFrom_Text), DateTimeFormat.ShortTime) & " - " & Text(DateTimeValue(ThisItem.CheckOutTo_Text), DateTimeFormat.ShortTime)
+            VerticalAlign: =VerticalAlign.Top
+            Width: =242
+            X: =15
+            Y: =49
+            ZIndex: =5
+
+        Title2_26 As label:
+            Color: =If(varTheme = "Dark",RGBA(255, 255, 255, 1), Color.Black)
+            Font: =Font.'Segoe UI'
+            Height: =31
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =0
+            Size: =18
+            Text: =ThisItem.DeskText
+            VerticalAlign: =VerticalAlign.Top
+            Width: =242
+            X: =20
+            Y: =149
+            ZIndex: =8
+
+        Button3_4 As button:
+            BorderThickness: =0
+            Color: |-
+                =//RGBA(255, 255, 255, 1)
+                If(
+                    ThisItem.Status_Choice.Value = "Booked",
+                    ColorFade(
+                        Color.Blue,
+                        .3
+                    ),
+                    ThisItem.Status_Choice.Value = Blank(),
+                    ColorFade(
+                        Color.Black,
+                        .3
+                    ),
+                    ColorFade(
+                        Color.White,
+                        .3
+                    )
+                )
+            Fill: |-
+                =//If(ThisItem.Status_Choice.Value = "Booked",ColorFade(ColorValue("#D2925F"),.3),ColorFade(ColorValue("#3C5F92"),.3))
+                If(
+                    ThisItem.Status_Choice.Value = "Booked",
+                    ColorFade(
+                        ColorValue("#D2925F"),
+                        .3
+                    ),
+                    Self.Text = "Wrong Day",
+                    ColorFade(
+                        Color.Red,
+                        .0
+                    ),
+                    ThisItem.Status_Choice.Value = Blank(),
+                    ColorFade(
+                        Color.LightGreen,
+                        .0
+                    ),
+                    ColorFade(
+                        ColorValue("#3C5F92"),
+                        .3
+                    )
+                )
+            Height: =33
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Set(varSelectedReservation,ThisItem);Navigate(Reservation)
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Size: =16
+            Text: |-
+                =//Upper(ThisItem.Status_Choice.Value)
+                
+                //If(ThisItem.Status_Choice.Value=Blank(),"UPCOMING",Upper(ThisItem.Status_Choice.Value))
+                
+                If(
+                    ThisItem.Status_Choice.Value = "Checked In",
+                        "CHECKED IN",
+                    (Left((Today()),8) = Left((ThisItem.CheckOutFrom_Text),8)),
+                        "CHECK IN",
+                    (Value(
+                        Text(
+                            Now(),
+                            "yyyymmddhmm"
+                        )
+                    ) <> ThisItem.CheckOutFrom_Number),
+                    "Wrong Day",
+                    "ERROR"
+                )
+            Width: =200
+            X: =25
+            Y: =87
+            ZIndex: =9
+
+    lblNoResDashboard_1 As label:
+        Align: =Align.Center
+        Color: =If(varTheme = "Dark",RGBA(255, 255, 255, 1), Color.Black)
+        FontWeight: =FontWeight.Lighter
+        Height: =90
+        Size: =21
+        Text: ="No upcoming reservations"
+        Visible: =If(CountRows(gallMyReservationsPreview_1.AllItems) >=1, false, true)
+        Width: =640
+        Y: =526
+        ZIndex: =7
+
+    Preloader_2 As Preloader:
+        Visible: =varTimer
+        ZIndex: =8
+
+    Image1 As image:
+        Height: =60
+        Image: =Office365Users.UserPhotoV2(User().Email)
+        OnSelect: =Navigate(ManageUsers)
+        RadiusBottomLeft: =180
+        RadiusBottomRight: =180
+        RadiusTopLeft: =180
+        RadiusTopRight: =180
+        Width: =60
+        X: =557
+        Y: =21
+        ZIndex: =9
+
+    Button1 As button:
+        Fill: =RGBA(135, 78, 181, 1)
+        Height: =61
+        HoverFill: =ColorFade(Self.Fill, -20%)
+        OnSelect: =Navigate(NewBooking,ScreenTransition.Cover)
+        RadiusBottomLeft: =60
+        RadiusBottomRight: =60
+        RadiusTopLeft: =60
+        RadiusTopRight: =60
+        Size: =21
+        Text: ="New booking"
+        Width: =261
+        X: =28
+        Y: =935
+        ZIndex: =10
+
+    Tabs_12 As Tabs:
+        FontColor: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        Height: =113
+        IconColor: |-
+            =ColorValue("#874EB5")
+        Items: |-
+            =Table(
+                {
+                    Name: "Home",
+                    Icon: Icon.DetailList,
+                    Page: Dashboard,        
+                    Visible:true
+                },
+                {
+                    Name: "Bookings",
+                    Icon: Icon.Person,
+                    Page: MyAppts,
+                    Visible:true
+                },
+                {
+                    Name: "Book",
+                    Icon: Icon.Add,
+                    Page: NewBooking,
+                    Visible:true
+                },
+                {
+                    Name: "Manage",
+                    Icon: Icon.ComputerDesktop,
+                    Page: ManageDesks,
+                    Visible:varAdmin
+                }
+            )
+        Y: =1016
+        ZIndex: =11
+
+    Button1_3 As button:
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(135, 78, 181, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =61
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(Self.Fill, -20%)
+        OnSelect: |-
+            =Set(varExitTargetScreen, Schedule_Screen.Name);
+            Set(varExitButtonName, "Button1_3");
+            Set(varHomeExitTime, Now());
+            
+            Navigate(Schedule_Screen);
+        RadiusBottomLeft: =60
+        RadiusBottomRight: =60
+        RadiusTopLeft: =60
+        RadiusTopRight: =60
+        Size: =21
+        Text: ="View Schedule"
+        Width: =261
+        X: =356
+        Y: =935
+        ZIndex: =13
+

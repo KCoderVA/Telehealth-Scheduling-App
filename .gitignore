@@ -14,6 +14,14 @@
 **/package-lock.json
 **/yarn.lock
 
+# PowerApps Version Control - Exclude .msapp binaries from v0.2.x onwards
+src/power-apps/v0.2.x/**/*.msapp
+src/power-apps/v0.3.x/**/*.msapp
+src/power-apps/v1.x.x/**/*.msapp
+# But keep ZIP archives for releases
+!src/power-apps/**/*/zip/*.zip
+!src/power-apps/**/*/.zip/*.zip
+
 # Power Platform Development
 **/.pcf/
 **/obj/
@@ -48,6 +56,16 @@
 .~lock.*
 *.xlk
 *.xlsm.backup
+
+# Assets - Large Media Files (keep structure, exclude large binaries)
+assets/videos/*.mp4
+assets/videos/*.avi
+assets/videos/*.mov
+assets/powerpoint/*.pptx.backup
+assets/excel/*.xlsm.backup
+# Keep demo and reference files
+!assets/videos/demo*.mp4
+!assets/videos/README.md
 
 # SharePoint Designer & Development
 *.stp
@@ -135,11 +153,16 @@ AutoRecovery save of*
 *.archive
 *.zip.backup
 backups/
-archives/
+archive/
+*/archive/
 old_versions/
+*/docs/**
+!docs/CONTRIBUTING.md
+!docs/SECURITY.md
 
 # Generated Documentation
 docs/generated/
+docs/hidden
 **/*_generated.md
 **/api_docs_generated/
 
@@ -171,6 +194,7 @@ yarn.lock
 .project
 .classpath
 
+
 # Build Outputs & Compilation
 bin/
 obj/
@@ -201,6 +225,8 @@ Icon?
 .onedrive
 .googledrive
 **/conflict_*
+.git/**
+.gitignore
 
 # Power Platform CLI & Tools
 **/.pcf/cache/

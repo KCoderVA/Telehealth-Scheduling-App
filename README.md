@@ -1,17 +1,17 @@
 # Telehealth Resources Project
 
 [![Power Platform](https://img.shields.io/badge/Power%20Platform-Canvas%20App-blue)](https://powerapps.microsoft.com/)
-[![Version](https://img.shields.io/badge/Version-0.1.3-green)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-0.2.0-green)](./CHANGELOG.md)
 [![Status](https://img.shields.io/badge/Status-Pre--Release%20Development-orange)](./CHANGELOG.md)
-[![Documentation](https://img.shields.io/badge/Documentation-90%25%20Complete-brightgreen)](./docs/)
-[![Technical Foundation](https://img.shields.io/badge/Technical%20Foundation-85%25%20Complete-success)](./docs/technical-analysis-v0.1.2.md)
+[![Documentation](https://img.shields.io/badge/Documentation-95%25%20Complete-brightgreen)](./docs/)
+[![Technical Foundation](https://img.shields.io/badge/Technical%20Foundation-90%25%20Complete-success)](./docs/technical-analysis-v0.1.2.md)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Ready-blue)](https://kcoderva.github.io/Telehealth-Scheduling-App/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue)](https://opensource.org/licenses/Apache-2.0)
 
 ## Overview
 A comprehensive digital transformation initiative for Edward Hines Jr. VA Hospital, evolving from legacy Excel-based room booking systems to a modern, enterprise-grade Microsoft Power Platform solution. The project encompasses the development of a sophisticated PowerApps canvas application with 18 screens, 154 reusable components, and over 186,000 lines of Power Fx code, integrated with SharePoint data architecture and Power Automate workflows to serve multiple hospital buildings across the VA healthcare network.
 
-**Current Status**: Version 0.1.3 in pre-release development, 85% complete in technical foundation with operational core functionality supporting telehealth room reservations, manager approval workflows, and role-based security controls. The project targets September 2025 for full production deployment (v1.0.0).
+**Current Status**: Version 0.2.0 in pre-release development, 90% complete in technical foundation with enhanced source control architecture and operational core functionality supporting telehealth room reservations, manager approval workflows, and role-based security controls. The project targets September 2025 for full production deployment (v1.0.0).
 
 ## Project Goals
 - **PowerApps Canvas App**: Graphical user interface for room booking
@@ -34,20 +34,41 @@ A comprehensive digital transformation initiative for Edward Hines Jr. VA Hospit
 ## Project Structure
 ```
 telehealth-resources-project/
+├── assets/                   # Project multimedia and presentation assets
+│   ├── excel/               # Spreadsheet templates and data exports
+│   ├── images/              # Screenshots, diagrams, and visual documentation
+│   ├── pbi/                 # Power BI dashboard files and reports
+│   ├── powerpoint/          # Presentation materials and stakeholder briefings
+│   └── videos/              # Demo recordings and training materials
 ├── docs/                     # Documentation and specifications
 ├── src/                      # Source code and configurations
-│   ├── powerapps/           # PowerApps canvas app files
+│   ├── power-apps/          # PowerApps canvas app files (version-controlled)
+│   │   ├── v0.1.x/         # Legacy versions (archived)
+│   │   └── v0.2.x/         # Current development branch
+│   │       └── v0.2.0/     # Version 0.2.0 release
+│   │           ├── .unpacked/   # Power Platform CLI source files
+│   │           ├── .zip/        # Archive packages for deployment
+│   │           └── .msapp/      # Binary application files
 │   ├── power-automate/      # Flow definitions and configurations
+│   ├── pwsh/                # PowerShell automation scripts
 │   └── sharepoint/          # SharePoint list schemas and configurations
-├── data/                     # Sample data and test datasets
+├── scripts/                  # Development automation and utilities
+│   ├── pwsh/                # PowerShell scripts for workspace management
+│   └── vba/                 # Legacy VBA migration utilities
 ├── legacy/                   # Legacy VBA and Excel files
 └── LICENSE                   # Apache 2.0 License
 ```
 
 ## Project Analysis Summary
-**Total Files**: 186+ files | **Project Size**: 34.68 MB | **PowerApps Components**: 154 components | **Power Fx Code**: 186,816+ lines
+**Total Files**: 220+ files | **Project Size**: 38.2 MB | **PowerApps Components**: 154+ components | **Power Fx Code**: 186,816+ lines
 
 ### 🏥 Core Application Analysis
+- **Version**: 0.2.0 (Current Development Release)
+- **Architecture**: Modern version-controlled source management with Power Platform CLI integration
+- **Screens**: 18 functional screens optimized for telehealth room booking workflows
+- **Components**: 154+ reusable UI components with enhanced radio button and dropdown functionality
+- **Data Integration**: 5 connectors (SharePoint, Office 365, Teams, Outlook, Excel Online)
+- **Security**: VA Government Cloud compliance with role-based access control
 - **Primary App**: "578 Telehealth Resource App" (ID: 4b4e5be9-cc6e-4856-81fa-dfbe6cff7d9b)
 - **Architecture**: 18 screens across 4 functional areas with 10 reusable components for navigation and UI consistency
 - **Data Architecture**: 3 SharePoint lists with production data storage architecture + Excel integration (2.85 MB active scheduling data)
@@ -89,7 +110,7 @@ telehealth-resources-project/
 
 ### 🚀 Quick Start
 1. **Review Project Documentation**: See detailed implementation plan in `/docs/migration-implementation-plan.md`
-2. **Examine PowerApps Structure**: Navigate to `/src/powerapps/` for unpacked application components
+2. **Examine PowerApps Structure**: Navigate to `/src/power-apps/v0.2.x/v0.2.0/` for current application version
 3. **Review Data Architecture**: Check SharePoint integration details in `/src/sharepoint/current-data-sources.md`
 4. **Setup Development Environment**: Follow comprehensive setup guide in `/docs/setup.md`
 5. **Start Development**: Run VS Code task "🚀 Daily Workflow Start" to begin
@@ -105,7 +126,7 @@ telehealth-resources-project/
 ### 🛠️ Development Tools
 - **VS Code Tasks**: Use `Ctrl+Shift+P → Tasks: Run Task` for common operations
 - **PowerShell Profile**: Enhanced commands loaded automatically (see `powershell-profile.ps1`)
-- **HTML Previewer**: Complete toolchain in `/src/powerapps/PowerApps_HTML_Previewer/`
+- **HTML Previewer**: Legacy development toolchain in `/src/power-apps/v0.1.x/` (archived)
 - **Project Validation**: Automated structure and quality checks
 
 ## Contributors

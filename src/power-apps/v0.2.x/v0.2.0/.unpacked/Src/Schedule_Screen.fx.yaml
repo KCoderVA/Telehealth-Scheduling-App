@@ -1,0 +1,1058 @@
+"Schedule_Screen As screen.'printableLayout_A4Landscape_ver1.0'":
+    Height: =794
+    OnHidden: |-
+        =If(
+            varRedirectedSchedScreen = false,
+                Concurrent(
+                    ClearCollect(col_CombiTable, TelehealthMasterSched_CombiTable),
+                    Set(varSelectedTimeSlot, Blank()),
+                    Set(varBuilding, Blank()),
+                    Set(varRoomNumberSelected, Blank()),
+                    Set(varRoomNumberSelectionText, Blank()),
+                    Reset(Dropdown1_4),
+                    Reset(Schedule_RoomNumber_Dropdown_1)
+                ),
+            varRedirectedSchedScreen = true,
+                ""
+        )
+    OnVisible: |-
+        =If(
+            varRedirectedSchedScreen = false,
+                Concurrent(
+                    ClearCollect(col_CombiTable, TelehealthMasterSched_CombiTable),
+                    Set(varSelectedTimeSlot, Blank()),
+                    Set(varBuilding, Blank()),
+                    Set(varRoomNumberSelected, Blank()),
+                    Set(varRoomNumberSelectionText, Blank()),
+                    Reset(Dropdown1_4),
+                    Reset(Schedule_RoomNumber_Dropdown_1)
+                ),
+            varRedirectedSchedScreen = true,
+                ""
+        )
+    Width: =1123
+
+    Icon3_1 As icon.Home:
+        BorderThickness: =3
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(9, 33, 98, 1)
+        Height: =60
+        Icon: =Icon.Home
+        OnSelect: |-
+            =Set(varRedirectedSchedScreen, false);
+            Navigate(Dashboard);
+        Width: =65
+        X: =962
+        Y: =12
+        ZIndex: =1
+
+    Image1_2 As image:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Height: =60
+        Image: =Office365Users.UserPhotoV2(User().Email)
+        OnSelect: =Navigate(ManageUsers)
+        RadiusBottomLeft: =180
+        RadiusBottomRight: =180
+        RadiusTopLeft: =180
+        RadiusTopRight: =180
+        Width: =60
+        X: =1049
+        Y: =12
+        ZIndex: =2
+
+    TextCanvas1_6 As Text:
+        AutoHeight: =true
+        BorderColor: =
+        DisplayMode: =DisplayMode.Edit
+        Fill: =
+        FontColor: =
+        Height: =32
+        Text: |-
+            ="CBOC Location:"
+        Width: =96
+        X: =8
+        Y: =10
+        ZIndex: =3
+
+    TextCanvas1_7 As Text:
+        Align: ="Start"
+        AutoHeight: =true
+        BorderColor: =
+        BorderStyle: =""
+        ContentLanguage: =""
+        DisplayMode: =DisplayMode.Edit
+        Fill: =
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =32
+        Size: =14
+        TabIndex: =0
+        Text: |-
+            ="Room Number:"
+        Tooltip: =""
+        VerticalAlign: =""
+        Visible: =true
+        Weight: ="Regular"
+        Width: =96
+        Wrap: =true
+        X: =380
+        Y: =10
+        ZIndex: =4
+
+    TextCanvas1_8 As Text:
+        Align: ="Start"
+        AutoHeight: =true
+        BorderColor: =
+        BorderStyle: =""
+        ContentLanguage: =""
+        DisplayMode: =DisplayMode.Edit
+        Fill: =RGBA(255, 0, 0, 1)
+        Font: =""
+        FontColor: =
+        FontItalic: =false
+        FontStrikethrough: =false
+        FontUnderline: =false
+        Height: =32
+        Size: =14
+        TabIndex: =0
+        Text: ="Other"
+        Tooltip: =""
+        VerticalAlign: =""
+        Visible: =false
+        Weight: ="Regular"
+        Width: =96
+        Wrap: =true
+        X: =761
+        Y: =10
+        ZIndex: =5
+
+    Dropdown1_4 As dropdown:
+        AllowEmptySelection: =true
+        Default: ="...Pick one!"
+        Height: =45
+        Items: |-
+            =Sort(
+                    Distinct(
+                        col_CombiTable,
+                        Coalesce(
+                            field_1,
+                            CBOC_Name_text)
+                    ),
+                    Value,
+                    SortOrder.Ascending
+                )
+        OnChange: |-
+            =Set(
+                varBuilding,
+                Dropdown1_4.Selected.Value
+            );
+            Reset(Schedule_RoomNumber_Dropdown_1)
+        OnSelect: |-
+            =Set(
+                varBuilding,
+                Dropdown1_4.Selected.Value
+            );
+            Reset(Schedule_RoomNumber_Dropdown_1)
+        Reset: =true
+        Size: =21
+        Width: =300
+        X: =TextCanvas1_6.X + 25
+        Y: =TextCanvas1_6.Y + TextCanvas1_6.Height
+        ZIndex: =6
+
+    Schedule_RoomNumber_Dropdown_1 As dropdown:
+        AllowEmptySelection: =true
+        BorderColor: =RGBA(0, 18, 107, 1)
+        ChevronBackground: =RGBA(56, 96, 178, 1)
+        ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+        ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+        ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+        ChevronHoverFill: =RGBA(255, 255, 255, 1)
+        Default: ="...Pick one!"
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        DisplayMode: |-
+            =If(
+                IsBlank(Dropdown1_4.SelectedText),
+                DisplayMode.Disabled,
+                DisplayMode.Edit
+            )
+        Height: =45
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(186, 202, 226, 1)
+        Items: |-
+            =//[("Aurora 120"), ("Aurora 121"), ("Hoffman Estates 103"), ("Hoffman Estates 104"), ("Hoffman Estates 105"), ("Hoffman Estates 106"), ("Joliet 1010"), ("Joliet 1011"), ("Joliet 1012"), ("Joliet 1013"), ("Kankakee 103"), ("Kankakee 104"), ("Kankakee 113"), ("Lasalle 127"), ("Lasalle 128"), ("Lasalle 129"), ("Lasalle 130"), ("Oak Lawn 102"), ("Oak Lawn 103"), ("Oak Lawn 104"), ("Oak Lawn 105")]
+            Sort(
+                Distinct(
+                    If(
+                        IsBlank(Dropdown1_4.Selected.Value) || Dropdown1_4.Selected.Value = "All",
+                        col_CombiTable,
+                        Filter(
+                            col_CombiTable,
+                            Coalesce(
+                                field_1,
+                                CBOC_Name_text
+                            ) = Dropdown1_4.Selected.Value
+                        )
+                    ),
+                    Coalesce(
+                        field_2,
+                        Room_number
+                    )
+                ),
+                Value,
+                SortOrder.Ascending
+            )
+        OnChange: |-
+            =Set(varRoomNumberSelectionText, Schedule_RoomNumber_Dropdown_1.SelectedText);
+            Set( varRoomNumberSelected, Coalesce( Schedule_RoomNumber_Dropdown_1.Selected.Value, Schedule_RoomNumber_Dropdown_1.Selected.Value ) )
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =RGBA(0, 18, 107, 1)
+        Reset: =true
+        SelectionFill: =RGBA(56, 96, 178, 1)
+        Size: =21
+        Width: =413
+        X: =TextCanvas1_7.X + 25
+        Y: =TextCanvas1_7.Y + TextCanvas1_7.Height
+        ZIndex: =7
+
+    Dropdown1_6 As dropdown:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        ChevronBackground: =RGBA(56, 96, 178, 1)
+        ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+        ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+        ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+        ChevronHoverFill: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Height: =45
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(186, 202, 226, 1)
+        Items: |-
+            =//DropDownSample
+            col_Desks
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =RGBA(0, 18, 107, 1)
+        SelectionFill: =RGBA(56, 96, 178, 1)
+        Size: =21
+        Visible: =false
+        Width: =300
+        X: =774
+        Y: =TextCanvas1_8.Y + TextCanvas1_8.Height
+        ZIndex: =8
+
+    Container1_1 As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height - Self.Y - 10
+        Width: =Parent.Width - (Self.X * 2)
+        X: =10
+        Y: =Dropdown1_4.Y + Dropdown1_4.Height + 20
+        ZIndex: =9
+
+        Header_Timeslot_1 As button:
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =35
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            Size: =16
+            Text: |-
+                ="Timeslot:"
+            Width: =Gallery_Timeslot_1.Width
+            X: =Gallery_Timeslot_1.X
+            ZIndex: =1
+
+        Header_Monday_1 As button:
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =35
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            Size: =16
+            Text: |-
+                ="Monday:"
+            Width: =Gallery_Monday_1.Width
+            X: =Gallery_Monday_1.X
+            ZIndex: =2
+
+        Header_Tuesday_1 As button:
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =35
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            Size: =16
+            Text: |-
+                ="Tuesday:"
+            Width: =Gallery_Tuesday_1.Width
+            X: =Gallery_Tuesday_1.X
+            ZIndex: =3
+
+        Header_Wednesday_1 As button:
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =35
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            Size: =16
+            Text: |-
+                ="Wednesday:"
+            Width: =Gallery_Wednesday_1.Width
+            X: =Gallery_Wednesday_1.X
+            ZIndex: =4
+
+        Header_Thursday_1 As button:
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =35
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            Size: =16
+            Text: |-
+                ="Thursday:"
+            Width: =Gallery_Thursday_1.Width
+            X: =Gallery_Thursday_1.X
+            ZIndex: =5
+
+        Header_Friday_1 As button:
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =35
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            Size: =16
+            Text: |-
+                ="Friday:"
+            Width: =Gallery_Friday_1.Width
+            X: =Gallery_Friday_1.X
+            ZIndex: =6
+
+        Gallery_Monday_1 As gallery.galleryVertical:
+            '#CopilotOverlayLabel': ="Filtered"
+            BorderThickness: =5
+            DelayItemLoading: =true
+            DisplayMode: |-
+                =If(
+                    IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    DisplayMode.Disabled,
+                    DisplayMode.Edit
+                )
+            Height: =Parent.Height - Header_Monday_1.Height
+            Items: |-
+                =If(
+                    !IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    With(
+                        {
+                            selBldg: Dropdown1_4.Selected.Value,
+                            selRoom: Schedule_RoomNumber_Dropdown_1.Selected.Value
+                        },
+                        Filter(
+                            col_CombiTable,
+                            IsBlank(selBldg) || selBldg = "All" || Coalesce(field_1, CBOC_Name_text) = selBldg,
+                            IsBlank(selRoom) || Coalesce(field_2, Room_number) = selRoom
+                        )),
+                    Blank()
+                )
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            OnSelect: =Navigate(NewBooking,ScreenTransition.Cover)
+            TemplatePadding: =0
+            TemplateSize: =Self.Height / 16
+            Width: =(Parent.Width - Gallery_Timeslot_1.Width) / 5
+            X: =Gallery_Timeslot_1.X + Gallery_Timeslot_1.Width
+            Y: =Header_Monday_1.Y + Header_Monday_1.Height
+            ZIndex: =7
+
+            Rectangle10_7 As rectangle:
+                BorderThickness: =1
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =36
+                OnSelect: =Select(Parent)
+                Visible: =false
+                Width: =Parent.Width - 1
+                ZIndex: =13
+
+            Button2_7 As button:
+                BorderColor: =RGBA(9, 33, 98, 1)
+                BorderThickness: =0
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =Parent.TemplateHeight
+                OnSelect: =Select(Parent)
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =24
+                Text: =
+                Width: =Parent.TemplateWidth
+                ZIndex: =14
+
+            TextCanvas4_9 As Text:
+                Align: ='TextCanvas.Align'.Center
+                AutoHeight: =false
+                BorderColor: =
+                BorderStyle: =BorderStyle.Solid
+                BorderThickness: =0
+                ContentLanguage: =""
+                DisplayMode: =DisplayMode.Edit
+                Fill: =
+                Font: =Font.'Lato Black'
+                FontColor: =
+                FontItalic: =false
+                FontStrikethrough: =false
+                FontUnderline: =false
+                Height: =36
+                PaddingTop: =
+                Size: |-
+                    =If(
+                        ThisItem.Day_Friday_text = "TCT LUNCH 12:15- 12:45",
+                        12,
+                        20
+                    )
+                TabIndex: =0
+                Text: =ThisItem.Day_Monday_text
+                Tooltip: =""
+                VerticalAlign: =VerticalAlign.Middle
+                Visible: =true
+                Weight: ='TextCanvas.Weight'.Bold
+                Width: =Parent.Width
+                Wrap: =false
+                X: =5
+                Y: =0
+                ZIndex: =15
+
+            Rectangle12_7 As rectangle:
+                Height: =1
+                OnSelect: =Select(Parent)
+                Width: =182.16666666666666
+                Y: =35
+                ZIndex: =16
+
+        Gallery_Tuesday_1 As gallery.galleryVertical:
+            '#CopilotOverlayLabel': ="Filtered"
+            BorderThickness: =5
+            DelayItemLoading: =true
+            DisplayMode: |-
+                =If(
+                    IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    DisplayMode.Disabled,
+                    DisplayMode.Edit
+                )
+            Height: =Parent.Height - Header_Tuesday_1.Height
+            Items: |-
+                =If(
+                    !IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    With(
+                        {
+                            selBldg: Dropdown1_4.Selected.Value,
+                            selRoom: Schedule_RoomNumber_Dropdown_1.Selected.Value
+                        },
+                        Filter(
+                            col_CombiTable,
+                            IsBlank(selBldg) || selBldg = "All" || Coalesce(field_1, CBOC_Name_text) = selBldg,
+                            IsBlank(selRoom) || Coalesce(field_2, Room_number) = selRoom
+                        )),
+                    Blank()
+                )
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            OnSelect: =Navigate(NewBooking,ScreenTransition.Cover)
+            TemplatePadding: =0
+            TemplateSize: =Self.Height / 16
+            Width: =(Parent.Width - Gallery_Timeslot_1.Width) / 5
+            X: =Gallery_Monday_1.X + Gallery_Monday_1.Width
+            Y: =Header_Tuesday_1.Y + Header_Tuesday_1.Height
+            ZIndex: =8
+
+            Rectangle10_8 As rectangle:
+                BorderThickness: =1
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =36
+                OnSelect: =Select(Parent)
+                Visible: =false
+                Width: =Parent.Width - 1
+                ZIndex: =18
+
+            Button2_8 As button:
+                BorderColor: =RGBA(9, 33, 98, 1)
+                BorderThickness: =0
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =Parent.TemplateHeight
+                OnSelect: =Select(Parent)
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =24
+                Text: =
+                Width: =Parent.TemplateWidth
+                ZIndex: =19
+
+            TextCanvas4_10 As Text:
+                Align: ='TextCanvas.Align'.Center
+                AutoHeight: =false
+                BorderColor: =
+                BorderStyle: =BorderStyle.Solid
+                BorderThickness: =0
+                ContentLanguage: =""
+                DisplayMode: =DisplayMode.Edit
+                Fill: =
+                Font: =Font.'Lato Black'
+                FontColor: =
+                FontItalic: =false
+                FontStrikethrough: =false
+                FontUnderline: =false
+                Height: =36
+                PaddingTop: =0
+                Size: |-
+                    =If(
+                        ThisItem.Day_Friday_text = "TCT LUNCH 12:15- 12:45",
+                        12,
+                        20
+                    )
+                TabIndex: =0
+                Text: =ThisItem.Day_Tuesday_text
+                Tooltip: =""
+                VerticalAlign: =VerticalAlign.Middle
+                Visible: =true
+                Weight: ='TextCanvas.Weight'.Bold
+                Width: =Parent.Width
+                Wrap: =false
+                X: =5
+                Y: =0
+                ZIndex: =20
+
+            Rectangle12_8 As rectangle:
+                Height: =1
+                OnSelect: =Select(Parent)
+                Width: =182.16666666666666
+                Y: =35
+                ZIndex: =21
+
+        Gallery_Wednesday_1 As gallery.galleryVertical:
+            '#CopilotOverlayLabel': ="Filtered"
+            BorderThickness: =5
+            DelayItemLoading: =true
+            DisplayMode: |-
+                =If(
+                    IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    DisplayMode.Disabled,
+                    DisplayMode.Edit
+                )
+            Height: =Parent.Height - Header_Wednesday_1.Height
+            Items: |-
+                =If(
+                    !IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    With(
+                        {
+                            selBldg: Dropdown1_4.Selected.Value,
+                            selRoom: Schedule_RoomNumber_Dropdown_1.Selected.Value
+                        },
+                        Filter(
+                            col_CombiTable,
+                            IsBlank(selBldg) || selBldg = "All" || Coalesce(field_1, CBOC_Name_text) = selBldg,
+                            IsBlank(selRoom) || Coalesce(field_2, Room_number) = selRoom
+                        )),
+                    Blank()
+                )
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            OnSelect: =Navigate(NewBooking,ScreenTransition.Cover)
+            TemplatePadding: =0
+            TemplateSize: =Self.Height / 16
+            Width: =(Parent.Width - Gallery_Timeslot_1.Width) / 5
+            X: =Gallery_Tuesday_1.X + Gallery_Tuesday_1.Width
+            Y: =Header_Wednesday_1.Y + Header_Wednesday_1.Height
+            ZIndex: =9
+
+            Rectangle10_9 As rectangle:
+                BorderThickness: =1
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =36
+                OnSelect: =Select(Parent)
+                Visible: =false
+                Width: =Parent.Width - 1
+                ZIndex: =23
+
+            Button2_9 As button:
+                BorderColor: =RGBA(9, 33, 98, 1)
+                BorderThickness: =0
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =Parent.TemplateHeight
+                OnSelect: =Select(Parent)
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =24
+                Text: =
+                Width: =Parent.TemplateWidth
+                ZIndex: =24
+
+            TextCanvas4_11 As Text:
+                Align: ='TextCanvas.Align'.Center
+                AutoHeight: =false
+                BorderColor: =
+                BorderStyle: =BorderStyle.Solid
+                BorderThickness: =0
+                ContentLanguage: =""
+                DisplayMode: =DisplayMode.Edit
+                Fill: =
+                Font: =Font.'Lato Black'
+                FontColor: =
+                FontItalic: =false
+                FontStrikethrough: =false
+                FontUnderline: =false
+                Height: =36
+                PaddingTop: =0
+                Size: |-
+                    =If(
+                        ThisItem.Day_Friday_text = "TCT LUNCH 12:15- 12:45",
+                        12,
+                        20
+                    )
+                TabIndex: =0
+                Text: =ThisItem.Day_Wednesday_text
+                Tooltip: =""
+                VerticalAlign: =VerticalAlign.Middle
+                Visible: =true
+                Weight: ='TextCanvas.Weight'.Bold
+                Width: =Parent.Width
+                Wrap: =false
+                X: =5
+                Y: =0
+                ZIndex: =25
+
+            Rectangle12_9 As rectangle:
+                Height: =1
+                OnSelect: =Select(Parent)
+                Width: =182.16666666666666
+                Y: =35
+                ZIndex: =26
+
+        Gallery_Thursday_1 As gallery.galleryVertical:
+            '#CopilotOverlayLabel': ="Filtered"
+            BorderThickness: =5
+            DelayItemLoading: =true
+            DisplayMode: |-
+                =If(
+                    IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    DisplayMode.Disabled,
+                    DisplayMode.Edit
+                )
+            Height: =Parent.Height - Header_Thursday_1.Height
+            Items: |-
+                =If(
+                    !IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    With(
+                        {
+                            selBldg: Dropdown1_4.Selected.Value,
+                            selRoom: Schedule_RoomNumber_Dropdown_1.Selected.Value
+                        },
+                        Filter(
+                            col_CombiTable,
+                            IsBlank(selBldg) || selBldg = "All" || Coalesce(field_1, CBOC_Name_text) = selBldg,
+                            IsBlank(selRoom) || Coalesce(field_2, Room_number) = selRoom
+                        )),
+                    Blank()
+                )
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            OnSelect: |-
+                =Set(varRedirectedSchedScreen, true);
+                Set(varSelectedSchedSlot, ThisItem);
+                Set(varSelectedSched_day, "Thursdays");
+                Set(varSelectedSched_Availibility, Text(ThisItem.Day_Thursday_text));
+                Set(varSelectedSched_time, Text(ThisItem.TimeSlot_text));
+                
+                
+                Navigate(ModifyTimeSlot, ScreenTransition.Cover)
+            TemplatePadding: =0
+            TemplateSize: =Self.Height / 16
+            Width: =(Parent.Width - Gallery_Timeslot_1.Width) / 5
+            X: =Gallery_Wednesday_1.X + Gallery_Wednesday_1.Width
+            Y: =Header_Thursday_1.Y + Header_Thursday_1.Height
+            ZIndex: =10
+
+            Rectangle10_10 As rectangle:
+                BorderThickness: =1
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =36
+                OnSelect: =Select(Parent)
+                Visible: =false
+                Width: =Parent.Width - 1
+                ZIndex: =28
+
+            Button2_10 As button:
+                BorderColor: =RGBA(9, 33, 98, 1)
+                BorderThickness: =0
+                Fill: |-
+                    =If(
+                        IsBlank(ThisItem.Day_Thursday_text),
+                        Color.LightGreen,
+                        Color.Red
+                    )
+                Height: =Parent.TemplateHeight
+                OnSelect: |-
+                    =If(
+                        IsBlank(ThisItem.Day_Thursday_text),
+                        Color.LightGreen,
+                        Color.Red
+                    )
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =24
+                Text: =
+                Width: =Parent.TemplateWidth
+                ZIndex: =29
+
+            TextCanvas4_12 As Text:
+                Align: ='TextCanvas.Align'.Center
+                AutoHeight: =false
+                BorderColor: =
+                BorderStyle: =BorderStyle.Solid
+                BorderThickness: =0
+                ContentLanguage: =""
+                DisplayMode: =DisplayMode.Edit
+                Fill: =
+                Font: =Font.'Lato Black'
+                FontColor: =
+                FontItalic: =false
+                FontStrikethrough: =false
+                FontUnderline: =false
+                Height: =36
+                PaddingTop: =0
+                Size: |-
+                    =If(
+                        ThisItem.Day_Friday_text = "TCT LUNCH 12:15- 12:45",
+                        12,
+                        20
+                    )
+                TabIndex: =0
+                Text: |-
+                    =If(
+                        IsBlank(ThisItem.Day_Thursday_text),
+                        "Available",
+                        ThisItem.Day_Thursday_text
+                    )
+                Tooltip: =""
+                VerticalAlign: =VerticalAlign.Middle
+                Visible: =true
+                Weight: ='TextCanvas.Weight'.Bold
+                Width: =Parent.Width
+                Wrap: =false
+                X: =5
+                Y: =0
+                ZIndex: =30
+
+            Rectangle12_10 As rectangle:
+                BorderColor: =Rectangle12_11.BorderColor
+                Fill: =Rectangle12_11.Fill
+                Height: =Rectangle12_11.Height
+                HoverFill: =Rectangle12_11.HoverFill
+                OnSelect: =Select(Parent)
+                PressedFill: =Rectangle12_11.PressedFill
+                Width: =Rectangle12_11.Width
+                X: =Rectangle12_11.X
+                Y: =Rectangle12_11.Y
+                ZIndex: =31
+
+            Rectangle8_1 As rectangle:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Fill: =RGBA(56, 96, 178, 1)
+                Height: =1
+                OnSelect: =Select(Parent)
+                Width: =Parent.Width
+                Y: =Parent.TemplateHeight - 2
+                ZIndex: =32
+
+        Gallery_Friday_1 As gallery.galleryVertical:
+            '#CopilotOverlayLabel': ="Filtered"
+            BorderThickness: =5
+            DelayItemLoading: =true
+            DisplayMode: |-
+                =If(
+                    IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    DisplayMode.Disabled,
+                    DisplayMode.Edit
+                )
+            Height: =Parent.Height - Header_Friday_1.Height
+            Items: |-
+                =If(
+                    !IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    With(
+                        {
+                            selBldg: Dropdown1_4.Selected.Value,
+                            selRoom: Schedule_RoomNumber_Dropdown_1.Selected.Value
+                        },
+                        Filter(
+                            col_CombiTable,
+                            IsBlank(selBldg) || selBldg = "All" || Coalesce(field_1, CBOC_Name_text) = selBldg,
+                            IsBlank(selRoom) || Coalesce(field_2, Room_number) = selRoom
+                        )),
+                    Blank()
+                )
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            OnSelect: |-
+                =Set(varRedirectedSchedScreen, true);
+                Set(varSelectedSchedSlot, ThisItem);
+                Set(varSelectedSched_day, "Fridays");
+                Set(varSelectedSched_Availibility, Text(ThisItem.Day_Friday_text));
+                Set(varSelectedSched_time, Text(ThisItem.TimeSlot_text));
+                
+                
+                Navigate(ModifyTimeSlot, ScreenTransition.Cover)
+            TemplatePadding: =0
+            TemplateSize: =Self.Height / 16
+            Width: =(Parent.Width - Gallery_Timeslot_1.Width) / 5
+            X: =Gallery_Thursday_1.X + Gallery_Thursday_1.Width
+            Y: =Header_Friday_1.Y + Header_Friday_1.Height
+            ZIndex: =12
+
+            Rectangle10_11 As rectangle:
+                BorderThickness: =1
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =36
+                OnSelect: =Select(Parent)
+                Visible: =false
+                Width: =Parent.Width - 1
+                ZIndex: =2
+
+            Button2_11 As button:
+                BorderColor: =RGBA(9, 33, 98, 1)
+                BorderThickness: =0
+                Color: =
+                Fill: |-
+                    =If(
+                        IsBlank(ThisItem.Day_Friday_text),
+                        Color.LightGreen,
+                        Color.Red
+                    )
+                Height: =Parent.TemplateHeight
+                OnSelect: =Select(Parent)
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =24
+                Text: =
+                Width: =Parent.TemplateWidth
+                ZIndex: =3
+
+            TextCanvas4_13 As Text:
+                Align: ='TextCanvas.Align'.Center
+                AutoHeight: =false
+                BorderColor: =
+                BorderStyle: =BorderStyle.Solid
+                BorderThickness: =0
+                ContentLanguage: =""
+                DisplayMode: =DisplayMode.Edit
+                Fill: =
+                Font: =Font.'Lato Black'
+                FontColor: =RGBA(0, 0, 0, 1)
+                FontItalic: =false
+                FontStrikethrough: =false
+                FontUnderline: =false
+                Height: =36
+                PaddingTop: =0
+                Size: |-
+                    =If(
+                        ThisItem.Day_Friday_text = "TCT LUNCH 12:15- 12:45",
+                        12,
+                        20
+                    )
+                TabIndex: =0
+                Text: |-
+                    =If(
+                        IsBlank(ThisItem.Day_Friday_text),
+                        "Available",
+                        ThisItem.Day_Friday_text
+                    )
+                Tooltip: =""
+                VerticalAlign: =VerticalAlign.Middle
+                Visible: =true
+                Weight: ='TextCanvas.Weight'.Bold
+                Width: =Parent.Width - 5
+                Wrap: =false
+                X: =5
+                Y: =0
+                ZIndex: =4
+
+            Rectangle12_11 As rectangle:
+                BorderColor: =RGBA(255, 255, 255, 1)
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =Parent.TemplateHeight
+                HoverFill: =RGBA(56, 96, 178, .50)
+                OnSelect: =Select(Parent)
+                PressedFill: =RGBA(56, 96, 178, .50)
+                Width: =Parent.Width
+                Y: =(Parent.TemplateHeight - 2) - Self.Height
+                ZIndex: =5
+
+            Rectangle8 As rectangle:
+                Height: =1
+                OnSelect: =Select(Parent)
+                Width: =Parent.Width
+                Y: =Parent.TemplateHeight - 2
+                ZIndex: =6
+
+        Gallery_Timeslot_1 As gallery.galleryVertical:
+            '#CopilotOverlayLabel': ="Filtered"
+            BorderThickness: =5
+            DelayItemLoading: =true
+            DisplayMode: |-
+                =If(
+                    IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    DisplayMode.Disabled,
+                    DisplayMode.Edit
+                )
+            Height: =Parent.Height - Header_Timeslot_1.Height
+            Items: |-
+                =If(
+                    !IsBlank(Schedule_RoomNumber_Dropdown_1.SelectedText),
+                    With(
+                        {
+                            selBldg: Dropdown1_4.Selected.Value,
+                            selRoom: Schedule_RoomNumber_Dropdown_1.Selected.Value
+                        },
+                        Filter(
+                            col_CombiTable,
+                            IsBlank(selBldg) || selBldg = "All" || Coalesce(field_1, CBOC_Name_text) = selBldg,
+                            IsBlank(selRoom) || Coalesce(field_2, Room_number) = selRoom
+                        )),
+                    Blank()
+                )
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            OnSelect: =Navigate(NewBooking,ScreenTransition.Cover)
+            TemplatePadding: =0
+            TemplateSize: =Self.Height / 16
+            Width: =130
+            Y: =Header_Timeslot_1.Y + Header_Timeslot_1.Height
+            ZIndex: =13
+
+            Rectangle10_6 As rectangle:
+                BorderThickness: =1
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =36
+                OnSelect: =Select(Parent)
+                Visible: =false
+                Width: =Parent.Width - 1
+                ZIndex: =8
+
+            Button2_6 As button:
+                BorderColor: =RGBA(9, 33, 98, 1)
+                BorderThickness: =0
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =Parent.TemplateHeight
+                OnSelect: =Select(Parent)
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =24
+                Text: =
+                Width: =Parent.TemplateWidth
+                ZIndex: =9
+
+            TextCanvas4_8 As Text:
+                Align: ='TextCanvas.Align'.Center
+                AutoHeight: =false
+                BorderColor: =
+                BorderStyle: =BorderStyle.Solid
+                BorderThickness: =0
+                ContentLanguage: =""
+                DisplayMode: =DisplayMode.Edit
+                Fill: =
+                Font: =Font.'Lato Black'
+                FontColor: =
+                FontItalic: =false
+                FontStrikethrough: =false
+                FontUnderline: =false
+                Height: =36
+                PaddingTop: =0
+                Size: =12
+                TabIndex: =0
+                Text: =ThisItem.TimeSlot_text
+                Tooltip: =""
+                VerticalAlign: =VerticalAlign.Middle
+                Visible: =true
+                Weight: ='TextCanvas.Weight'.Bold
+                Width: =Parent.Width - Self.X
+                Wrap: =false
+                X: =0
+                Y: =0
+                ZIndex: =10
+
+            Rectangle12_6 As rectangle:
+                Height: =1
+                OnSelect: =Select(Parent)
+                Width: =130
+                Y: =35
+                ZIndex: =11
+
+        ButtonCanvas2 As Button:
+            BasePaletteColor: =RGBA(135, 123, 123, 1)
+            DisplayMode: =DisplayMode.Edit
+            FontSize: =45
+            FontWeight: =FontWeight.Bold
+            Height: =Parent.Height + 10
+            Text: ="Choose a specific CBOC and room with the slicers above to populate the schedule...."
+            Visible: |-
+                =If(
+                    IsBlank(Schedule_RoomNumber_Dropdown_1.Selected.Value),
+                    true,
+                    false
+                )
+            Width: =Parent.Width + 6
+            X: =-3
+            Y: =- 5
+            ZIndex: =14
+
+    Icon3_2 As icon:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        BorderThickness: =3
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(9, 33, 98, 1)
+        Height: =60
+        Icon: =Icon.Reload
+        OnSelect: |-
+            =Reset(Dropdown1_4);
+            Reset(Schedule_RoomNumber_Dropdown_1);
+            Set(varBuilding, Blank());
+            ClearCollect(col_CombiTable, TelehealthMasterSched_CombiTable);
+            //Clear(col_CBOCNames_text); ForAll( SortByColumns( DropColumns( GroupBy( Filter(col_CombiTable, !IsBlank(CBOC_Name_text)), "CBOC_Name_text", "grp" ), "grp" ), "CBOC_Name_text", Ascending ), Collect(col_CBOCNames_text, { CBOC_Name_text: ThisRecord.CBOC_Name_text }) );
+        Width: =65
+        X: =891
+        Y: =12
+        ZIndex: =17
+

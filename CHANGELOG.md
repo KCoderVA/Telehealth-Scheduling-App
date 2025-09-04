@@ -11,6 +11,64 @@ This project is currently in **pre-release development** (0.x.x versions). The f
 - **1.0.0** - First production-ready release
 - **1.x.x** - Production releases with new features and bug fixes
 
+## [0.2.0] - 2025-09-03
+### Added
+- **Version-Based Source Control Architecture**: Implemented semantic versioning directory structure
+  - `src/power-apps/v0.2.x/v0.2.0/` - New versioned PowerApps source organization
+  - `.unpacked/` directory for Power Platform CLI source control integration
+  - `.zip/` archive preservation for release management and rollback capabilities
+  - `.msapp/` binary storage separate from source control for deployment artifacts
+- **Enhanced Project Asset Management**: Comprehensive multimedia and documentation organization
+  - `assets/` directory with organized subdirectories (excel/, images/, pbi/, powerpoint/, videos/)
+  - Professional asset categorization for stakeholder presentations and training materials
+  - README documentation for each asset category with usage guidelines
+- **Advanced PowerShell Script Organization**: Modernized automation and development tooling
+  - `scripts/pwsh/` - Dedicated PowerShell script directory with enhanced functionality
+  - `workspace-cleanup.ps1` - Automated project organization and file management
+  - Enhanced `powershell-profile.ps1` with improved error handling and development functions
+  - `Pre-Commit-Cleanup.ps1` - Quality assurance automation for repository health
+- **Modern Development Documentation**: Updated project documentation and governance
+  - Restored `docs/CONTRIBUTING.md` with enhanced contribution guidelines and coding standards
+  - Restored `docs/SECURITY.md` with VA healthcare compliance and security protocols
+  - Enhanced `.gitignore` patterns for version-based source control and asset management
+
+### Enhanced
+- **PowerApps Canvas App v0.2.0**: Updated application with improved functionality and performance
+  - Enhanced radio button selection logic with proper data type handling
+  - Improved user interface components with healthcare-focused design patterns
+  - Updated business logic for telehealth room booking workflows
+  - Performance optimizations for large dataset handling and delegation patterns
+- **Repository Structure Modernization**: Professional enterprise-grade organization
+  - Semantic versioning implementation for all PowerApps releases
+  - Archive management for legacy v0.1.x versions with full backward compatibility
+  - Asset categorization following Microsoft Power Platform best practices
+  - Documentation structure alignment with enterprise development standards
+
+### Changed
+- **Source Control Strategy**: Transitioned to version-based development workflow
+  - PowerApps `.msapp` files now excluded from primary source control in v0.2.x+
+  - Focus on unpacked source files for collaborative development and change tracking
+  - ZIP archives maintained for release management and deployment automation
+  - Structured approach to version management supporting parallel development tracks
+- **Development Workflow**: Enhanced automation and quality assurance integration
+  - Pre-commit hooks with comprehensive workspace validation
+  - Automated file organization and cleanup processes
+  - PowerShell profile integration with VS Code development environment
+  - Asset management workflows for multimedia content and documentation
+
+### Technical Metrics
+- **Canvas App Architecture**: 18 screens with enhanced radio button and dropdown functionality
+- **Version Control Structure**: 3-tier versioning (major.minor.patch) with archive preservation
+- **Asset Organization**: 5 major asset categories with structured documentation
+- **PowerShell Automation**: 3 enhanced scripts with enterprise-grade error handling
+- **Project Size**: Optimized structure with improved file organization and reduced redundancy
+
+### Repository
+- **Version 0.2.0 Release**: Ready for GitHub Pages deployment with updated documentation
+- **Enhanced Asset Management**: Professional multimedia organization for stakeholder engagement
+- **Development Workflow**: Complete CI/CD pipeline with version-based source control
+- **Documentation Quality**: 95% completion with comprehensive technical specifications
+
 ## [0.1.3] - 2025-07-18
 ### Added
 - **Professional HTML Project Summary**: Publication-ready index.html with comprehensive project overview

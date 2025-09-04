@@ -1,0 +1,270 @@
+Confirm As screen:
+    Fill: =Dashboard.Fill
+    Height: =Max(App.Height, App.DesignHeight)
+    Width: =Max(App.Width, App.DesignWidth)
+
+    lblLookGood As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =113
+        Size: =32
+        Text: ="Everything look good?"
+        Width: =640
+        ZIndex: =3
+
+    bgRounded As htmlViewer:
+        Height: =619
+        HtmlText: |+
+            =If(varTheme="Dark",
+            "<div style='border-radius:10%;height:550px;width:100%;background-color:#1D1F23'></div>",
+            "<div style='border-radius:10%;height:550px;width:100%;background-color:#FCFCFC'></div>")
+            
+        Width: =610
+        X: =16
+        Y: =113
+        ZIndex: =4
+
+    lblDate As label:
+        Align: =Align.Center
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Height: =130
+        Size: =24
+        Text: |-
+            =//Text(startTime,DateTimeFormat.LongDate) & " - " & Char(10) &Text(endTime,DateTimeFormat.LongDate)
+            If(
+                (DateDiff(selectedDate, selectedEndDate, TimeUnit.Days) < 2),
+                Text(startTime,DateTimeFormat.LongDate),
+                Text(startTime,DateTimeFormat.LongDate) & " - " & Char(10) &Text(endTime,DateTimeFormat.LongDate)
+            )
+        Width: =560
+        X: =41
+        Y: =322
+        ZIndex: =7
+
+    lblTime As label:
+        Align: =Align.Center
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Height: =70
+        Size: =24
+        Text: =Text(startTime,DateTimeFormat.ShortTime) & " to " &Text(endTime,DateTimeFormat.ShortTime)
+        Width: =560
+        X: =39
+        Y: =452
+        ZIndex: =8
+
+    lblDesk As label:
+        Align: =Align.Center
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Height: =70
+        Size: =28
+        Text: =Concat(selectedDesks, Title, ", ")
+        Width: =560
+        X: =41
+        Y: =252
+        ZIndex: =9
+
+    Tabs_3 As Tabs:
+        FontColor: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        IconColor: |-
+            =ColorValue("#874EB5")
+        Items: |-
+            =Table(
+                {
+                    Name: "Home",
+                    Icon: Icon.DetailList,
+                    Page: Dashboard,        
+                    Visible:true
+                },
+                {
+                    Name: "Bookings",
+                    Icon: Icon.Person,
+                    Page: MyAppts,
+                    Visible:true
+                },
+                {
+                    Name: "Book",
+                    Icon: Icon.Add,
+                    Page: NewBooking,
+                    Visible:true
+                },
+                {
+                    Name: "Manage",
+                    Icon: Icon.ComputerDesktop,
+                    Page: ManageDesks,
+                    Visible:varAdmin
+                }
+            )
+        Y: =1016
+        ZIndex: =11
+
+    lblReview As label:
+        Align: =Align.Center
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        Font: =Font.'Segoe UI'
+        Height: =70
+        Italic: =true
+        Size: =18
+        Text: ="Please review your desk reservation details and press Confirm to proceed with your reservation"
+        Width: =560
+        X: =41
+        Y: =134
+        ZIndex: =12
+
+    Button1_8 As button:
+        Fill: =RGBA(135, 78, 181, 1)
+        Height: =61
+        HoverFill: =ColorFade(Self.Fill, -20%)
+        OnSelect: |-
+            =ForAll(
+                selectedDesks,
+                Patch(
+                    List_DeskReservations,
+                    Defaults(List_DeskReservations),
+                    {
+                        Title: selectedPerson.DisplayName & " " & ThisRecord.Title,
+                        DeskText: ThisRecord.Title,
+                        //CheckOutFrom_DateTime: DateAdd(startTime, /*TimeZoneOffset(),*/ TimeUnit.Minutes ), 
+                        CheckOutFrom_DateTime: DateAdd(startTime, DateDiff(startTime, endTime,TimeUnit.Minutes), TimeUnit.Minutes ),
+                        CheckOutFrom_Text: startTime,
+                        CheckOutFrom_Number:Value(Text(startTime,"yyyymmddhmm")),
+                        //CheckOutTo_DateTime: DateAdd(endTime, /*TimeZoneOffset(),*/ TimeUnit.Minutes ),
+                        CheckOutTo_DateTime: DateAdd(endTime, DateDiff(startTime, endTime, TimeUnit.Minutes), TimeUnit.Minutes ),
+                        CheckOutTo_Text: endTime,
+                        CheckOutTo_Number: Value(Text(endTime,"yyyymmddhmm")),
+                        ReservedBy_Person: {
+                            '@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser",
+                            Claims: "i:0#.f|membership|" &  selectedPerson.Mail,
+                            Department: "",
+                            DisplayName: selectedPerson.DisplayName,
+                            Email: selectedPerson.Mail,
+                            JobTitle: "",
+                            Picture: ""
+                        }
+                    }
+                )
+            );
+            Concurrent(
+                Reset(ddTimeTo),
+                Reset(ddTimeFrom),
+                Reset(Calendar_1),
+                Clear(selectedDesks),
+                Set(
+                    selectedDate,
+                    Blank()
+                ),
+                Set(
+                    startTime,
+                    Today()
+                ),
+                Set(
+                    endTime,
+                    Today()
+                )
+            );
+            
+            Navigate(Success)
+        RadiusBottomLeft: =60
+        RadiusBottomRight: =60
+        RadiusTopLeft: =60
+        RadiusTopRight: =60
+        Size: =21
+        Text: ="LOOKS GOOD!"
+        Width: =450
+        X: =96
+        Y: =756
+        ZIndex: =13
+
+    Button1_9 As button:
+        Fill: =RGBA(116, 116, 116, 1)
+        Height: =61
+        HoverFill: =ColorFade(Self.Fill, -20%)
+        OnSelect: =Back()
+        RadiusBottomLeft: =60
+        RadiusBottomRight: =60
+        RadiusTopLeft: =60
+        RadiusTopRight: =60
+        Size: =21
+        Text: ="MAKE CHANGES"
+        Width: =450
+        X: =96
+        Y: =853
+        ZIndex: =14
+
+    lblTime_1 As label:
+        Align: =Align.Center
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        Font: =Font.'Segoe UI'
+        Height: =70
+        Size: =24
+        Text: ="for"
+        Width: =560
+        X: =41
+        Y: =504
+        ZIndex: =15
+
+    grpHeader_2 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =20
+        ZIndex: =15
+
+        Image2_4 As image:
+            Height: =150
+            Image: =abstractBackground
+            ImagePosition: =ImagePosition.Fill
+            Width: =640
+            ZIndex: =1
+
+        Rectangle2_2 As rectangle:
+            Fill: =RGBA(135, 78, 181, 0.65)
+            Height: =150
+            Width: =640
+            ZIndex: =2
+
+    lblTime_2 As label:
+        Align: =Align.Center
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Height: =70
+        Size: =24
+        Text: =selectedPerson.DisplayName
+        Width: =560
+        X: =41
+        Y: =552
+        ZIndex: =16
+
+    lblTime_3 As label:
+        Align: =Align.Center
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        Font: =Font.'Segoe UI'
+        Height: =70
+        Size: =24
+        Text: ="from"
+        Width: =560
+        X: =41
+        Y: =402
+        ZIndex: =17
+
+    lblTime_4 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Font: =Font.'Segoe UI'
+        Height: =70
+        Size: =24
+        Text: ="Will be reserved on"
+        Width: =560
+        X: =39
+        Y: =297
+        ZIndex: =18
+
