@@ -1,3 +1,24 @@
+'==============================================================================
+' TELEHEALTH CONFERENCE ROOM CONSOLIDATION MACRO
+'==============================================================================
+' Purpose: Consolidates multiple OakLawn conference room scheduling tables
+'          into a single normalized table for Power Platform migration
+' Author:  Kyle J. Coder
+' Created: 2025
+'
+' Business Context:
+' - Part of VA Healthcare telehealth room booking system migration
+' - Transforms Excel-based scheduling into SharePoint-compatible format
+' - Consolidates 4 separate room tables (OakLawn102-105) into unified structure
+' - Prepares data for PowerApps canvas app and Power Automate workflows
+'
+' Technical Details:
+' - Processes time slots from 8:00am-3:30pm for Monday-Friday scheduling
+' - Extracts room metadata (alias, extension, IP address) from source tables
+' - Applies hospital staff contact information (TCT, CNM, FTC roles)
+' - Formats output for SharePoint list integration
+'==============================================================================
+
 Option Explicit
 
 ' Main subroutine to process conference room scheduling
@@ -13,6 +34,119 @@ Sub ProcessConferenceRoomScheduling()
     On Error Resume Next
     Set masterWs = ThisWorkbook.Worksheets("Output_VBAMacro")
     On Error GoTo 0
+
+Sub CreateConsolidatedHeaders(outputWs As Worksheet)
+    outputWs.Cells(25, 1).Value = "Room Name"
+    outputWs.Cells(25, 2).Value = "Room Alias"
+    outputWs.Cells(25, 3).Value = "Room Extension"
+    outputWs.Cells(25, 4).Value = "Room IP Address"
+    outputWs.Cells(25, 5).Value = "Time Slot"
+    outputWs.Cells(25, 6).Value = "Monday"
+    outputWs.Cells(25, 7).Value = "Tuesday"
+    outputWs.Cells(25, 8).Value = "Wednesday"
+    outputWs.Cells(25, 9).Value = "Thursday"
+    outputWs.Cells(25, 10).Value = "Friday"
+    outputWs.Cells(25, 11).Value = "CBOC Name"
+    outputWs.Cells(25, 12).Value = "TCT Name"
+    outputWs.Cells(25, 13).Value = "TCT Extension"
+    outputWs.Cells(25, 14).Value = "TCT Cell"
+    outputWs.Cells(25, 15).Value = "CNM Name"
+    outputWs.Cells(25, 16).Value = "CNM Extension"
+    outputWs.Cells(25, 17).Value = "CNM Cell"
+    outputWs.Cells(25, 18).Value = "FTC Name"
+    outputWs.Cells(25, 19).Value = "FTC Extension"
+    outputWs.Cells(25, 20).Value = "FTC Cell"
+
+    With outputWs.Range("A25:T25")
+        .Font.Bold = True
+        .Interior.Color = RGB(200, 220, 255)
+        .HorizontalAlignment = xlCenter
+    End With
+End Sub
+
+Function ProcessSingleTable(sourceWs As Worksheet, outputWs As Worksheet, tableRange As String, roomName As String, startOutputRow As Long) As Long
+    Dim tableRangeObj As Range
+    Dim currentRow As Long
+    Dim timeSlotRow As Integer
+    Dim dayCol As Integer
+    Dim timeSlot As String
+    Dim cellValue As String
+    Dim outputRow As Long
+    Dim roomAlias As String
+    Dim roomExtension As String
+    Dim roomIPAddress As String
+    Dim detailsRow As Range
+    Dim cbocName As String
+    Dim tctName As String
+    Dim tctExtension As String
+    Dim tctCell As String
+    Dim cnmName As String
+    Dim cnmExtension As String
+    Dim cnmCell As String
+    Dim ftcName As String
+    Dim ftcExtension As String
+    Dim ftcCell As String
+
+    Set tableRangeObj = sourceWs.Range(tableRange)
+    outputRow = startOutputRow
+
+    Dim tableStartRow As Long
+    Dim tableStartCol As Long
+    tableStartRow = tableRangeObj.Row - 1
+    tableStartCol = tableRangeObj.Column
+
+    roomAlias = Trim(sourceWs.Cells(tableStartRow, tableStartCol + 1).Value)
+    roomExtension = Trim(sourceWs.Cells(tableStartRow, tableStartCol + 2).Value)
+    roomIPAddress = Trim(sourceWs.Cells(tableStartRow, tableStartCol + 3).Value)
+
+    cbocName = "Oak Lawn"
+    tctName = "Candice Harris"
+    tctExtension = "29940"
+    tctCell = "(708) 243-0448"
+    cnmName = "Gisele Steele"
+    cnmExtension = "29941"
+    cnmCell = ""
+    ftcName = "Jessica Wilson"
+    ftcExtension = ""
+    ftcCell = "(708) 932-7433"
+
+    For timeSlotRow = 2 To 17
+        timeSlot = Trim(tableRangeObj.Cells(timeSlotRow, 1).Value)
+
+        If timeSlot <> "" Then
+            outputWs.Cells(outputRow, 1).Value = roomName
+            outputWs.Cells(outputRow, 2).Value = roomAlias
+            outputWs.Cells(outputRow, 3).Value = roomExtension
+            outputWs.Cells(outputRow, 4).Value = roomIPAddress
+            outputWs.Cells(outputRow, 5).Value = timeSlot
+
+            For dayCol = 2 To 6
+                cellValue = Trim(tableRangeObj.Cells(timeSlotRow, dayCol).Value)
+                If cellValue = "" Then
+                    outputWs.Cells(outputRow, dayCol + 4).Value = "AVAILABLE"
+                Else
+                    outputWs.Cells(outputRow, dayCol + 4).Value = cellValue
+                End If
+            Next dayCol
+
+            outputWs.Cells(outputRow, 11).Value = cbocName
+            outputWs.Cells(outputRow, 12).Value = tctName
+            outputWs.Cells(outputRow, 13).Value = tctExtension
+            outputWs.Cells(outputRow, 14).Value = tctCell
+            outputWs.Cells(outputRow, 15).Value = cnmName
+            outputWs.Cells(outputRow, 16).Value = cnmExtension
+            outputWs.Cells(outputRow, 17).Value = cnmCell
+            outputWs.Cells(outputRow, 18).Value = ftcName
+            outputWs.Cells(outputRow, 19).Value = ftcExtension
+            outputWs.Cells(outputRow, 20).Value = ftcCell
+
+            outputRow = outputRow + 1
+        End If
+    Next timeSlotRow
+
+    ProcessSingleTable = outputRow
+End Function
+
 
     ' If the output sheet doesn't exist, create it
     If masterWs Is Nothing Then
@@ -438,3 +572,21 @@ Function ProcessBuilding6(buildingWs As Worksheet, masterWs As Worksheet, startR
     ' TODO: Implement Building 6 specific room processing
     ProcessBuilding6 = startRow
 End Function
+
+'==============================================================================
+' SOFTWARE LICENSE
+'==============================================================================
+' Copyright 2025 Kyle J. Coder
+'
+' Licensed under the Apache License, Version 2.0 (the "License");
+' you may not use this file except in compliance with the License.
+' You may obtain a copy of the License at
+'
+'     http://www.apache.org/licenses/LICENSE-2.0
+'
+' Unless required by applicable law or agreed to in writing, software
+' distributed under the License is distributed on an "AS IS" BASIS,
+' WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+' See the License for the specific language governing permissions and
+' limitations under the License.
+'==============================================================================
