@@ -14,13 +14,15 @@
 **/package-lock.json
 **/yarn.lock
 
-# PowerApps Version Control - Exclude .msapp binaries from v0.2.x onwards
-src/power-apps/v0.2.x/**/*.msapp
-src/power-apps/v0.3.x/**/*.msapp
-src/power-apps/v1.x.x/**/*.msapp
-# But keep ZIP archives for releases
-!src/power-apps/**/*/zip/*.zip
-!src/power-apps/**/*/.zip/*.zip
+# PowerApps Version Control
+# Exclude any export package directory named '.zip'
+src/power-apps/**/.zip/
+src/power-apps/**/.zip/**
+# (Clarity / no-op) Explicitly keep .msapp and .unpacked directories & contents (not strictly required unless a broader ignore is later added)
+!src/power-apps/**/.msapp/
+!src/power-apps/**/.msapp/**
+!src/power-apps/**/.unpacked/
+!src/power-apps/**/.unpacked/**
 
 # Power Platform Development
 **/.pcf/
@@ -75,12 +77,18 @@ assets/excel/*.xlsm.backup
 **/.sharepoint/
 
 # Visual Studio Code
+# Ignore entire .vscode folder contents except keep tasks.json for automation transparency
+.vscode/
+!/.vscode/tasks.json
+# (Optional clarity: legacy explicit ignores retained though redundant)
 .vscode/settings.json
 .vscode/launch.json
 .vscode/extensions.json
 .vscode/.ropeproject
-.code-workspace
 **/.vscode/ipch/
+
+# Workspace definition files (do not publish local workspace metadata)
+*.code-workspace
 
 # Development Tools & Logs
 *.log
@@ -157,12 +165,17 @@ archive/
 */archive/
 old_versions/
 */docs/**
+archive/*
+archive/**
 !docs/CONTRIBUTING.md
 !docs/SECURITY.md
 
-# Generated Documentation
+# Generated & Hidden Documentation
 docs/generated/
-docs/hidden
+docs/hidden/
+docs/hidden/**
+docs/logs/
+docs/logs/**
 **/*_generated.md
 **/api_docs_generated/
 
