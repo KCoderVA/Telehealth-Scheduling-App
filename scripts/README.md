@@ -13,9 +13,10 @@ scripts/
 ## PowerShell Scripts (`pwsh/`)
 
 ### Core Development Automation
-- **powershell-profile.ps1**: Enhanced PowerShell profile with project-specific functions
-- **Pre-Commit-Cleanup.ps1**: Repository quality assurance and validation automation
-- **workspace-cleanup.ps1**: Project organization and file management utilities
+- **powershell-profile.ps1**: Enhanced PowerShell profile with project-specific functions and enterprise-grade error handling
+- **Pre-Commit-Cleanup.ps1**: Repository quality assurance and validation automation with comprehensive workspace validation
+- **workspace-cleanup.ps1**: Project organization and file management utilities with automated archival
+- **generate-inventory.ps1**: Recursive directory analysis and project inventory generation
 
 ### Development Workflow Integration
 - Project structure validation and organization
@@ -25,28 +26,42 @@ scripts/
 
 ### Usage
 ```powershell
-# Load project PowerShell profile
+# Load project PowerShell profile with enhanced functions
 . .\scripts\pwsh\powershell-profile.ps1
 
-# Run pre-commit cleanup
+# Run comprehensive pre-commit cleanup and validation
 .\scripts\pwsh\Pre-Commit-Cleanup.ps1
 
-# Organize workspace files
+# Organize workspace files with automated archival
 .\scripts\pwsh\workspace-cleanup.ps1
+
+# Generate project inventory and analysis
+.\scripts\pwsh\generate-inventory.ps1
 ```
+
+### VS Code Task Integration
+Scripts are integrated with VS Code tasks for automated execution:
+- **🧹 Pre-Commit Cleanup & Validation**: Automated quality assurance
+- **📈 Project Status Check**: Comprehensive repository health analysis
+- **🔍 Validate Project Structure**: Project organization verification
+- **📦 Create Project Backup**: Timestamped backup creation
 
 ## VBA Scripts (`vba/`)
 
 ### Legacy System Migration
-- VBA code from Excel-based scheduling system
-- Migration utilities for transitioning to Power Platform
-- Business logic documentation and analysis
-- Data transformation and import/export scripts
+- **ConsolidateOakLawnTables.vb**: VBA code for Oak Lawn table consolidation and data processing
+- **ConsolidateOakLawnYearlySchedule.vb**: Annual schedule consolidation utilities
+- **VBScript_ConferenceRoomScheduling_2025.08.19.vb**: Conference room scheduling business logic
+- Migration utilities for transitioning from Excel/VBA to Power Platform
+- Business logic documentation and analysis for Power Fx translation
+- Data transformation and import/export scripts for SharePoint integration
 
 ### Integration Notes
-- Scripts support transition from Excel/VBA to PowerApps/SharePoint
+- Scripts support transition from Excel/VBA to PowerApps/SharePoint architecture
 - Business logic preserved and documented for Power Fx translation
-- Maintains backward compatibility during migration phase
+- Maintains backward compatibility during migration phase with parallel operation
+- Reference [Power Fx Documentation](https://docs.microsoft.com/en-us/power-platform/power-fx/) for formula conversion
+- Integration with [SharePoint REST API](https://docs.microsoft.com/en-us/sharepoint/dev/sp-add-ins/get-to-know-the-sharepoint-rest-service) for data migration
 
 ## Development Standards
 
@@ -72,10 +87,12 @@ scripts/
 
 ### VS Code Tasks
 Scripts are integrated with VS Code tasks (`.vscode/tasks.json`) for:
-- Automated project setup and configuration
-- Quality assurance and validation workflows
-- Backup and cleanup automation
-- Development environment maintenance
+- **Automated project setup and configuration**: 15 specialized tasks for development workflow
+- **Quality assurance and validation workflows**: Pre-commit hooks with comprehensive validation
+- **Backup and cleanup automation**: Timestamped backups with size reporting
+- **Development environment maintenance**: PowerShell profile integration and module management
+- **Power Platform Tools**: Direct links to PowerApps Studio, SharePoint Admin, and Power Automate
+- **Repository Health**: Automated Git status, structure validation, and documentation updates
 
 ### Continuous Integration
 - Pre-commit hooks for repository quality

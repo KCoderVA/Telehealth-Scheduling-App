@@ -10,7 +10,7 @@ src/
 │   ├── v0.1.x/         # Legacy versions (archived)
 │   │   └── v0.1.3/     # Version 0.1.3 (archived)
 │   └── v0.2.x/         # Current development branch
-│       └── v0.2.0/     # Version 0.2.0 release
+│       └── v0.2.1/     # Version 0.2.1 release
 │           ├── .unpacked/   # Power Platform CLI source files
 │           ├── .zip/        # Archive packages for deployment
 │           └── .msapp/      # Binary application files
@@ -22,11 +22,12 @@ src/
 ## Development Workflow
 
 ### PowerApps Development
-1. **Design**: Use PowerApps Studio web interface
-2. **Export**: Download .msapp files to `/power-apps/v0.2.x/v0.2.0/.msapp/`
+1. **Design**: Use PowerApps Studio web interface ([make.powerapps.com](https://make.powerapps.com/))
+2. **Export**: Download .msapp files to `/power-apps/v0.2.x/v0.2.1/.msapp/`
 3. **Source Control**: Use Power Platform CLI to maintain .unpacked/ source files
 4. **Version Control**: Semantic versioning with separate directories for major releases
 5. **Testing**: Use HTML Previewer tool for rapid development (legacy v0.1.x)
+6. **Documentation**: Reference [Microsoft Canvas Apps Documentation](https://docs.microsoft.com/en-us/powerapps/maker/canvas-apps/)
 
 ### SharePoint Configuration
 - List schemas and field definitions
@@ -43,16 +44,19 @@ src/
 ## Key Features
 
 ### Production-Ready Components
-- **578 Telehealth Resource App v0.2.0**: 18 functional screens with enhanced UI
+- **578 Telehealth Resource App v0.2.1**: 18 functional screens with enhanced UI and comprehensive documentation
 - **Version-Controlled Source**: Power Platform CLI integration for collaborative development
-- **SharePoint Integration**: 3 lists + Excel Online bridge for data management
-- **Security Model**: VA Government Cloud compliance with role-based access
+- **SharePoint Integration**: 3 lists + Excel Online bridge for data management (2.85+ MB active data)
+- **Security Model**: VA Government Cloud compliance with role-based access and HIPAA compliance
+- **Asset Management**: Professional multimedia organization with 11+ Excel schedules and PowerBI dashboards
 
 ### Development Tools
-- PowerShell automation scripts
-- JSON screen definitions
-- Automated backup and cleanup utilities
-- VS Code task integration
+- PowerShell automation scripts with enterprise-grade error handling
+- JSON screen definitions and component specifications
+- Automated backup and cleanup utilities (15 VS Code tasks)
+- Professional asset management and multimedia organization
+- [Power Platform CLI](https://docs.microsoft.com/en-us/power-platform/developer/cli/introduction) integration
+- VS Code task integration with quality assurance automation
 
 ## Getting Started
 
@@ -60,6 +64,8 @@ src/
 2. **Setup Environment**: Follow `/docs/setup.md`
 3. **PowerApps Development**: Use Power Platform CLI for v0.2.x development (legacy HTML Previewer in `/power-apps/v0.1.x/`)
 4. **SharePoint Lists**: Review current schema in `/sharepoint/current-data-sources.md`
+5. **External Resources**: Reference [Power Platform Documentation](https://docs.microsoft.com/en-us/power-platform/) for best practices
+6. **Asset Management**: Review `/assets/README.md` for multimedia and presentation resources
 
 ## Quality Standards
 
