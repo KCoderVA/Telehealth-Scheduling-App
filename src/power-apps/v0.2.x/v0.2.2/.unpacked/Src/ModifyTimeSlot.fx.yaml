@@ -1,0 +1,1073 @@
+ModifyTimeSlot As screen:
+    Fill: =Dashboard.Fill
+    Height: =Max(App.Height, App.DesignHeight)
+    OnVisible: |-
+        =ClearCollect(col_SlotsToBeModified, Blank());
+        UpdateContext({prevSelected:false});
+        UpdateContext({upSelected:true});
+        Reset(RadioGroupCanvas1);
+        If(
+            !IsBlank(varClinicalFreeText),
+                Reset(tbClinical),
+            tbClinical.Text = "   . . .   enter text here",
+                Set(varClinicalFreeText, Blank()),
+            tbClinical.Text <> "   . . .   enter text here" && IsBlank(varClinicalFreeText),
+                Reset(tbClinical)
+        );
+        Set(varSelectedSchedSlot_endTime_text, Blank());
+        
+        If(
+            "60 Minutes" in RadioGroupCanvas1.SelectedItems.Value,
+                Set(varSelectedSched_duration, 60);
+                ClearCollect(col_SlotsToBeModified, varSelectedSchedSlot, varSelectedSchedSlot_secondarySlot),
+            "90 Minutes" in RadioGroupCanvas1.SelectedItems.Value,
+                Set(varSelectedSched_duration, 90);
+                ClearCollect(col_SlotsToBeModified, varSelectedSchedSlot, First(varSelectedSchedSlot_secondarySlot), varSelectedSchedSlot_tertiarySlot),
+            "30 Minutes" in RadioGroupCanvas1.SelectedItems.Value || IsBlankOrError(varSelectedSched_duration),
+                Set(varSelectedSched_duration, 30);
+                ClearCollect(col_SlotsToBeModified, varSelectedSchedSlot)
+        );
+        
+        Set(
+            varSelectedSchedSlot_endTime_text,
+            With(
+                {
+                    startHour: Value(Left(varSelectedSchedSlot_startTime_text, 2)),
+                    startMinute: Value(Right(varSelectedSchedSlot_startTime_text, 2))
+                },
+                With(
+                    {
+                        totalMinutes: startHour * 60 + startMinute + varSelectedSched_duration
+                    },
+                    With(
+                        {
+                            endHour: Mod(RoundDown(totalMinutes / 60, 0), 24),
+                            endMinute: Mod(totalMinutes, 60)
+                        },
+                        Text(endHour, "00") & Text(endMinute, "00")
+                    )
+                )
+            )
+        );
+        
+        Set(varClinicalFreeText, Blank());
+        Set(varRecurrance, RadioGroupCanvas2.SelectedItems);
+        
+        /*
+        If(
+            varSelectedSched_duration = 30,
+                ClearCollect(col_SlotsToBeModified, varSelectedSchedSlot),
+            varSelectedSched_duration = 60,
+                ClearCollect(col_SlotsToBeModified, varSelectedSchedSlot, varSelectedSchedSlot_secondarySlot),
+            varSelectedSched_duration = 90,
+                ClearCollect(col_SlotsToBeModified, varSelectedSchedSlot, First(varSelectedSchedSlot_secondarySlot), varSelectedSchedSlot_tertiarySlot)
+        );
+        */
+    Width: =Max(App.Width, App.DesignWidth)
+
+    lblMyAppointments_6 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Height: =115
+        Size: =32
+        Text: ="New booking"
+        Width: =640
+        ZIndex: =3
+
+    Tabs_15 As Tabs:
+        FontColor: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        IconColor: |-
+            =ColorValue("#874EB5")
+        Items: |-
+            =Table(
+                {
+                    Name: "Go Home",
+                    Icon: Icon.DetailList,
+                    Page: Dashboard,        
+                    Visible:true
+                },
+                {
+                    Name: " My Bookings",
+                    Icon: Icon.Person,
+                    Page: MyAppts,
+                    Visible:true
+                },
+                {
+                    Name: "New Request",
+                    Icon: Icon.Add,
+                    Page: Schedule_Screen,
+                    Visible:true
+                },
+                {
+                    Name: "Manage Rooms",
+                    Icon: Icon.ComputerDesktop,
+                    Page: ManageDesks,
+                    Visible:varAdmin
+                }
+            )
+        Y: =1016
+        ZIndex: =4
+
+    bgRounded_20 As htmlViewer:
+        Height: =898
+        HtmlText: |
+            =If(varTheme="Dark",
+            "<div style='border-radius:10%;height:870px;width:100%;background-color:#d6dde0'></div>",
+            "<div style='border-radius:10%;height:870px;width:100%;background-color:#FFFFFF'></div>")
+        Width: =610
+        X: =15
+        Y: =116
+        ZIndex: =5
+
+    Button1_12 As button:
+        Fill: =RGBA(135, 78, 181, 1)
+        Height: =61
+        HoverFill: =ColorFade(Self.Fill, -20%)
+        OnSelect: |-
+            =Set(var_fromScreen_ModifyTimeSlot, true);
+            Set(var_fromScreen_ModifyTimeSlot_When, tbFrom_1.Text);
+            
+            Set(
+                varSelectedSchedSlot_endTime_text,
+                With(
+                    {
+                        startHour: Value(Left(varSelectedSchedSlot_startTime_text, 2)),
+                        startMinute: Value(Right(varSelectedSchedSlot_startTime_text, 2))
+                    },
+                    With(
+                        {
+                            totalMinutes: startHour * 60 + startMinute + varSelectedSched_duration
+                        },
+                        With(
+                            {
+                                endHour: Mod(RoundDown(totalMinutes / 60, 0), 24),
+                                endMinute: Mod(totalMinutes, 60)
+                            },
+                            Text(endHour, "00") & Text(endMinute, "00")
+                        )
+                    )
+                )
+            );
+            
+            
+            If(
+                IsBlank(tbClinical) || IsBlank(tbClinical.Text) || tbClinical.Text = "   . . .   enter text here",
+                    Set(varClinicalFreeText, Blank()),
+                    Set(varClinicalFreeText, tbClinical.Text)
+            );
+            
+            
+            
+            
+            Set(varRecurrance, RadioGroupCanvas2.SelectedItems);
+            
+            
+            
+            If(
+                varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) = ""),
+                    If(
+                        IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                            Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                            && Set(varClinicalFreeText, "   . . .   enter text here"),
+                        !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                            Notify("No scheduling conflicts currently exist with your selected date & time!")
+                            && Set(varSubmission_DoubleBook, false) && Navigate(Confirm)
+                    ),
+                varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) = ""),
+                    If(
+                        IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                            Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                            && Set(varClinicalFreeText, "   . . .   enter text here"),
+                        !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                            Notify("No scheduling conflicts currently exist with your selected date & time!")
+                            && Set(varSubmission_DoubleBook, false) && Navigate(Confirm)
+                    ),
+                varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) = ""),
+                    If(
+                        IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                            Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                            && Set(varClinicalFreeText, "   . . .   enter text here"),
+                        !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                            Notify("No scheduling conflicts currently exist with your selected date & time!")
+                            && Set(varSubmission_DoubleBook, false) && Navigate(Confirm)
+                    ),
+                varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) = ""),
+                    If(
+                        IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                            Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                            && Set(varClinicalFreeText, "   . . .   enter text here"),
+                        !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                            Notify("No scheduling conflicts currently exist with your selected date & time!")
+                            && Set(varSubmission_DoubleBook, false) && Navigate(Confirm)
+                    ),
+                varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) = ""),
+                    If(
+                        IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                            Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                            && Set(varClinicalFreeText, "   . . .   enter text here"),
+                        !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                            Notify("No scheduling conflicts currently exist with your selected date & time!")
+                            && Set(varSubmission_DoubleBook, false)
+                    ),
+                Concurrent(
+                    Set(varSubmission_DoubleBook, true),
+                    Notify("With duration selected, this request will result in a double-book!")
+                )
+            );
+            
+            
+            
+            /*
+            If(
+                varSubmission_DoubleBook = true && varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, false),
+                varSubmission_DoubleBook = true && varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, false),
+                varSubmission_DoubleBook = true && varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, false),
+                varSubmission_DoubleBook = true && varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, false),
+                varSubmission_DoubleBook = true && varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, false),
+                varSubmission_DoubleBook = false && varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, Blank()),
+                varSubmission_DoubleBook = false && varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, Blank()),
+                varSubmission_DoubleBook = false && varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, Blank()),
+                varSubmission_DoubleBook = false && varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, Blank()),
+                varSubmission_DoubleBook = false && varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) = ""),
+                    Set(varSubmission_DoubleBook, Blank()),
+                IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) <> ""),
+                    Set(varSubmission_DoubleBook, true),
+                IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) <> ""),
+                    Set(varSubmission_DoubleBook, true),
+                IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) <> ""),
+                    Set(varSubmission_DoubleBook, true),
+                IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) <> ""),
+                    Set(varSubmission_DoubleBook, true),
+                IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) <> ""),
+                    Set(varSubmission_DoubleBook, true)
+            
+            );
+            
+            
+            If(
+                varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) = ""),
+                    Notify("No scheduling conflicts currently exist with your selected date & time!"),
+                varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) = ""),
+                    Notify("No scheduling conflicts currently exist with your selected date & time!"),
+                varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) = ""),
+                    Notify("No scheduling conflicts currently exist with your selected date & time!"),
+                varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) = ""),
+                    Notify("No scheduling conflicts currently exist with your selected date & time!"),
+                varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) = ""),
+                    Notify("No scheduling conflicts currently exist with your selected date & time!"),
+                Set(varSubmission_DoubleBook, true) && Notify("With duration selected, this request will result in a double-book!")
+            );
+            
+            
+                    
+                    If(
+                        IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                            Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                            && Set(varClinicalFreeText, "   . . .   enter text here"),
+                        !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                            Navigate(Confirm)
+                    );
+            */
+        RadiusBottomLeft: =60
+        RadiusBottomRight: =60
+        RadiusTopLeft: =60
+        RadiusTopRight: =60
+        Size: =21
+        Text: ="NEXT PAGE"
+        Width: =450
+        X: =95
+        Y: =Container_Recurrance.Y + Container_Recurrance.Height + 10
+        ZIndex: =9
+
+    Arrow1_6 As arrow.backArrow:
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =60
+        OnSelect: |-
+            =Reset(tbFrom_1);
+            Reset(tbBookFor_1);
+            Back()
+        Width: =60
+        X: =22
+        Y: =29
+        ZIndex: =12
+
+    Container_Recurrance As groupContainer.manualLayoutContainer:
+        BorderThickness: =Container_Person.BorderThickness
+        Height: =tbClinical_1.Y + tbClinical_1.Height + RadioGroupCanvas2.Height + 5
+        maximumHeight: =11360
+        maximumWidth: =640
+        RadiusBottomLeft: =15
+        RadiusBottomRight: =15
+        RadiusTopLeft: =15
+        RadiusTopRight: =15
+        Width: =Container_Person.Width
+        X: =Container_Location.X
+        Y: =Container_Clinical.Y + Container_Clinical.Height + 10
+        ZIndex: =13
+
+        lblClinical_1 As label:
+            AutoHeight: =true
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Font: =Font.'Segoe UI'
+            Height: =50
+            Size: =20
+            Text: ="Should this reservation be repeated every week?"
+            Width: =Parent.Width
+            X: =lblBookFor_1.X
+            ZIndex: =1
+
+        tbClinical_1 As text:
+            AccessibleLabel: ="Floor Input"
+            BorderColor: =RGBA(9, 33, 98, 1)
+            Color: =If(varTheme = "Dark",Color.White, RGBA(0, 0, 0, 1))
+            Default: ="   . . .   enter text here"
+            DelayOutput: =true
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: |-
+                =If(
+                    IsBlank(varClinicalFreeText),
+                        If(varTheme="Dark",ColorValue("#2A2B33"),Color.PaleTurquoise),
+                    varClinicalFreeText = "   . . .   enter text here",
+                        Color.Red,
+                    !IsBlank(varClinicalFreeText) && varClinicalFreeText <> "   . . .   enter text here",
+                        If(varTheme="Dark",ColorValue("#2A2B33"),Color.PaleTurquoise),
+                    If(varTheme="Dark",ColorValue("#2A2B33"),Color.PaleTurquoise)
+                )
+                
+                //If(varTheme="Dark",ColorValue("#2A2B33"),Color.PaleTurquoise)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: |-
+                =If(
+                    Self.Text = "   . . .   enter text here",
+                    FontWeight.Lighter,
+                    FontWeight.Bold
+                )
+            Height: =0
+            HintText: =""
+            HoverBorderColor: =RGBA(0, 18, 107, 1)
+            HoverColor: =RGBA(0, 0, 0, 1)
+            HoverFill: =RGBA(186, 202, 226, 1)
+            Italic: |-
+                =If(
+                    Self.Text = "   . . .   enter text here",
+                    true,
+                    false
+                )
+            OnChange: =Set(varClinicalFreeText, Self.Text);
+            Reset: =true
+            Size: =20
+            Visible: =false
+            Width: =tbBookFor_1.Width
+            X: =tbBookFor_1.X
+            Y: =lblClinical_1.Y + lblClinical_1.Height
+            ZIndex: =2
+
+        RadioGroupCanvas2 As Radio.pcfdataset:
+            DefaultSelectedItems: =["Repeat this reservation every week on the same day and time indefinately"]
+            DisplayMode: =DisplayMode.Edit
+            FontSize: =18
+            FontWeight: =FontWeight.Bold
+            Height: =98
+            Items: =["Repeat this reservation every week on the same day and time indefinately", "Do not repeat this reservation, it is for one single occurance only"]
+            Layout: ='RadioGroupCanvas.Layout'.Horizontal
+            OnChange: =Set(varRecurrance, Self.SelectedItems);
+            RadioSize: =25
+            Width: =Parent.Width
+            X: =0
+            Y: =tbClinical_1.Y + tbClinical_1.Height
+            ZIndex: =3
+
+    Container_Clinical As groupContainer.manualLayoutContainer:
+        BorderThickness: =Container_Person.BorderThickness
+        Height: =tbClinical.Y + tbClinical.Height + 5
+        maximumHeight: =11360
+        maximumWidth: =640
+        RadiusBottomLeft: =15
+        RadiusBottomRight: =15
+        RadiusTopLeft: =15
+        RadiusTopRight: =15
+        Width: =Container_Person.Width
+        X: =Container_Location.X
+        Y: =Container_Location.Y + Container_Location.Height + 10
+        ZIndex: =14
+
+        lblClinical As label:
+            AutoHeight: =true
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            Font: =Font.'Segoe UI'
+            Height: =50
+            Size: =20
+            Text: |-
+                ="Which clinic/specialty will use this room:"
+            Width: =Parent.Width
+            X: =lblBookFor_1.X
+            ZIndex: =1
+
+        tbClinical As text:
+            AccessibleLabel: ="Floor Input"
+            BorderColor: =RGBA(9, 33, 98, 1)
+            BorderThickness: =1
+            Clear: =true
+            Color: =If(varTheme = "Dark",Color.White, RGBA(0, 0, 0, 1))
+            Default: ="   . . .   enter text here"
+            Fill: |-
+                =If(
+                    IsBlank(varClinicalFreeText),
+                        If(varTheme="Dark",ColorValue("#2A2B33"),Color.PaleTurquoise),
+                    varClinicalFreeText = "   . . .   enter text here",
+                        Color.Red,
+                    !IsBlank(varClinicalFreeText) && varClinicalFreeText <> "   . . .   enter text here",
+                        If(varTheme="Dark",ColorValue("#2A2B33"),Color.PaleTurquoise),
+                    If(varTheme="Dark",ColorValue("#2A2B33"),Color.PaleTurquoise)
+                )
+                
+                //If(varTheme="Dark",ColorValue("#2A2B33"),Color.PaleTurquoise)
+            Font: =Font.'Segoe UI'
+            FontWeight: |-
+                =If(
+                    Self.Text = "   . . .   enter text here",
+                    FontWeight.Lighter,
+                    FontWeight.Bold
+                )
+            Height: =70
+            HintText: =""
+            Italic: |-
+                =If(
+                    Self.Text = "   . . .   enter text here",
+                    true,
+                    false
+                )
+            OnChange: |-
+                =If(
+                    Self.Text <> "   . . .   enter text here",
+                    Set(varClinicalFreeText, Self.Text)
+                )
+            OnSelect: |-
+                =If(
+                    Self.Text = "   . . .   enter text here",
+                    Self.Clear,
+                    ""
+                )
+            Reset: =true
+            Size: =20
+            Width: =tbBookFor_1.Width
+            X: =tbBookFor_1.X
+            Y: =lblClinical.Y + lblClinical.Height
+            ZIndex: =2
+
+    Container_Aknowledgement As groupContainer.manualLayoutContainer:
+        Height: =Parent.Height - Self.Y - Tabs_15.Height
+        Visible: |-
+            =If(
+                varSubmission_DoubleBook = true,
+                    true,
+                varSubmission_DoubleBook = false || IsBlank(varSubmission_DoubleBook),
+                    false
+            )
+        Width: =Container_Person.Width + 20
+        X: =Container_Person.X - 10
+        Y: =Container_Clinical.Y
+        ZIndex: =15
+
+        ButtonCanvas1 As Button:
+            BasePaletteColor: =RGBA(255, 0, 0, 1)
+            BorderColor: =
+            BorderRadius: =15
+            DisplayMode: =DisplayMode.Edit
+            FontColor: =
+            FontSize: =40
+            FontWeight: =FontWeight.Bold
+            Height: =Parent.Height
+            Text: ="If you submit this request with the selected time & duration, you will be overbooking this telehealth room..."
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+        Button1_13 As button:
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Fill: =RGBA(135, 78, 181, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =Button1_12.Height
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =Set(varSubmission_DoubleBook, true);
+                
+                Set(var_fromScreen_ModifyTimeSlot, true);
+                Set(var_fromScreen_ModifyTimeSlot_When, tbFrom_1.Text);
+                
+                Set(
+                    varSelectedSchedSlot_endTime_text,
+                    With(
+                        {
+                            startHour: Value(Left(varSelectedSchedSlot_startTime_text, 2)),
+                            startMinute: Value(Right(varSelectedSchedSlot_startTime_text, 2))
+                        },
+                        With(
+                            {
+                                totalMinutes: startHour * 60 + startMinute + varSelectedSched_duration
+                            },
+                            With(
+                                {
+                                    endHour: Mod(RoundDown(totalMinutes / 60, 0), 24),
+                                    endMinute: Mod(totalMinutes, 60)
+                                },
+                                Text(endHour, "00") & Text(endMinute, "00")
+                            )
+                        )
+                    )
+                );
+                
+                
+                If(
+                    IsBlank(tbClinical) || IsBlank(tbClinical.Text) || tbClinical.Text = "   . . .   enter text here",
+                        Set(varClinicalFreeText, Blank()),
+                        Set(varClinicalFreeText, tbClinical.Text)
+                );
+                
+                
+                
+                
+                Set(varRecurrance, RadioGroupCanvas2.SelectedItems);
+                
+                
+                
+                If(
+                    varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) = ""),
+                        If(
+                            IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                                Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                                && Set(varClinicalFreeText, "   . . .   enter text here"),
+                            !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                                Notify("No scheduling conflicts currently exist with your selected date & time!")
+                                && Set(varSubmission_DoubleBook, false)
+                        ),
+                    varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) = ""),
+                        If(
+                            IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                                Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                                && Set(varClinicalFreeText, "   . . .   enter text here"),
+                            !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                                Notify("No scheduling conflicts currently exist with your selected date & time!")
+                                && Set(varSubmission_DoubleBook, false)
+                        ),
+                    varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) = ""),
+                        If(
+                            IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                                Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                                && Set(varClinicalFreeText, "   . . .   enter text here"),
+                            !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                                Notify("No scheduling conflicts currently exist with your selected date & time!")
+                                && Set(varSubmission_DoubleBook, false)
+                        ),
+                    varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) = ""),
+                        If(
+                            IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                                Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                                && Set(varClinicalFreeText, "   . . .   enter text here"),
+                            !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                                Notify("No scheduling conflicts currently exist with your selected date & time!")
+                                && Set(varSubmission_DoubleBook, false)
+                        ),
+                    varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) = ""),
+                        If(
+                            IsBlank(varClinicalFreeText) || varClinicalFreeText = "   . . .   enter text here" || tbClinical.Text = "   . . .   enter text here",
+                                Notify("You must enter the name of the clinical team, specialty service, or similar information before proceeding!")
+                                && Set(varClinicalFreeText, "   . . .   enter text here"),
+                            !IsBlank(varClinicalFreeText) || varClinicalFreeText <> "   . . .   enter text here" || tbClinical.Text <> "   . . .   enter text here",
+                                Notify("No scheduling conflicts currently exist with your selected date & time!")
+                                && Set(varSubmission_DoubleBook, false)
+                        ),
+                    Concurrent(
+                        Set(varSubmission_DoubleBook, true),
+                        Notify("With duration selected, this request will result in a double-book!")
+                    )
+                );
+                
+                Set(varSubmission_DoubleBook, true);
+                Navigate(Confirm)
+            RadiusBottomLeft: =60
+            RadiusBottomRight: =60
+            RadiusTopLeft: =60
+            RadiusTopRight: =60
+            Size: =21
+            Text: ="Proceed Anyway!"
+            Width: =Button1_12.Width
+            X: =Button1_12.X - Parent.X
+            Y: =Parent.Height - Self.Height - 25
+            ZIndex: =2
+
+    Container_Location As groupContainer.manualLayoutContainer:
+        BorderThickness: =Container_Person.BorderThickness
+        Height: =tbDesk_1.Y + tbDesk_1.Height + 5
+        RadiusBottomLeft: =15
+        RadiusBottomRight: =15
+        RadiusTopLeft: =15
+        RadiusTopRight: =15
+        Width: =Container_Person.Width
+        X: =Container_Person.X
+        Y: =Container_When.Y + Container_When.Height + 10
+        ZIndex: =16
+
+        lblResDesk_1 As label:
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            Font: =Font.'Segoe UI'
+            Height: =50
+            Size: =20
+            Text: |-
+                ="Which CBOC & room number are you reserving:"
+            Width: =Parent.Width
+            X: =lblBookFor_1.X
+            ZIndex: =1
+
+        tbDesk_1 As text:
+            AccessibleLabel: ="Floor Input"
+            BorderColor: =RGBA(9, 33, 98, 1)
+            BorderThickness: =1
+            Color: =If(varTheme = "Dark",Color.White, RGBA(0, 0, 0, 1))
+            Default: |-
+                =Concatenate(varSelectedSchedSlot.CBOC_Name_text, " CBOC - Room #", varSelectedSchedSlot.Room_number)
+            DisplayMode: =DisplayMode.View
+            Fill: |-
+                =If(varTheme="Dark",ColorValue("#2A2B33"), Color.PaleTurquoise)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =70
+            Size: =20
+            Width: =tbBookFor_1.Width
+            X: =tbBookFor_1.X
+            Y: =lblResDesk_1.Y + lblResDesk_1.Height
+            ZIndex: =2
+
+        Icon2_9 As icon.NextArrow:
+            Color: =If(varTheme = "Dark",Color.White, RGBA(0, 0, 0, 1))
+            Height: =35
+            Icon: =Icon.NextArrow
+            OnSelect: |-
+                =Set(varRedirectedSchedScreen, true);
+                Select(Button4_1)
+            Width: =35
+            X: =Icon2_4.X
+            Y: =tbDesk_1.Y + Self.Height / 2
+            ZIndex: =3
+
+        Button4_2 As button:
+            BorderThickness: =0
+            Color: =
+            Fill: =Color.Transparent
+            Height: =tbDesk_1.Height
+            HoverBorderColor: =Color.DarkBlue
+            HoverFill: =ColorFade(RGBA(56, 96, 178, .5), -20%)
+            OnSelect: =Select(Icon2_9)
+            PressedBorderColor: =
+            Size: =24
+            Text: =
+            Width: =tbDesk_1.Width
+            X: =tbDesk_1.X
+            Y: =tbDesk_1.Y
+            ZIndex: =4
+
+    Container_When As groupContainer.manualLayoutContainer:
+        BorderThickness: =Container_Person.BorderThickness
+        Height: =tbFrom_1.Y + tbFrom_1.Height + Container7.Height
+        RadiusBottomLeft: =15
+        RadiusBottomRight: =15
+        RadiusTopLeft: =15
+        RadiusTopRight: =15
+        Width: =Container_Person.Width
+        X: =Container_Person.X
+        Y: =Container_Person.Y + Container_Person.Height + 10
+        ZIndex: =17
+
+        lblFrom_1 As label:
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            Font: =Font.'Segoe UI'
+            Height: =50
+            Size: =20
+            Text: ="When are you reserving this room?"
+            Width: =Parent.Width
+            X: =lblBookFor_1.X
+            ZIndex: =1
+
+        tbFrom_1 As text:
+            AccessibleLabel: ="Map Link Input"
+            BorderColor: =RGBA(179, 179, 179, 1)
+            Color: =If(varTheme = "Dark",Color.White, RGBA(0, 0, 0, 1))
+            Default: |-
+                =Concatenate(varSelectedSched_day, " @ ", Left(varSelectedSchedSlot.TimeSlot_Start_text, 2), ":", Right(varSelectedSchedSlot.TimeSlot_Start_text, 2), " - ", Left(varSelectedSchedSlot_endTime_text, 2), ":", Right(varSelectedSchedSlot_endTime_text, 2))
+            DisplayMode: =DisplayMode.View
+            Fill: |-
+                =If(varTheme="Dark",ColorValue("#2A2B33"), Color.PaleTurquoise)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =70
+            Size: =20
+            Width: =tbBookFor_1.Width
+            X: =tbBookFor_1.X
+            Y: =lblFrom_1.Y + lblFrom_1.Height
+            ZIndex: =2
+
+        Icon2_8 As icon.NextArrow:
+            Color: =If(varTheme = "Dark",Color.White, RGBA(0, 0, 0, 1))
+            Height: =35
+            Icon: =Icon.NextArrow
+            OnSelect: |-
+                =Set(varRedirectedSchedScreen, true);
+                Set(varSelectedSchedSlot, Blank());
+                Set(varSelectedSched_day, Blank());
+                Set(varSelectedSched_time, Blank());
+                Set(varSelectedSchedSlot_endTime_text, Blank());
+                Set(varSelectedSchedSlot_endTime_text, Blank());
+                Set(varSelectedSchedSlot_startTime_text, Blank());
+                Set(var_fromScreen_ModifyTimeSlot_When, Blank());
+                
+                
+                Navigate(Schedule_Screen)
+            Width: =35
+            X: =Icon2_4.X
+            Y: =Button4_1.Y + Self.Height / 2
+            ZIndex: =3
+
+        Button4_1 As button:
+            BorderThickness: =0
+            Color: =
+            Fill: =Color.Transparent
+            Height: =tbFrom_1.Height
+            HoverBorderColor: =Color.DarkBlue
+            HoverFill: =ColorFade(RGBA(56, 96, 178, .5), -20%)
+            OnSelect: |-
+                =Set(varRedirectedSchedScreen, true);
+                Select(Icon2_8)
+            PressedBorderColor: =
+            Size: =24
+            Text: =
+            Width: =tbFrom_1.Width
+            X: =tbFrom_1.X
+            Y: =tbFrom_1.Y
+            ZIndex: =4
+
+        Container7 As groupContainer.horizontalAutoLayoutContainer:
+            Height: =RadioGroupCanvas1.Height + 10
+            LayoutMode: =LayoutMode.Auto
+            Width: =Button4_1.Width
+            X: =Button4_1.X + 25
+            Y: =tbFrom_1.Y + tbFrom_1.Height
+            ZIndex: =5
+
+            TextCanvas1 As Text:
+                BorderColor: =
+                DisplayMode: =DisplayMode.Edit
+                Fill: =
+                FontColor: =
+                Height: =32
+                LayoutMinHeight: =32
+                LayoutMinWidth: =96
+                Size: =18
+                Text: |-
+                    ="Duration:"
+                VerticalAlign: =VerticalAlign.Top
+                Weight: ='TextCanvas.Weight'.Regular
+                Width: =78
+                X: =0
+                Y: =0
+                ZIndex: =1
+
+            RadioGroupCanvas1 As Radio.pcfdataset:
+                AlignInContainer: =AlignInContainer.End
+                BasePaletteColor: =
+                DefaultSelectedItems: |-
+                    =If(
+                        varSelectedSched_duration = 60,
+                            ["60 Minutes"],
+                        varSelectedSched_duration = 90,
+                            ["90 Minutes"],
+                        varSelectedSched_duration = 30 || !IsBlankOrError(varSelectedSched_duration),
+                            ["30 Minutes"]
+                    )
+                DisplayMode: =DisplayMode.Edit
+                FontSize: |
+                    =18
+                FontWeight: =FontWeight.Bold
+                Height: =50
+                Items: =["30 Minutes", "60 Minutes", "90 Minutes"]
+                Layout: ='RadioGroupCanvas.Layout'.Horizontal
+                LayoutMinHeight: =100
+                LayoutMinWidth: =320
+                OnChange: |-
+                    =If(
+                        "60 Minutes" in RadioGroupCanvas1.SelectedItems.Value,
+                            Set(varSelectedSched_duration, 60);
+                            ClearCollect(col_SlotsToBeModified, varSelectedSchedSlot, varSelectedSchedSlot_secondarySlot),
+                        "90 Minutes" in RadioGroupCanvas1.SelectedItems.Value,
+                            Set(varSelectedSched_duration, 90);
+                            ClearCollect(col_SlotsToBeModified, varSelectedSchedSlot, First(varSelectedSchedSlot_secondarySlot), varSelectedSchedSlot_tertiarySlot),
+                        "30 Minutes" in RadioGroupCanvas1.SelectedItems.Value || IsBlankOrError(varSelectedSched_duration),
+                            Set(varSelectedSched_duration, 30);
+                            ClearCollect(col_SlotsToBeModified, varSelectedSchedSlot)
+                    );
+                    
+                    Set(
+                        varSelectedSchedSlot_endTime_text,
+                        With(
+                            {
+                                startHour: Value(Left(varSelectedSchedSlot_startTime_text, 2)),
+                                startMinute: Value(Right(varSelectedSchedSlot_startTime_text, 2))
+                            },
+                            With(
+                                {
+                                    totalMinutes: startHour * 60 + startMinute + varSelectedSched_duration
+                                },
+                                With(
+                                    {
+                                        endHour: Mod(RoundDown(totalMinutes / 60, 0), 24),
+                                        endMinute: Mod(totalMinutes, 60)
+                                    },
+                                    Text(endHour, "00") & Text(endMinute, "00")
+                                )
+                            )
+                        )
+                    );
+                    
+                    If(
+                        varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true),
+                        varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true),
+                        varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true),
+                        varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true),
+                        varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true)
+                    )
+                    
+                    /*
+                    If(
+                        varSubmission_DoubleBook = true && varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSubmission_DoubleBook = true && varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSubmission_DoubleBook = true && varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSubmission_DoubleBook = true && varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSubmission_DoubleBook = true && varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, false),
+                        varSubmission_DoubleBook = false && varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, Blank()),
+                        varSubmission_DoubleBook = false && varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, Blank()),
+                        varSubmission_DoubleBook = false && varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, Blank()),
+                        varSubmission_DoubleBook = false && varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, Blank()),
+                        varSubmission_DoubleBook = false && varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) = ""),
+                            Set(varSubmission_DoubleBook, Blank()),
+                        IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Mondays" && (Text(Concat(col_SlotsToBeModified, Day_Monday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true),
+                        IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Tuesdays" && (Text(Concat(col_SlotsToBeModified, Day_Tuesday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true),
+                        IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Wednesdays" && (Text(Concat(col_SlotsToBeModified, Day_Wednesday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true),
+                        IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Thursdays" && (Text(Concat(col_SlotsToBeModified, Day_Thursday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true),
+                        IsBlank(varSubmission_DoubleBook) && varSelectedSched_day = "Fridays" && (Text(Concat(col_SlotsToBeModified, Day_Friday_text, "")) <> ""),
+                            Set(varSubmission_DoubleBook, true)
+                    
+                    );
+                    */
+                RadioSize: |
+                    =25
+                Width: =Parent.Width - TextCanvas1.X - TextCanvas1.Width
+                X: =0
+                Y: =0
+                ZIndex: =2
+
+    Container_Person As groupContainer.manualLayoutContainer:
+        BorderThickness: =2
+        Height: =tbBookFor_1.Height + lblBookFor_1.Height + 5
+        RadiusBottomLeft: =15
+        RadiusBottomRight: =15
+        RadiusTopLeft: =15
+        RadiusTopRight: =15
+        Width: =bgRounded_20.Width - 20
+        X: =bgRounded_20.X + 10
+        Y: =175
+        ZIndex: =18
+
+        lblBookFor_1 As label:
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            Font: =Font.'Segoe UI'
+            Height: =50
+            Size: =20
+            Text: |-
+                ="Provider/Clinician's Name:"
+            Width: =575
+            ZIndex: =1
+
+        tbBookFor_1 As text:
+            AccessibleLabel: ="Desk Name Input"
+            BorderColor: =RGBA(179, 179, 179, 1)
+            Color: =If(varTheme = "Dark",Color.White, RGBA(0, 0, 0, 1))
+            Default: =selectedPerson.DisplayName
+            DisplayMode: =DisplayMode.View
+            Fill: |-
+                =If(varTheme="Dark",ColorValue("#2A2B33"), Color.PaleTurquoise)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =70
+            OnSelect: =Select(Icon2_4)
+            Size: =25
+            Width: =Parent.Width - (Self.X * 2)
+            X: =bgRounded_20.X + 10
+            Y: =lblBookFor_1.Y + lblBookFor_1.Height
+            ZIndex: =2
+
+        Icon2_4 As icon.NextArrow:
+            Color: =If(varTheme = "Dark",Color.White, RGBA(0, 0, 0, 1))
+            Height: =35
+            Icon: =Icon.NextArrow
+            OnSelect: =Navigate(BookFor,ScreenTransition.Fade)
+            Width: =35
+            X: =tbBookFor_1.Width - (Self.Width / 2)
+            Y: =tbBookFor_1.Y + Self.Height / 2
+            ZIndex: =3
+
+        Button4 As button:
+            BorderThickness: =0
+            Color: =
+            Fill: =Color.Transparent
+            Height: =tbBookFor_1.Height
+            HoverBorderColor: =Color.DarkBlue
+            HoverFill: =ColorFade(RGBA(56, 96, 178, .5), -20%)
+            OnSelect: =Select(Icon2_4)
+            PressedBorderColor: =
+            Size: =24
+            Text: =
+            Width: =tbBookFor_1.Width
+            X: =tbBookFor_1.X
+            Y: =tbBookFor_1.Y
+            ZIndex: =4
+
+    grpHeader_12 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =20
+        ZIndex: =19
+
+        Image2_13 As image:
+            Height: =150
+            Image: =abstractBackground
+            ImagePosition: =ImagePosition.Fill
+            Width: =640
+            ZIndex: =1
+
+        Rectangle2_12 As rectangle:
+            Fill: =RGBA(135, 78, 181, 0.65)
+            Height: =150
+            Width: =640
+            ZIndex: =2
+
+    grpConfirmCancel_4 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =20
+
+        Label1_5 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =87
+            Size: =24
+            Text: ="Confirm Cancellation"
+            Visible: =varConfirmCancel
+            Width: =557
+            X: =40
+            Y: =298
+            ZIndex: =6
+
+        btnConfirmCancel_5 As button:
+            BorderThickness: =0
+            Fill: =RGBA(128, 128, 128, 1)
+            Height: =45
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =UpdateContext({varConfirmCancel:false})
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Size: =14
+            Text: ="NEVERMIND"
+            Visible: =varConfirmCancel
+            X: =141
+            Y: =465
+            ZIndex: =7
+
+        btnConfirmDelete_5 As button:
+            BorderThickness: =0
+            Fill: =RGBA(184, 0, 0, 1)
+            Height: =45
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =Remove(List_DeskReservations,varSelectedReservation);UpdateContext({varConfirmCancel:false})
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Size: =14
+            Text: ="CONFIRM"
+            Visible: =varConfirmCancel
+            X: =341
+            Y: =465
+            ZIndex: =8
+
+        Rectangle3_8 As rectangle:
+            Fill: =RGBA(116, 116, 116, 0.85)
+            Height: =1136
+            Visible: =varConfirmCancel
+            Width: =640
+            ZIndex: =10
+
+        bgRounded_21 As htmlViewer:
+            Height: =651
+            HtmlText: |-
+                ="<div style='border:1px gray;border-radius:10%;height:450px;width:100%;background-color:#FCFCFC'></div>"
+            Visible: =varConfirmCancel
+            Width: =610
+            X: =14
+            Y: =229
+            ZIndex: =11
+
