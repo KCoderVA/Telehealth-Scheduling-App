@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telehealth Room Booking - Approval Card Preview</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f2f1;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.4;
+        }
+
+        .adaptive-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            border: 1px solid #e1dfdd;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .header-logo {
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
+            background: #0078d4;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0078d4;
+            flex: 1;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #323130;
+        }
+
+        .subtitle {
+            color: #605e5c;
+            margin-bottom: 12px;
+        }
+
+        .fact-set {
+            background: #f8f8f8;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        .fact-row {
+            display: flex;
+            margin-bottom: 4px;
+        }
+
+        .fact-title {
+            font-weight: 600;
+            color: #323130;
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        .fact-value {
+            color: #605e5c;
+        }
+
+        .details-section {
+            background: #f8f8f8;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            white-space: pre-line;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .reservation-details {
+            background: white;
+            border: 2px solid #0078d4;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 12px 0;
+        }
+
+        .reservation-details strong {
+            color: #0078d4;
+        }
+
+        .previous-value {
+            background: #fff4ce;
+            border-left: 4px solid #f7b731;
+            padding: 8px 12px;
+            margin: 8px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .action-button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            text-align: left;
+        }
+
+        .action-button:hover {
+            background: #106ebe;
+        }
+
+        .action-button.approve {
+            background: #107c10;
+        }
+
+        .action-button.approve:hover {
+            background: #0e6b0e;
+        }
+
+        .action-button.deny {
+            background: #d13438;
+        }
+
+        .action-button.deny:hover {
+            background: #b52e31;
+        }
+
+        .action-button.change {
+            background: #ff8c00;
+        }
+
+        .action-button.change:hover {
+            background: #e67c00;
+        }
+
+        .comment-section {
+            display: none;
+            background: #f8f8f8;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        .comment-section.active {
+            display: block;
+        }
+
+        .comment-input {
+            width: 100%;
+            min-height: 80px;
+            border: 1px solid #d2d0ce;
+            border-radius: 4px;
+            padding: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .submit-button:hover {
+            background: #106ebe;
+        }
+
+        .warning-text {
+            color: #d13438;
+            font-weight: 500;
+        }
+
+        .success-text {
+            color: #107c10;
+            font-weight: 500;
+        }
+
+        .info-text {
+            color: #0078d4;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="adaptive-card">
+        <!-- Header -->
+        <div class="header-row">
+            <div class="header-logo">PA</div>
+            <div class="header-title">Approvals | Power Automate</div>
+        </div>
+
+        <!-- Title -->
+        <div class="title">TCT Reservation #24</div>
+
+        <!-- Requester -->
+        <div class="subtitle">Requested by Coder, Kyle J. &lt;Kyle.Coder@va.gov&gt;</div>
+
+        <!-- Date Created -->
+        <div class="fact-set">
+            <div class="fact-row">
+                <div class="fact-title">Date Created:</div>
+                <div class="fact-value">Wednesday, October 02, 2025 10:41 AM</div>
+            </div>
+        </div>
+
+        <!-- Details Section -->
+        <div class="details-section">
+A request has been submitted on [10/2/2025 6:40 AM] by [Kyle.Coder@va.gov] to reserve the [KankakeeCBOC's] CVT room [#101] to the TCT Team for your approval or denial. Review the impacts of this change below, and then take the appropriate action on this request:
+
+<div class="reservation-details">
+<strong>BUILDING:</strong>   Kankakee CBOC
+<strong>ROOM:</strong>   #101
+<strong>DAY OF WEEK:</strong>   Tuesday
+<strong>TIME REQUESTED:</strong>   11:30am - 12:00pm
+<strong>CLINICAL STAFF MEMBER:</strong>   Kyle.Coder@va.gov
+<strong>NEW CLINIC/LOCATION NAME:</strong>   test - Informatics Team G6
+</div>
+
+<div class="previous-value">
+<strong>PREVIOUSLY SCHEDULED VALUE:</strong>   test - Informatics Team G6
+</div>
+
+<div class="success-text">If you APPROVE this reservation request</div>, the 'Telehealth Master Schedule' will be automatically updated for the specified day/time with the new clinic name (it will replace the previously scheduled value) & the employees that this change impacts will be notified.
+
+<div class="warning-text">If you DENY this reservation request</div>, the 'Telehealth Master Schedule' will *not* be modified in any way from the current value, & the employees this denial impacts will be automatically notified.
+
+<div class="info-text">If you CHANGE this reservation request</div>, you will automatically receive a message via Microsoft Teams from a ChatBot that will ask you more questions about your changes.
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="action-button approve" onclick="toggleComments('approve')">
+                ✓ APPROVED - Automatically update the "Telehealth Master Schedule" with this change...
+            </button>
+            <div id="approve-comments" class="comment-section">
+                <label for="approve-textarea">Comments:</label>
+                <textarea id="approve-textarea" class="comment-input" placeholder="Enter comments" maxlength="2048"></textarea>
+                <button class="submit-button" onclick="submitApproval('approve')">Submit</button>
+            </div>
+
+            <button class="action-button deny" onclick="toggleComments('deny')">
+                ✗ DENIED - Do not modify the "Telehealth Master Schedule"...
+            </button>
+            <div id="deny-comments" class="comment-section">
+                <label for="deny-textarea">Comments:</label>
+                <textarea id="deny-textarea" class="comment-input" placeholder="Enter comments" maxlength="2048"></textarea>
+                <button class="submit-button" onclick="submitApproval('deny')">Submit</button>
+            </div>
+
+            <button class="action-button change" onclick="toggleComments('change')">
+                ⚡ CHANGED - Request able to be fulfilled with change to date/time/room/building...
+            </button>
+            <div id="change-comments" class="comment-section">
+                <label for="change-textarea">Comments:</label>
+                <textarea id="change-textarea" class="comment-input" placeholder="Enter comments" maxlength="2048"></textarea>
+                <button class="submit-button" onclick="submitApproval('change')">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleComments(action) {
+            // Hide all comment sections
+            document.querySelectorAll('.comment-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the selected comment section
+            document.getElementById(action + '-comments').classList.add('active');
+        }
+
+        function submitApproval(action) {
+            const textarea = document.getElementById(action + '-textarea');
+            const comments = textarea.value;
+
+            // Simulate approval submission
+            alert(`${action.toUpperCase()} action submitted with comments: "${comments}"`);
+
+            // In a real implementation, this would submit to Power Automate
+            console.log('Approval Data:', {
+                action: action,
+                comments: comments,
+                timestamp: new Date().toISOString(),
+                requestId: 'TCT Reservation #24'
+            });
+        }
+    </script>
+</body>
+</html>
