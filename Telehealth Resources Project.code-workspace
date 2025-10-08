@@ -31,7 +31,12 @@
 			"*.msapp": "default",
 			"*.pbix": "default"
 		},
-		"terminal.integrated.defaultProfile.windows": "PowerShell"
+		"terminal.integrated.defaultProfile.windows": "PowerShell",
+		"markdown.extension.completion.enabled": true,
+		"markdown.extension.preview.autoShowPreviewToSide": true,
+		"markdown.extension.print.imgToBase64": true,
+		"markdown.extension.print.theme": "dark",
+		"markdown.extension.showActionButtons": true
 	},
 	"extensions": {
 		"recommendations": [

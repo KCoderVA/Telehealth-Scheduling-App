@@ -286,3 +286,23 @@ appsettings.local.json
 dist/
 build/
 out/
+
+# ---------------------------------------------------------------------------
+# Project-Specific Overrides (Appended 2025-10-08)
+# ---------------------------------------------------------------------------
+# Ignore the unpacked source for a specific canvas app version (v0.3.0).
+# Earlier in this file we explicitly un-ignored generic `.unpacked` folders so
+# they ARE tracked. For this version we intentionally exclude the transient
+# output to reduce churn/noise while investigating PA3011 roundtrip issues.
+# (Order matters: these appear later, so they override prior negation.)
+src/power-apps/v0.3.x/v0.3.0/.unpacked/
+src/power-apps/v0.3.x/v0.3.0/.unpacked/**
+
+# Ignore the in-progress Canvas Toolkit sub-project until it is split into
+# its own dedicated repository. Prevents experimental scripts & logs from
+# polluting main Telehealth Resources history.
+scripts/VA-PowerApps-CanvasToolkit/
+scripts/VA-PowerApps-CanvasToolkit/**
+
+# (If later you decide to version these, remove the lines above and commit
+# the directories explicitly.)
