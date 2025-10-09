@@ -1,0 +1,687 @@
+MyAppts As screen:
+    Fill: =Dashboard.Fill
+    Height: =Max(App.Height, App.DesignHeight)
+    OnVisible: |-
+        =UpdateContext({prevSelected:false});UpdateContext({upSelected:true});
+    Width: =Max(App.Width, App.DesignWidth)
+
+    lblMyAppointments As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Font: =Font.'Segoe UI'
+        FontWeight: =FontWeight.Bold
+        Height: =115
+        Size: =32
+        Text: ="My Appointments"
+        Width: =640
+        ZIndex: =3
+
+    bgRounded_4 As htmlViewer:
+        Height: =898
+        HtmlText: |+
+            =If(varTheme="Dark",
+            "<div style='border-radius:10%;height:870px;width:100%;background-color:#1D1F23'></div>",
+            "<div style='border-radius:10%;height:870px;width:100%;background-color:#FCFCFC'></div>")
+            
+        Width: =610
+        X: =15
+        Y: =116
+        ZIndex: =4
+
+    "gallUpcoming As gallery.'BrowseLayout_Vertical_OneTextVariant_ver4.0'":
+        '#CopilotOverlayLabel': ="Filtered"
+        AccessibleLabel: ="Upcoming Reservations"
+        Height: =740
+        Items: |-
+            =/*SortByColumns(
+                Filter(
+                    List_DeskReservations,
+                    ReservedBy_Person.Email = currentUser.Email && CheckOutFrom_Number >= Value(
+                        Text(
+                            Today(),
+                            "yyyymmddhmm"
+                        )
+                    )
+                ),
+                "CheckOutFrom_Number",
+                SortOrder.Descending
+            )
+            */
+            FirstN(
+                SortByColumns(
+                    Filter(
+                        App_ReservationLog,
+                        //ReservedBy.Email = currentUser.Email && 'CheckOutFrom_Number' >= Value(
+                        currentUser.Email = selectedClinicalStaff_email // || Modified_SubmitterEmail_text = currentUser.Email
+                        //&& Modified >= Value(
+                        //    Text(
+                        //        Today(),
+                        //        "yyyymmddhmm"
+                        //    )
+                        //)
+                    ),
+                    "Modified",
+                    SortOrder.Descending
+                ),
+                6
+            )
+        Layout: =Layout.Vertical
+        OnSelect: =
+        ShowNavigation: =true
+        ShowScrollbar: =false
+        TabIndex: =3
+        TemplatePadding: =0
+        TemplateSize: =182
+        Visible: =upSelected
+        Width: =557
+        X: =42
+        Y: =211
+        ZIndex: =5
+
+        Title2_4 As label:
+            Align: =Align.Center
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            Font: =Font.'Segoe UI'
+            Height: =57
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =28
+            Text: |-
+                =ThisItem.Modified_DayOfWeek & "s"
+                //Upper(Text(DateTimeValue(ThisItem.CheckOutFrom_Text),"[$-en-US]mmm"))
+            VerticalAlign: =VerticalAlign.Top
+            Width: =201
+            X: |-
+                =2
+                //If(Upper(Text(DateTimeValue(ThisItem.CheckOutFrom_Text),"[$-en-US]dd")) = Upper(Text(DateTimeValue(ThisItem.CheckOutTo_Text),"[$-en-US]dd")),55,2)
+            Y: =10
+            ZIndex: =1
+
+        Separator2_1 As rectangle:
+            Fill: =RGBA(135, 78, 181, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =3
+
+        Title2_6 As label:
+            Align: =Align.Center
+            AutoHeight: =true
+            Color: =RGBA(135, 78, 181, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =49
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =16
+            Text: |-
+                =ThisItem.TimeSlot_text
+                //Upper(Text(DateTimeValue(ThisItem.CheckOutFrom_Text),"[$-en-US]dd"))
+            VerticalAlign: =VerticalAlign.Top
+            Width: =200
+            X: =2
+            Y: =101
+            ZIndex: =4
+
+        Title2_5 As label:
+            AutoHeight: =true
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            Font: =Font.'Segoe UI'
+            Height: =57
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =0
+            Size: |-
+                =If(
+                    Len(Self.Text) > 21,
+                    18,
+                    22
+                )
+            Text: |-
+                =ThisItem.CBOC_Name_text & " CBOC Rm. #" & ThisItem.Room_number
+            VerticalAlign: =VerticalAlign.Top
+            Width: =354
+            X: =202
+            Y: =2
+            ZIndex: =5
+
+        Title2_7 As label:
+            AutoHeight: =true
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            Font: =Font.'Segoe UI'
+            Height: =49
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =0
+            Text: |-
+                ="Description: " & ThisItem.Modified_ClinicLocationName
+                //Text(DateTimeValue(ThisItem.CheckOutFrom_Text), DateTimeFormat.ShortTime) & " to " & Text(DateTimeValue(ThisItem.CheckOutTo_Text), DateTimeFormat.ShortTime)
+            VerticalAlign: =VerticalAlign.Top
+            Width: =354
+            X: =202
+            Y: =Button3_3.Y - Self.Height
+            ZIndex: =6
+
+        Button3 As button:
+            BorderThickness: =0
+            Fill: =RGBA(184, 0, 0, 1)
+            Height: =38
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =Select(Parent);UpdateContext({varConfirmCancel:true});UpdateContext({varReservationToCancel:ThisItem});
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Size: =16
+            Text: ="CANCEL"
+            Width: =104
+            X: =424
+            Y: =129
+            ZIndex: =7
+
+        Title2_12 As label:
+            Align: =Align.Center
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            Font: =Font.'Segoe UI'
+            Height: =57
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =28
+            Text: |-
+                =//ThisItem.TimeSlot_text
+                //Upper(Text(DateTimeValue(ThisItem.CheckOutTo_Text),"[$-en-US]mmm"))
+            VerticalAlign: =VerticalAlign.Top
+            Visible: |-
+                =true
+                //If(Upper(Text(DateTimeValue(ThisItem.CheckOutFrom_Text),"[$-en-US]dd")) = Upper(Text(DateTimeValue(ThisItem.CheckOutTo_Text),"[$-en-US]dd")), false, true)
+            Width: =94
+            X: =109
+            Y: =10
+            ZIndex: =8
+
+        Title2_13 As label:
+            Align: =Align.Center
+            Color: =RGBA(135, 78, 181, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =49
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =32
+            Text: =//Upper(Text(DateTimeValue(ThisItem.CheckOutTo_Text),"[$-en-US]dd"))
+            VerticalAlign: =VerticalAlign.Top
+            Visible: =Title2_12.Visible
+            Width: =94
+            X: =Title2_12.X
+            Y: =67
+            ZIndex: =9
+
+        Label2 As label:
+            Align: =Align.Center
+            Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+            FontWeight: =FontWeight.Semibold
+            Height: =68
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="@"
+            Width: =43
+            X: =84
+            Y: =48
+            ZIndex: =10
+
+        Button3_3 As button:
+            BorderThickness: =0
+            Color: |-
+                =//RGBA(255, 255, 255, 1)
+                If(
+                    !IsBlank(ThisItem.Modified_Approval_DateTime),
+                    ColorFade(
+                        Color.Blue,
+                        .3
+                    ),
+                    ThisItem.Modified_Approval_DateTime = Blank() || IsBlank(ThisItem.Modified_Approval_DateTime),
+                    ColorFade(
+                        Color.Black,
+                        .3
+                    ),
+                    ColorFade(
+                        Color.White,
+                        .3
+                    )
+                )
+            DisplayMode: |-
+                =DisplayMode.Edit
+                //If(ThisItem.Status_Choice.Value = "Checked In",DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: |-
+                =//If(ThisItem.Status_Choice.Value = "Booked",ColorFade(ColorValue("#D2925F"),.3),ColorFade(ColorValue("#3C5F92"),.3))
+                If(
+                    Self.Text = "Pending Approval",
+                    ColorFade(
+                        Color.Yellow, //ColorValue("#D2925F")
+                        .3
+                    ),
+                    Self.Text = "Request Denied",
+                    ColorFade(
+                        Color.Red,
+                        .0
+                    ),
+                    Self.Text= "Approved",
+                    ColorFade(
+                        Color.LightGreen,
+                        .0
+                    ),
+                    ColorFade(
+                        ColorValue("#3C5F92"),
+                        .3
+                    )
+                )
+            Height: =38
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Set(varSelectedReservation,ThisItem);Navigate(Reservation)
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Size: |
+                =12
+            Text: |-
+                =/*
+                //Upper(ThisItem.Status_Choice.Value)
+                //If(ThisItem.Status_Choice.Value=Blank(),"UPCOMING",Upper(ThisItem.Status_Choice.Value))
+                If(
+                    ThisItem.Status_Choice.Value = "Checked In",
+                        "CHECKED IN",
+                    (Left((Today()),8) = Left((ThisItem.CheckOutFrom_Text),8)),
+                        "CHECK IN",
+                    (Value(
+                        Text(
+                            Now(),
+                            "yyyymmddhmm"
+                        )
+                    ) <> ThisItem.CheckOutFrom_Number),
+                    "Wrong Day",
+                    "ERROR"
+                )
+                */
+                If(
+                    ThisItem.Modified_Type = "Reservation Submitted",
+                    "Pending Approval",
+                    ThisItem.Modified_Type
+                )
+            Width: =205
+            X: =203
+            Y: =129
+            ZIndex: =12
+
+    lblNoRes As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Lighter
+        Height: =90
+        Size: =21
+        Text: ="No upcoming reservations"
+        Visible: =If(CountRows(gallUpcoming.AllItems) >=1, false, true)
+        Width: =640
+        Y: =526
+        ZIndex: =6
+
+    lblUpcoming As label:
+        Align: =Align.Center
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        FocusedBorderThickness: =.5
+        FontWeight: =FontWeight.Lighter
+        Height: =55
+        OnSelect: |-
+            =UpdateContext({upSelected:!upSelected});UpdateContext({prevSelected:!prevSelected})
+        Size: =18
+        TabIndex: =1
+        Text: ="UPCOMING (" & CountRows(gallUpcoming.AllItems) & ")"
+        Width: =220
+        X: =41
+        Y: =132
+        ZIndex: =7
+
+    lblPrev As label:
+        Align: =Align.Center
+        Color: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        FocusedBorderThickness: =.5
+        FontWeight: =FontWeight.Lighter
+        Height: =55
+        OnSelect: |-
+            =UpdateContext({prevSelected:!prevSelected});UpdateContext({upSelected:!upSelected});
+        Size: =18
+        TabIndex: =2
+        Text: ="PREVIOUS (" & CountRows(gallPast.AllItems) &")"
+        Width: =220
+        X: =250
+        Y: =132
+        ZIndex: =8
+
+    rectSeperator As rectangle:
+        Fill: =RGBA(204, 204, 204, 1)
+        Height: =1
+        Width: =590
+        X: =25
+        Y: =193
+        ZIndex: =9
+
+    rectUpSel As rectangle:
+        Fill: =RGBA(135, 78, 181, 1)
+        Height: =5
+        Visible: =upSelected
+        Width: =160
+        X: =72
+        Y: =184
+        ZIndex: =10
+
+    rectPrevSel As rectangle:
+        Fill: =RGBA(135, 78, 181, 1)
+        Height: =5
+        Visible: =prevSelected
+        Width: =160
+        X: =285
+        Y: =184
+        ZIndex: =11
+
+    "gallPast As gallery.'BrowseLayout_Vertical_OneTextVariant_ver4.0'":
+        '#CopilotOverlayLabel': ="Filtered"
+        AccessibleLabel: ="Past Reservations"
+        Height: =719
+        Items: |-
+            =SortByColumns(
+                Filter(
+                    List_DeskReservations,
+                    ReservedBy_Person.Email = currentUser.Email && CheckOutFrom_Number < Value(
+                        Text(
+                            Today(),
+                            "yyyymmddhmm"
+                        )
+                    )
+                ),
+                "CheckOutFrom_Number",
+                SortOrder.Descending
+            )
+        Layout: =Layout.Vertical
+        TabIndex: =4
+        TemplatePadding: =0
+        TemplateSize: =147
+        Visible: =prevSelected
+        Width: =557
+        X: =41
+        Y: =212
+        ZIndex: =12
+
+        Title2_8 As label:
+            Align: =Align.Center
+            Font: =Font.'Segoe UI'
+            Height: =57
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =28
+            Text: =Upper(Text(ThisItem.CheckOutFrom_DateTime,"[$-en-US]mmm"))
+            VerticalAlign: =VerticalAlign.Top
+            Width: =94
+            X: =28
+            Y: =10
+            ZIndex: =1
+
+        Separator2_2 As rectangle:
+            Fill: =RGBA(135, 78, 181, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =3
+
+        Title2_10 As label:
+            Align: =Align.Center
+            Color: =RGBA(135, 78, 181, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =49
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =32
+            Text: =Upper(Text(ThisItem.CheckOutFrom_DateTime,"[$-en-US]dd"))
+            VerticalAlign: =VerticalAlign.Top
+            Width: =94
+            X: =28
+            Y: =67
+            ZIndex: =4
+
+        Title2_9 As label:
+            Align: =Align.Center
+            Font: =Font.'Segoe UI'
+            Height: =57
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =28
+            Text: =ThisItem.DeskText
+            VerticalAlign: =VerticalAlign.Top
+            Width: =354
+            X: =163
+            Y: =10
+            ZIndex: =5
+
+        Title2_11 As label:
+            Align: =Align.Center
+            Font: =Font.'Segoe UI'
+            Height: =49
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =24
+            Text: =Text(ThisItem.CheckOutFrom_DateTime, DateTimeFormat.ShortTime) & " to " & Text(ThisItem.CheckOutTo_DateTime, DateTimeFormat.ShortTime)
+            VerticalAlign: =VerticalAlign.Top
+            Width: =354
+            X: =163
+            Y: =67
+            ZIndex: =6
+
+        Icon2_1 As icon.OpenInNewWindow:
+            Color: =RGBA(135, 78, 181, 1)
+            Height: =45
+            Icon: =Icon.OpenInNewWindow
+            OnSelect: =Set(varSelectedReservation,ThisItem);Navigate(Reservation)
+            Width: =45
+            X: =436
+            Y: =102
+            ZIndex: =7
+
+    Tabs_2 As Tabs:
+        FontColor: =If(varTheme="Dark",Color.White, RGBA(0, 0, 0, 1))
+        Height: =113
+        IconColor: |-
+            =ColorValue("#874EB5")
+        Items: |-
+            =Table(
+                {
+                    Name: "Go Home",
+                    Icon: Icon.DetailList,
+                    Page: Dashboard,        
+                    Visible:true
+                },
+                {
+                    Name: " My Bookings",
+                    Icon: Icon.Person,
+                    Page: MyAppts,
+                    Visible:true
+                },
+                {
+                    Name: "New Request",
+                    Icon: Icon.Add,
+                    Page: Schedule_Screen,
+                    Visible:true
+                },
+                {
+                    Name: "Manage Rooms",
+                    Icon: Icon.ComputerDesktop,
+                    Page: ManageDesks,
+                    Visible:varAdmin
+                }
+            )
+        Visible: =false
+        Y: =1016
+        ZIndex: =13
+
+    grpHeader_4 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =20
+        ZIndex: =18
+
+        Image2_5 As image:
+            Height: =150
+            Image: =abstractBackground
+            ImagePosition: =ImagePosition.Fill
+            Width: =640
+            ZIndex: =1
+
+        Rectangle2_4 As rectangle:
+            Fill: =RGBA(135, 78, 181, 0.65)
+            Height: =150
+            Width: =640
+            ZIndex: =2
+
+    Tabs_17 As Tabs_1:
+        ChildTabPriority: =true
+        ContentLanguage: =""
+        EnableChildFocus: =true
+        IconColor: |-
+            =Color.DarkBlue
+            //ColorValue("#2771C2")
+        Items: |-
+            =Table(
+                {
+                    Name: "Home",
+                    Icon: Icon.Home,
+                    Page: Dashboard, //App.ActiveScreen,
+                    Visible:true
+                },
+                {
+                    Name: "Submissions",
+                    Icon: Icon.DetailList,
+                    Page: MyAppts, //App.ActiveScreen,
+                    Visible:true
+                },
+                 {
+                    Name: "Edit Rooms",
+                    Icon: Icon.Settings,
+                    Page: ManageDesks, //App.ActiveScreen,
+                    Visible:true
+                },
+                {
+                    Name: "Create New",
+                    Icon: Icon.AddToCalendar,
+                    Page: Schedule_Screen, //App.ActiveScreen,
+                    Visible:true
+                }
+            )
+        Visible: =true
+        X: =Tabs_12.X
+        Y: =1016
+        ZIndex: =19
+
+    grpConfirmCancel As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =20
+
+        Rectangle3_3 As rectangle:
+            Fill: =RGBA(116, 116, 116, 0.85)
+            Height: =1136
+            OnSelect: =
+            Visible: =varConfirmCancel
+            Width: =640
+            ZIndex: =14
+
+        bgRounded_10 As htmlViewer:
+            Height: =651
+            HtmlText: |-
+                ="<div style='border:1px gray;border-radius:10%;height:450px;width:100%;background-color:#FCFCFC'></div>"
+            OnSelect: =
+            Visible: =varConfirmCancel
+            Width: =610
+            X: =14
+            Y: =165
+            ZIndex: =15
+
+        Label1_1 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =87
+            OnSelect: =
+            Size: =24
+            Text: ="Confirm Cancellation"
+            Visible: =varConfirmCancel
+            Width: =557
+            X: =40
+            Y: =234
+            ZIndex: =16
+
+        btnConfirmCancel_1 As button:
+            BorderThickness: =0
+            Fill: =RGBA(128, 128, 128, 1)
+            Height: =45
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =UpdateContext({varConfirmCancel:false});UpdateContext({varReservationToCancel:Blank()});
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Size: =14
+            Text: ="NEVERMIND"
+            Visible: =varConfirmCancel
+            X: =141
+            Y: =401
+            ZIndex: =17
+
+        btnConfirmDelete_1 As button:
+            BorderThickness: =0
+            Fill: =RGBA(184, 0, 0, 1)
+            Height: =45
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Notify("ALERT - ERROR!!!! Change not correctly recorded or submitted!!!")
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Size: =14
+            Text: ="CONFIRM"
+            Visible: =varConfirmCancel
+            X: =341
+            Y: =401
+            ZIndex: =18
+
