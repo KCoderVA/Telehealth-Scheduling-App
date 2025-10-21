@@ -11,6 +11,44 @@ This project is currently in **pre-release development** (0.x.x versions). The f
 - **1.0.0** - First production-ready release
 - **1.x.x** - Production releases with new features and bug fixes
 
+## [0.3.2] - 2025-10-21
+### Added
+- **Dynamic Schedule Grid Interaction**: Time-slot matrix now supports direct cell selection that auto-populates new reservation request form fields (date, time range, building, room) reducing user input friction.
+- **Real-Time Availability Counters**: Per-room and per-building availability summary (e.g., "There are currently 35 available blocks") calculated on-the-fly with delegation-friendly formulas.
+- **Enhanced Approval Flow Architecture (Power Automate)**: Refactored reservation request flow (v0.3.2) with layered conditional branches, improved parallelism for notification dispatch, and structured error handling. Screenshot added to documentation.
+- **SharePoint Master Schedule Expansion**: Weekly schedule list columns optimized for clarity (Day_Monday_text .. Day_Friday_text) with color-coded availability (visual alignment with Canvas grid).
+- **Screenshot Gallery Integration**: Added four v0.3.2 screenshots (App Landing, Schedule Grid, SharePoint Weekly Master Schedule, Flow Architecture) referenced in root README and `index.html`.
+- **Versioned Source Paths**: Introduced `src/power-apps/v0.3.x/v0.3.2/` and `src/power-automate/ReservationRequest/v0.3.2/` directories as new canonical source locations.
+- **Interactive HTML Documentation**: Deployed comprehensive `index.html` with VA.gov design patterns, accessibility features (high contrast toggle, keyboard shortcuts Alt+Shift+E/C), scroll spy navigation, mobile drawer, and accordion state persistence.
+- **GitHub Pages Deployment**: Live interactive project overview at https://kcoderva.github.io/Telehealth-Scheduling-App/ with executive summary, architecture deep-dive, technical metrics, and roadmap.
+
+### Enhanced
+- **User Experience**: Landing page now surfaces user-specific approved reservations with styled status pill and quick action pathway.
+- **Performance**: Reduced unnecessary recalculations in availability grid; consolidated lookups and minimized non-delegable operations.
+- **Flow Resilience**: Added retry and conditional logging steps in Power Automate for approval callback updates; improved branch clarity.
+- **Documentation Alignment**: Updated all major markdown and HTML docs to reflect version 0.3.2 capabilities and architecture.
+- **Accessibility**: High contrast mode toggle, keyboard shortcuts (expand/collapse all sections), accordion state persistence (sessionStorage), screen reader improvements.
+- **Navigation**: Sticky side navigation with scroll spy, mobile off-canvas drawer with focus trap, grouped navigation categories (Executive, Technical, Actions).
+- **Visual Polish**: Micro-metrics KPI strip, screenshot gallery with lazy loading, back-to-top links, responsive layout for mobile/tablet/desktop.
+
+### Changed
+- **Version References**: Updated from 0.2.1 → 0.3.2 in badges, meta tags, structured data, directory examples.
+- **Architecture Diagrams (Textual)**: Root README now emphasizes dynamic selection and live counters as core differentiators.
+- **Source Layout**: Promotion of v0.3.x branch to current development line; v0.2.x marked as prior release lineage.
+
+### Technical Metrics (Delta since 0.2.1)
+- **Schedule Interaction**: Direct cell selection + form auto-fill (new)
+- **Approval Flow**: Additional conditional layers & notification refinements
+- **Documentation Coverage**: Maintained at 98% with new gallery and feature notes
+- **Availability Calculation**: Real-time block counting integrated into UI (new)
+- **HTML Documentation**: 1 comprehensive interactive page with 18+ sections, accessibility features, performance optimizations
+- **GitHub Pages**: Public deployment ready with canonical URL reference in all docs
+
+### Repository
+- **New Directories**: Added v0.3.2 paths for PowerApps & Power Automate flow definitions.
+- **Screenshot Assets**: Placeholder entries created for four new PNG files under `assets/images/`.
+- **Changelog Governance**: Entry adheres to Keep a Changelog; prior releases retained intact.
+
 ## [0.2.1] - 2025-09-17
 ### Added
 - **Comprehensive Documentation Updates**: Complete refresh of all major project README files for v0.2.1

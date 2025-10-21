@@ -49,8 +49,8 @@ code "Telehealth Resources Project.code-workspace"
 
 # For PowerApps:
 # 1. Design in PowerApps Studio (make.powerapps.com)
-# 2. Export .msapp files to /src/power-apps/v0.2.x/v0.2.0/.msapp/
-# 3. Use Power Platform CLI to maintain /src/power-apps/v0.2.x/v0.2.0/.unpacked/ source files
+# 2. Export .msapp files to /src/power-apps/v0.3.x/v0.3.2/.msapp/
+# 3. Use Power Platform CLI to maintain /src/power-apps/v0.3.x/v0.3.2/.unpacked/ source files
 # 4. Test with HTML Previewer tool
 
 # For Power Automate:

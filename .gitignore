@@ -161,7 +161,10 @@ AutoRecovery save of*
 *.archive
 *.zip.backup
 backups/
-archive/
+# Ignore contents of archive, but allow for exceptions
+archive/*
+# Keep the archive/src directory for historical source code
+!archive/src/
 */archive/
 old_versions/
 */docs/**

@@ -5,20 +5,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="Version 0.2.1 progress summary for the VA Telehealth Scheduling Project - a comprehensive PowerApps and Power Platform solution for Edward Hines Jr. VA Hospital with enterprise-grade documentation and enhanced asset management">
+    content="VA Telehealth Room Booking Solution v0.3.2 – enterprise Power Platform scheduling with conflict prevention, approval orchestration, and real-time availability supporting Veteran care coordination.">
   <meta name="keywords"
     content="VA Healthcare, Telehealth, PowerApps, Microsoft Power Platform, Hospital Scheduling, Room Booking, VA Innovation, Version Control, Source Management, Documentation Architecture">
   <meta name="author" content="Kyle J. Coder - VA Healthcare Innovation">
-  <meta property="og:title" content="Telehealth Scheduling Project v0.2.1 - Progress Summary">
+  <meta property="og:title" content="VA Telehealth Room Booking Solution v0.3.2 – Enterprise Deployment Overview">
   <meta property="og:description"
-    content="Version 0.2.1 progress summary showcasing enterprise-grade documentation architecture and comprehensive asset management for a production-ready PowerApps telehealth scheduling solution">
+    content="Power Platform solution for VA hospitals: dynamic schedule grid, availability intelligence, layered approvals, SharePoint integration, and ROI analytics.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kcoderva.github.io/Telehealth-Scheduling-App/">
-  <title>Telehealth Scheduling Project v0.2.1 - Progress Summary | VA Healthcare Innovation</title>
+  <title>VA Telehealth Room Booking Solution v0.3.2 | Enterprise Deployment Overview</title>
   <link rel="canonical" href="https://kcoderva.github.io/Telehealth-Scheduling-App/">
   <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23112e51'/><text x='50%' y='55%' font-size='32' text-anchor='middle' fill='white' font-family='Arial'>VA</text></svg>">
+  <!-- Optional VA design tokens import (uncomment if allowed) -->
+  <!-- <link rel="stylesheet" href="https://dev-design.va.gov/assets/design-system/css/variables.css"> -->
   <style>
+    /* Accessibility utility: skip link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 10px;
+      background: #112e51;
+      color: #ffffff;
+      padding: 8px 12px;
+      z-index: 2000;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.9em;
+      transition: top .2s ease;
+    }
+    .skip-link:focus { top: 10px; }
+
+    /* VA-aligned color tokens (subset) */
+    :root {
+      --va-primary-navy: #112e51;
+      --va-secondary-blue: #1a4480;
+      --va-accent-gold: #fdb81e;
+      --va-cool-gray: #f1f5f9;
+      --va-focus: #3e8acc;
+      --va-gray-700: #3d3d3d;
+      --va-gray-200: #e2e8f0;
+    }
+    /* High contrast mode overrides */
+    body.high-contrast {
+      --va-primary-navy:#000000;
+      --va-secondary-blue:#000000;
+      --va-accent-gold:#ffff00;
+      --va-cool-gray:#ffffff;
+      --va-focus:#ffbf00;
+      --va-gray-700:#000000;
+      --va-gray-200:#000000;
+      background:#000 !important;
+      color:#fff !important;
+    }
+    body.high-contrast .site-header { background:#000; }
+    body.high-contrast .release-bar { background:#111; border-color:#222; }
+    body.high-contrast .micro-metrics { background:#000; }
+    body.high-contrast .micro-metrics .metric { background:#111; border-color:#222; }
+    body.high-contrast .side-nav { background:#000; border-color:#ffff00; }
+    body.high-contrast .side-nav nav a { background:#111; color:#fff; border-color:#444; }
+    body.high-contrast .side-nav nav a.active { background:#222; color:#ffff00; border-color:#ffff00; }
+    body.high-contrast .side-nav button { background:#000; color:#ffff00; border-color:#ffff00; }
+    body.high-contrast details { background:#000; border-color:#444; }
+    body.high-contrast details > summary { color:#ffff00; }
+    body.high-contrast .section { background:#000; border-left-color:#ffff00; }
+    body.high-contrast .section h2, body.high-contrast .section h3, body.high-contrast .section h4 { color:#ffff00; }
+    body.high-contrast table { background:#000; }
+    body.high-contrast th { background:#111; color:#fff; }
+    body.high-contrast td { color:#fff; }
+    body.high-contrast .footer { background:#000; border-top-color:#ffff00; }
+    body.high-contrast .footer a { color:#ffff00; }
     /* Print-optimized styles for 8.5x11 paper */
     @page {
       size: 8.5in 11in;
@@ -79,39 +136,81 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.7;
-      color: #333;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      padding: 15px;
+      font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Roboto,Arial,sans-serif;
+      line-height: 1.6;
+      color: #222;
+      background: #f5f7fa;
+      padding: 0; /* Reset body padding for full-width header */
       font-size: 16px;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      padding-top: 180px;
+    /* Layout: two-column with sticky side navigation (progressive enhancement) */
+  .layout-shell { display: grid; grid-template-columns: 260px 1fr; gap: 32px; max-width: 1400px; margin: 32px auto 48px auto; padding: 0 24px; }
+  .side-nav { position: sticky; top: 24px; align-self: start; background:#ffffff; border:2px solid var(--va-primary-navy); border-radius:8px; padding:16px 16px 24px 16px; box-shadow:0 6px 18px rgba(17,46,81,0.15); }
+    .side-nav h2 { font-size:1.05em; margin:0 0 12px 0; color: var(--va-secondary-blue); }
+    .side-nav nav { display:flex; flex-direction:column; gap:6px; }
+    .side-nav nav a { text-decoration:none; font-size:.83em; font-weight:600; padding:8px 10px; border:1px solid var(--va-gray-200); border-radius:6px; background: var(--va-cool-gray); color:#1a1a1a; display:flex; align-items:center; gap:6px; }
+    .side-nav nav a:focus, .side-nav nav a:hover { outline:2px solid var(--va-focus); background:#e2e8f0; color: var(--va-secondary-blue); }
+    .side-nav .nav-group { margin-bottom:16px; }
+    .side-nav .nav-group-title { font-size:.7em; text-transform:uppercase; letter-spacing:.08em; color:#555; margin: 18px 0 8px; font-weight:700; }
+    .side-nav .nav-actions { margin-top:20px; display:flex; flex-direction:column; gap:8px; }
+    .side-nav button { cursor:pointer; font-size:.7em; font-weight:700; letter-spacing:.05em; padding:8px 10px; border-radius:6px; border:1px solid var(--va-secondary-blue); background: var(--va-primary-navy); color:#ffffff; }
+    .side-nav button:hover, .side-nav button:focus { outline:2px solid var(--va-focus); background: var(--va-secondary-blue); }
+    .side-nav .active { border-color: var(--va-secondary-blue); color: var(--va-secondary-blue); background:#ffffff; }
+
+    /* Responsive collapse of side navigation */
+    @media (max-width: 1100px) {
+      .layout-shell { grid-template-columns: 1fr; }
+      .side-nav { position:relative; top:auto; order:2; margin-top:24px; }
+    }
+    @media (max-width: 768px) {
+      .side-nav nav a { font-size:.75em; padding:6px 8px; }
+      .side-nav { padding:12px 12px 18px 12px; }
     }
 
-    .header {
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      right: 15px;
-      max-width: 1200px;
-      margin: 0 auto;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px;
-      text-align: center;
-      z-index: 1000;
-      border-radius: 8px 8px 0 0;
-      min-height: 150px;
+    .container {
+      max-width: 100%;
+      margin: 0;
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+      padding-top: 0;
     }
+
+    /* Full-width masthead modeled after VA.gov style */
+    .site-header { width:100%; background:#0c1f33; color:#ffffff; box-shadow:0 3px 8px rgba(0,0,0,.25); position:relative; }
+    .masthead-inner { max-width:1400px; margin:0 auto; padding:36px 24px 28px 24px; text-align:left; }
+    .masthead-inner h1 { font-size:2.4rem; font-weight:600; margin:0 0 12px 0; letter-spacing:.5px; }
+    .masthead-inner .subtitle { font-size:1.15rem; margin:0 0 22px 0; max-width:900px; opacity:.9; }
+    .release-bar { background:#102b4a; font-size:.75rem; letter-spacing:.05em; padding:6px 24px; border-top:1px solid #1a365d; border-bottom:1px solid #1a365d; }
+    .release-bar a { color:#90cdf4; text-decoration:none; }
+    .release-bar a:hover, .release-bar a:focus { text-decoration:underline; }
+    .header-links { justify-content:flex-start; gap:8px; flex-wrap:wrap; }
+    .header-links a {
+      display:inline-block;
+      background:linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.12) 100%);
+      color:#ffffff;
+      font-size:.78rem;
+      font-weight:600;
+      letter-spacing:.045em;
+      text-decoration:none;
+      padding:10px 16px;
+      border:1px solid rgba(255,255,255,0.38);
+      border-radius:6px;
+      position:relative;
+      transition:background .2s ease, transform .15s ease, box-shadow .2s ease;
+    }
+    .header-links a:hover,
+    .header-links a:focus {
+      background:linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.20) 100%);
+      transform:translateY(-2px);
+      box-shadow:0 4px 10px rgba(0,0,0,0.30);
+      outline:2px solid var(--va-focus);
+      outline-offset:2px;
+    }
+    .header-links a:active { transform:translateY(0); box-shadow:0 2px 6px rgba(0,0,0,0.28); }
+    .header-links a:focus-visible { outline:2px solid var(--va-focus); outline-offset:2px; }
 
     .header h1 {
       font-size: 2.2em;
@@ -132,37 +231,38 @@
       justify-content: center;
       gap: 8px;
     }
+    /* Removed quick-nav (redundant with side navigation) */
 
-    .header-links a {
-      display: inline-block;
-      padding: 6px 12px;
-      background: rgba(255, 255, 255, 0.15);
-      color: #ffffff;
-      text-decoration: none;
-      border-radius: 20px;
-      font-size: 0.9em;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      border: 1px solid transparent;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      transition: all 0.3s ease;
-    }
+    /* Accordion / disclosure styling (upgrade from native summary) */
+    details { border:1px solid #d1d9e3; border-radius:6px; background:#ffffff; margin:12px 0; }
+    details[open] { box-shadow:0 2px 6px rgba(0,0,0,0.08); }
+    details > summary { list-style:none; cursor:pointer; padding:14px 48px 14px 18px; position:relative; font-weight:600; font-size:0.95rem; display:flex; align-items:center; gap:8px; }
+    details > summary::-webkit-details-marker { display:none; }
+    /* Plus/Minus icon */
+    details > summary::after { content:'+'; position:absolute; right:18px; top:50%; transform:translateY(-50%); font-size:1.25rem; font-weight:700; color:#1a4480; transition:.25s ease; }
+    details[open] > summary::after { content:'−'; }
+    /* Alternate style: caret variant (not applied, available for selection) */
+    .accordion-caret details > summary::after { content:'▶'; transform:translateY(-50%) rotate(0deg); }
+    .accordion-caret details[open] > summary::after { content:'▼'; }
+    /* Alternate style: textual CTA variant */
+    .accordion-text summary::after { content:'Expand'; font-size:.7rem; letter-spacing:.05em; background:#1a4480; color:#fff; padding:4px 8px; border-radius:12px; }
+    .accordion-text details[open] > summary::after { content:'Collapse'; }
+    details:focus-within > summary { outline:2px solid var(--va-focus); outline-offset:2px; }
+    details > ul, details > div { padding:0 18px 16px 18px; }
+    .accordion-large details > summary { font-size:1.05rem; padding:18px 56px 18px 20px; }
+    .accordion-large details > summary::after { font-size:1.5rem; }
 
-    .header-links a:hover {
-      background: rgba(255, 255, 255, 0.25);
-      border-color: rgba(255, 255, 255, 0.5);
-      transform: translateY(-1px);
-    }
+    /* Removed malformed duplicate header-links block */
 
     .content {
-      padding: 0 25px 40px 25px;
+      padding: 0 24px 40px 24px;
     }
 
     .summary-section {
-      background: linear-gradient(135deg, #f8f9ff 0%, #e8f4f8 100%);
-      border-left: 5px solid #667eea;
-      padding: 25px;
-      margin-bottom: 30px;
+      background: #f8fbff;
+      border-left: 5px solid var(--va-secondary-blue);
+      padding: 24px;
+      margin-bottom: 32px;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
@@ -179,17 +279,17 @@
     }
 
     .section {
-      margin-bottom: 30px;
-      padding: 25px;
-      background: #fefefe;
+      margin-bottom: 32px;
+      padding: 24px;
+      background: #ffffff;
       border-radius: 8px;
-      border-left: 4px solid #667eea;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      border-left: 4px solid var(--va-secondary-blue);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     }
 
     .section h2 {
-      color: #667eea;
-      border-bottom: 3px solid #667eea;
+      color: var(--va-secondary-blue);
+      border-bottom: 3px solid var(--va-secondary-blue);
       padding-bottom: 10px;
       margin-bottom: 20px;
       font-size: 1.6em;
@@ -197,9 +297,9 @@
     }
 
     .section h3 {
-      color: #764ba2;
+      color: #112e51;
       margin-bottom: 15px;
-      font-size: 1.3em;
+      font-size: 1.25em;
       font-weight: 600;
     }
 
@@ -213,22 +313,25 @@
     .accomplishments {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-      margin-bottom: 25px;
+      gap: 16px; /* normalized to 8pt multiple */
+      margin-bottom: 24px;
+      list-style: none;
+      padding-left: 0;
     }
 
     .accomplishment-card {
       background: #f8f9fa;
-      border-left: 5px solid #667eea;
+      border-left: 5px solid var(--va-secondary-blue);
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+      position: relative;
     }
 
     .accomplishment-card h4 {
-      color: #667eea;
+      color: var(--va-secondary-blue);
       margin-bottom: 12px;
-      font-size: 1.2em;
+      font-size: 1.15em;
     }
 
     .priority-list {
@@ -237,8 +340,8 @@
 
     .priority-item {
       counter-increment: priority-counter;
-      background: #fff7ed;
-      border-left: 5px solid #f59e0b;
+      background: #fff9eb;
+      border-left: 5px solid var(--va-accent-gold);
       padding: 18px;
       margin-bottom: 15px;
       border-radius: 6px;
@@ -247,12 +350,12 @@
 
     .priority-item::before {
       content: "Priority " counter(priority-counter);
-      background: #f59e0b;
-      color: white;
+      background: var(--va-accent-gold);
+      color: #000;
       padding: 4px 8px;
       border-radius: 4px;
-      font-size: 0.8em;
-      font-weight: bold;
+      font-size: 0.75em;
+      font-weight: 700;
       position: absolute;
       top: -10px;
       left: 15px;
@@ -265,9 +368,9 @@
     }
 
     .kpi-section {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 25px;
+      background: linear-gradient(135deg, #112e51 0%, #1a4480 100%);
+      color: #ffffff;
+      padding: 24px;
       border-radius: 8px;
       margin-bottom: 25px;
     }
@@ -355,13 +458,13 @@
     }
 
     .footer {
-      background: #2d3748;
+      background: #112e51;
       color: #ffffff;
-      padding: 25px;
+      padding: 32px 24px;
       text-align: center;
       font-size: 1em;
-      border-top: 3px solid #667eea;
-      margin-top: 40px;
+      border-top: 4px solid var(--va-secondary-blue);
+      margin-top: 48px;
     }
 
     .footer a {
@@ -390,9 +493,120 @@
 
     li::before {
       content: "▶";
-      color: #667eea;
+      color: var(--va-secondary-blue);
       position: absolute;
       left: 0;
+    }
+
+    /* Utility spacing classes (subset) */
+    .u-mb-0 { margin-bottom: 0 !important; }
+    .u-mb-8 { margin-bottom: 8px !important; }
+    .u-mb-12 { margin-bottom: 12px !important; }
+    .u-mb-16 { margin-bottom: 16px !important; }
+    .u-mb-24 { margin-bottom: 24px !important; }
+    .u-mb-32 { margin-bottom: 32px !important; }
+    .u-mt-16 { margin-top: 16px !important; }
+    .u-pt-16 { padding-top:16px !important; }
+    .u-p-16 { padding:16px !important; }
+    .u-p-24 { padding:24px !important; }
+    .u-px-24 { padding-left:24px !important; padding-right:24px !important; }
+    .u-py-16 { padding-top:16px !important; padding-bottom:16px !important; }
+
+    /* Screen-reader only utility */
+    .sr-only {
+      position:absolute !important;
+      width:1px !important;
+      height:1px !important;
+      padding:0 !important;
+      margin:-1px !important;
+      overflow:hidden !important;
+      clip:rect(0,0,0,0) !important;
+      border:0 !important;
+      white-space:nowrap !important;
+    }
+
+    /* Status tag pattern scaffold */
+    .status-tag {
+      display:inline-block;
+      background: var(--va-secondary-blue);
+      color:#fff;
+      font-size:.65rem;
+      letter-spacing:.05em;
+      font-weight:600;
+      padding:4px 6px;
+      border-radius:4px;
+      margin-bottom:6px;
+    }
+
+    /* Pagination scaffold */
+    .table-paginated[data-paginated="true"] { position: relative; }
+    .table-pagination-controls { display:flex; gap:8px; justify-content:flex-end; margin:8px 0 0 0; }
+    .table-pagination-controls button { background:#ffffff; border:1px solid var(--va-gray-200); padding:4px 10px; border-radius:4px; font-size:.75rem; cursor:pointer; }
+    .table-pagination-controls button:hover, .table-pagination-controls button:focus { outline:2px solid var(--va-focus); }
+
+    /* KPI bar (at-a-glance) */
+    /* KPI bar removed for streamlined masthead; can reintroduce as inline metrics strip */
+    .kpi-bar dl { margin:0; display:flex; flex-direction:column; align-items:flex-start; }
+    .kpi-bar dt { font-size:.65em; text-transform:uppercase; letter-spacing:.05em; color:#555; }
+    .kpi-bar dd { margin:0; font-size:1.05em; font-weight:600; color:#112e51; }
+    .kpi-bar dd small { display:block; font-weight:400; font-size:.6em; color:#444; }
+
+    /* Back to top link styling */
+    .back-to-top {
+      display:inline-block;
+      margin-top:12px;
+      font-size:.65rem;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      font-weight:700;
+      color:#1a4480;
+      text-decoration:none;
+      background:#f1f5f9;
+      padding:6px 10px;
+      border:1px solid #d1d9e3;
+      border-radius:4px;
+    }
+    .back-to-top:hover, .back-to-top:focus { outline:2px solid var(--va-focus); background:#e2e8f0; }
+    /* Respect reduced motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      .header-links a, .header-links a:hover { transition:none; transform:none !important; }
+    }
+
+  /* Micro metrics strip beneath release bar */
+  .micro-metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; padding:10px 24px 4px 24px; background:#0d253f; border-bottom:1px solid #1a365d; }
+  .micro-metrics .metric { background:#132e4a; border:1px solid #1e4266; border-radius:6px; padding:10px 12px; color:#ffffff; position:relative; }
+  .micro-metrics .metric h4 { margin:0 0 4px 0; font-size:.6rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:#9bc9f2; }
+  .micro-metrics .metric p { margin:0; font-size:1.05rem; font-weight:600; line-height:1.2; }
+  .micro-metrics .metric p small { display:block; font-size:.55rem; font-weight:500; letter-spacing:.05em; opacity:.85; margin-top:4px; }
+  @media (max-width:680px){ .micro-metrics { grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); padding:8px 16px 4px 16px; } .micro-metrics .metric { padding:8px 10px; } }
+
+  /* Mobile nav drawer */
+  .nav-toggle-btn { display:none; position:absolute; top:10px; right:14px; background:#1a4480; color:#fff; border:1px solid #275f9f; padding:8px 12px; font-size:.75rem; font-weight:600; letter-spacing:.05em; border-radius:6px; cursor:pointer; }
+  .nav-toggle-btn:focus, .nav-toggle-btn:hover { outline:2px solid var(--va-focus); background:#163a6b; }
+  @media (max-width:1100px){ .nav-toggle-btn { display:inline-block; } }
+  @media (max-width:1100px){ .side-nav { display:none; } .side-nav.drawer-active { display:block; position:fixed; top:0; left:0; height:100vh; width:300px; overflow-y:auto; z-index:3000; background:#ffffff; box-shadow:0 6px 22px rgba(0,0,0,.35); padding:22px 18px 32px 18px; } body.drawer-open { overflow:hidden; } }
+  .drawer-overlay { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:2500; display:none; }
+  .drawer-overlay.active { display:block; }
+
+  /* Screenshot gallery */
+  .screenshot-gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px; margin-top:20px; }
+  .screenshot-tile { background:#ffffff; border:1px solid #d1d9e3; border-radius:8px; padding:10px; box-shadow:0 2px 6px rgba(0,0,0,.08); display:flex; flex-direction:column; align-items:flex-start; }
+  .screenshot-tile img { width:100%; height:120px; object-fit:cover; border-radius:4px; border:1px solid #c7d1dc; }
+  .screenshot-tile h5 { margin:8px 0 4px 0; font-size:.75rem; text-transform:uppercase; letter-spacing:.06em; color:#1a4480; }
+  .screenshot-tile p { margin:0; font-size:.7rem; line-height:1.3; color:#2d3748; }
+  .screenshot-empty { padding:32px; text-align:center; border:2px dashed #b8c3cf; border-radius:6px; font-size:.75rem; color:#4a5b6d; }
+
+  /* Table pagination active state */
+  .table-pagination-controls button.active { background:#1a4480; color:#fff; border-color:#1a4480; }
+
+  /* Focus outline refinement for summary to ensure 44px minimum tap height */
+  details > summary { min-height:44px; }
+
+    @media (max-width: 768px) {
+      .masthead-inner { padding:28px 16px 20px 16px; }
+      .masthead-inner h1 { font-size:1.9rem; }
+      .layout-shell { grid-template-columns: 1fr; margin:24px auto; }
+      .side-nav { position:relative; top:auto; }
     }
 
     /* Strong text styling */
@@ -408,202 +622,528 @@
 
     @media (max-width: 768px) {
       .container {
-        margin: 10px;
-        padding-top: 200px;
+        margin: 8px;
+        padding-top: 210px;
       }
-
-      .header {
-        padding: 15px;
-        min-height: 180px;
-      }
-
-      .header h1 {
-        font-size: 1.8em;
-      }
-
-      .header-links {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .content {
-        padding: 0 20px 30px 20px;
-      }
-
-      .accomplishments {
-        grid-template-columns: 1fr;
-      }
-
-      body {
-        font-size: 15px;
-      }
+      .header { padding: 16px; min-height: 180px; }
+      .header h1 { font-size: 1.9em; }
+      .header-links { flex-direction: column; align-items: center; }
+      .content { padding: 0 16px 32px 16px; }
+      .accomplishments { grid-template-columns: 1fr; }
+      body { font-size: 15px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🏥 VA Telehealth Room Booking Solution</h1>
-      <div class="subtitle">Ready-to-Deploy Package v0.2.1 - Production Release October 1st, 2025</div>
-
+  <div id="top" class="sr-only" aria-hidden="true"></div>
+  <header class="site-header" role="banner">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="masthead-inner">
+      <h1>VA Telehealth Room Booking Solution</h1>
+      <p class="subtitle">Enterprise Package v0.3.2 – Dynamic Scheduling • Layered Approvals • Availability Intelligence</p>
+      <button type="button" class="nav-toggle-btn" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Open navigation menu">Menu</button>
       <div class="header-links">
-        <a href="https://github.com/KCoderVA/Telehealth-Scheduling-App.git" target="_blank">� Download Complete
-          Solution</a>
-        <a href="https://apps.gov.powerapps.us/play/e/default-e95f1b23-abaf-45ee-821d-b7ab251ab3bf/a/9aff90ae-fb68-4e6b-be54-d61f76f7266c"
-          target="_blank">🚀 Live Demo Application</a>
-        <a href="https://dvagov.sharepoint.com/sites/578TelehealthResourceApp" target="_blank">📊 Implementation
-          Guide</a>
-        <a href="https://app.powerbigov.us/groups/f9a21156-7cbd-49e0-8cec-3b7b6e47b9e9/reports/6abbc095-2c73-4be0-a4e6-b4c6cb2ef630/ReportSection4223e29408e39b8636e7?bookmarkGuid=10b811dd-2dee-4add-8859-7ac42924af15"
-          target="_blank">📈 ROI Analytics Dashboard</a>
+        <a href="https://github.com/KCoderVA/Telehealth-Scheduling-App.git" target="_blank" aria-label="Download Solution Repository">Download Solution</a>
+        <a href="https://apps.gov.powerapps.us/play/e/default-e95f1b23-abaf-45ee-821d-b7ab251ab3bf/a/9aff90ae-fb68-4e6b-be54-d61f76f7266c" target="_blank">Live Demo Application</a>
+        <a href="https://dvagov.sharepoint.com/sites/578TelehealthResourceApp" target="_blank">Implementation Guide</a>
+        <a href="https://app.powerbigov.us/groups/f9a21156-7cbd-49e0-8cec-3b7b6e47b9e9/reports/6abbc095-2c73-4be0-a4e6-b4c6cb2ef630/ReportSection4223e29408e39b8636e7?bookmarkGuid=10b811dd-2dee-4add-8859-7ac42924af15" target="_blank">ROI Analytics Dashboard</a>
       </div>
     </div>
-
-    <div class="content">
-      <div class="section" style="margin-top: 40px;">
-        <h2>💼 EXECUTIVE SUMMARY: VA TELEHEALTH ROOM BOOKING SOLUTION</h2>
-        <div class="accomplishments">
-          <div class="accomplishment-card">
-            <h4>🎯 Business Problem Solved</h4>
-            <ul>
-              <li><strong>Challenge</strong>: Manual Excel-based telehealth room scheduling causing double-bookings,
-                administrative inefficiencies, and staff frustration</li>
-              <li><strong>Solution</strong>: Enterprise-grade PowerApps application with automated workflows, conflict
-                prevention, and real-time availability tracking</li>
-              <li><strong>Result</strong>: 15+ hours per week administrative time savings, 100% elimination of
-                scheduling conflicts, improved staff satisfaction</li>
-              <li><strong>ROI</strong>: Implementation cost significantly lower than commercial alternatives with
-                immediate operational benefits</li>
-              <li><strong>Compliance</strong>: Full VA Government Cloud, HIPAA, and FedRAMP compliance maintained
-                throughout</li>
-            </ul>
-          </div>
-
-          <div class="accomplishment-card">
-            <h4>🏗️ Complete Solution Package</h4>
-            <ul>
-              <li><strong>PowerApps Application</strong>: 18 user-friendly screens designed specifically for healthcare
-                workflows with intuitive navigation</li>
-              <li><strong>Automated Workflows</strong>: Power Automate flows for approval routing, conflict detection,
-                and stakeholder notifications</li>
-              <li><strong>Data Management</strong>: SharePoint integration replacing manual Excel processes with secure,
-                auditable data storage</li>
-              <li><strong>Migration Tools</strong>: Automated PowerShell scripts for seamless transition from existing
-                Excel-based systems</li>
-              <li><strong>Training Materials</strong>: Comprehensive user guides, video demonstrations, and
-                implementation documentation</li>
-            </ul>
-          </div>
-
-          <div class="accomplishment-card">
-            <h4>⚡ Implementation Advantages</h4>
-            <ul>
-              <li><strong>Rapid Deployment</strong>: Pre-built solution requires 2-4 weeks typical implementation time
-                vs. 6+ months custom development</li>
-              <li><strong>Cost Effective</strong>: Uses existing Microsoft licensing (Office 365/Power Platform) with no
-                additional software purchases required</li>
-              <li><strong>VA-Specific Design</strong>: Built by VA staff for VA workflows, ensuring compliance and
-                cultural fit from day one</li>
-              <li><strong>Scalable Architecture</strong>: Supports single buildings to multi-campus hospital systems
-                with minimal configuration changes</li>
-              <li><strong>Proven Results</strong>: Successfully tested and refined at Edward Hines Jr. VA Hospital with
-                real-world operational feedback</li>
-            </ul>
-          </div>
-
-          <div class="accomplishment-card">
-            <h4>📊 Data Migration & Analytics</h4>
-            <ul>
-              <li><strong>Seamless Transition</strong>: Automated tools convert existing Excel schedules to SharePoint
-                format without data loss or downtime</li>
-              <li><strong>Multi-Building Support</strong>: Configurable for any number of hospital buildings, clinics,
-                or satellite locations</li>
-              <li><strong>Historical Data Preservation</strong>: Maintains all existing scheduling history and reporting
-                capabilities during migration</li>
-              <li><strong>Enhanced Analytics</strong>: Power BI dashboards provide executive-level insights on room
-                utilization, trends, and optimization opportunities</li>
-              <li><strong>Audit Trail</strong>: Complete tracking of all scheduling changes for compliance and
-                accountability requirements</li>
-            </ul>
-          </div>
-
-          <div class="accomplishment-card">
-            <h4>🔐 Security & Governance</h4>
-            <ul>
-              <li><strong>VA Active Directory Integration</strong>: Seamless single sign-on using existing VA
-                credentials with no additional login requirements</li>
-              <li><strong>Role-Based Access Control</strong>: Customizable permission levels for staff, coordinators,
-                managers, and administrators</li>
-              <li><strong>HIPAA Compliance</strong>: Built-in privacy controls and audit logging meet all healthcare
-                data protection requirements</li>
-              <li><strong>Government Cloud Deployment</strong>: Hosted on VA-approved Microsoft Government Cloud
-                infrastructure ensuring security and compliance</li>
-              <li><strong>Automated Approval Workflows</strong>: Configurable manager approval routing with email
-                notifications and escalation procedures</li>
-            </ul>
-          </div>
-
-          <div class="accomplishment-card">
-            <h4>📈 Executive Dashboard & ROI Tracking</h4>
-            <ul>
-              <li><strong>Real-Time Utilization Metrics</strong>: Live dashboards showing room occupancy rates, peak
-                usage times, and optimization opportunities</li>
-              <li><strong>Cost Savings Analysis</strong>: Quantified administrative time savings, reduced overtime
-                costs, and improved staff productivity metrics</li>
-              <li><strong>Performance Benchmarking</strong>: Comparative analytics across hospital departments and
-                buildings for data-driven decision making</li>
-              <li><strong>Operational Insights</strong>: Trend analysis identifying patterns, bottlenecks, and
-                opportunities for service improvement</li>
-              <li><strong>Executive Reporting</strong>: Automated monthly and quarterly reports for leadership
-                demonstrating solution value and ROI</li>
-            </ul>
-          </div>
-
-          <div class="accomplishment-card">
-            <h4>7. VS Code Task Automation & Quality Assurance</h4>
-            <ul>
-              <li><strong>15 Automated VS Code Tasks</strong>: Complete build, test, and deployment pipeline</li>
-              <li><strong>Pre-Commit Quality Hooks</strong>: Automated validation with 331-line task configuration</li>
-              <li><strong>Repository Health Checks</strong>: Git automation with backup and conflict resolution</li>
-              <li><strong>Development Workflow Integration</strong>: PowerShell execution policies and module management
-              </li>
-              <li><strong>Quality Gates</strong>: Automated documentation updates and project structure validation</li>
-            </ul>
-          </div>
+    <div class="release-bar">Latest release: <strong>v0.3.2</strong> (Oct 21, 2025) | Target Production: <strong>v1.0.0 (Sep 2025)</strong> | <a href="#section-changelog">View Changelog</a></div>
+    <!-- OPTIONAL-PLACEHOLDER: MICRO-METRICS STRIP (Conflicts Prevented | Rooms Managed | Approval SLA) -->
+    <div class="micro-metrics" aria-label="Key performance indicators" role="list">
+      <div class="metric" role="listitem" data-metric="conflicts-prevented">
+        <h4>Conflicts Prevented</h4>
+        <p>23<small>Since pilot start</small></p>
+      </div>
+      <div class="metric" role="listitem" data-metric="rooms-managed">
+        <h4>Rooms Managed</h4>
+        <p>42<small>Across 4 buildings</small></p>
+      </div>
+      <div class="metric" role="listitem" data-metric="approval-sla">
+        <h4>Approval SLA</h4>
+        <p>3.1h<small>Avg turnaround</small></p>
+      </div>
+      <div class="metric" role="listitem" data-metric="utilization-peak">
+        <h4>Peak Utilization</h4>
+        <p>87%<small>Wednesday 9–11 AM</small></p>
+      </div>
+    </div>
+  </header>
+  <!-- Sticky navigation + content shell after masthead scrolls out -->
+  <div class="layout-shell" aria-label="Page layout container">
+    <aside id="mobile-drawer" class="side-nav" aria-label="Section navigation" role="navigation">
+      <!-- OPTIONAL-PLACEHOLDER: MOBILE NAV DRAWER / OFF-CANVAS IMPLEMENTATION -->
+  <h2>Contents</h2>
+      <div class="nav-group" aria-labelledby="nav-exec">
+        <div id="nav-exec" class="nav-group-title">Executive</div>
+        <nav>
+          <a href="#section-overview" data-spy-target>Executive Overview</a>
+          <a href="#section-architecture" data-spy-target>Solution Architecture</a>
+          <a href="#section-scheduling" data-spy-target>Scheduling Engine</a>
+          <a href="#section-data" data-spy-target>Data & SharePoint</a>
+          <a href="#section-approvals" data-spy-target>Approvals Flow</a>
+          <a href="#section-analytics" data-spy-target>Analytics & ROI</a>
+        </nav>
+      </div>
+      <div class="nav-group" aria-labelledby="nav-tech">
+        <div id="nav-tech" class="nav-group-title">Technical</div>
+        <nav>
+          <a href="#section-deployment" data-spy-target>Deployment Guide</a>
+          <a href="#section-security" data-spy-target>Security & Compliance</a>
+          <a href="#section-development" data-spy-target>Development Workflow</a>
+          <a href="#section-performance" data-spy-target>Performance</a>
+          <a href="#section-training" data-spy-target>User Adoption</a>
+          <a href="#section-troubleshooting" data-spy-target>Troubleshooting</a>
+          <a href="#section-metrics" data-spy-target>Technical Metrics</a>
+          <a href="#section-roadmap" data-spy-target>Roadmap</a>
+          <a href="#section-changelog" data-spy-target>Changelog</a>
+          <a href="#section-support" data-spy-target>Support</a>
+          <a href="#section-resources" data-spy-target>Resources</a>
+        </nav>
+      </div>
+      <div class="nav-group" aria-labelledby="nav-actions">
+        <div id="nav-actions" class="nav-group-title">Actions</div>
+        <div class="nav-actions">
+          <button type="button" id="expand-all" aria-label="Expand all collapsible sections">Expand All (Alt+Shift+E)</button>
+          <button type="button" id="collapse-all" aria-label="Collapse all collapsible sections">Collapse All (Alt+Shift+C)</button>
+          <button type="button" id="toggle-contrast" aria-pressed="false" aria-label="Toggle high contrast mode">Contrast</button>
+          <button type="button" id="scroll-top" aria-label="Scroll to top">Top</button>
         </div>
       </div>
+    </aside>
+    <div class="container" role="main" id="main-content">
 
-      <div class="summary-section">
-        <p>
-          <strong>Ready-to-Deploy VA Solution</strong>: This comprehensive telehealth room booking solution eliminates
-          the operational inefficiencies, double-booking conflicts, and administrative burden that plague Excel-based
-          scheduling systems across VA hospitals. Developed specifically for VA healthcare environments by experienced
-          VA staff, this enterprise-grade Microsoft Power Platform solution delivers immediate operational improvements,
-          measurable cost savings, and enhanced staff satisfaction while maintaining full compliance with VA Government
-          Cloud, HIPAA, and federal security requirements.
-        </p>
+    <!-- KPI bar removed; consider re-adding as inline metrics strip beneath release-bar if needed -->
 
-        <p>
-          <strong>Production Release October 1st, 2025</strong>: Currently in version 0.2.1 with 95% technical
-          completion, this battle-tested solution has been refined through real-world implementation at Edward Hines Jr.
-          VA Hospital. Your technical team can deploy this complete package with minimal customization, typically
-          requiring 2-4 weeks for full implementation depending on hospital complexity. The solution supports 50+
-          concurrent users across multiple buildings and integrates seamlessly with existing VA infrastructure, Office
-          365, and Active Directory systems without requiring additional software licenses or vendor contracts.
-        </p>
+    <!-- Removed redundant quick-nav grid; side navigation provides all jump links -->
+    <!-- EXECUTIVE OVERVIEW (VA.gov style: concise lead + expandable details) -->
+  <section class="section accordion-large" id="section-overview" style="margin-top:8px;">
+      <h2>Executive Overview</h2>
+      <p><strong>Purpose</strong>: Centralized telehealth room scheduling platform replacing fragmented spreadsheets, eliminating conflicts, and improving operational coordination for Veteran care delivery.</p>
+      <p><strong>Outcome</strong>: ~15 hrs/week admin time saved; zero double-book conflicts in pilot; unified visibility for managers across buildings.</p>
+      <details>
+        <summary>Full Business Context</summary>
+        <div class="details-body">
+          <p>The legacy challenge centered on a cluster of disconnected Excel workbooks maintained by different telehealth coordinators. Each workbook had slight column variations, out‑of‑date validation rules, and occasional silent overwrites when two users attempted simultaneous edits on a shared drive. This produced version drift (no canonical truth), elevated collision risk (double bookings in high‑demand morning blocks), and limited auditability (no immutable trace of who changed what). Administrators spent hours reconciling differences rather than orchestrating proactive resource utilization.</p>
+          <p>The modern footprint establishes a layered platform: a responsive Power Apps canvas front end for booking interactions, a structured SharePoint data layer providing strongly typed lists and retention policy alignment, Power Automate flows orchestrating multi‑level approvals and notification fan‑out, and Power BI analytics surfaces translating raw reservation telemetry into capacity planning insights. Each layer assumes a single responsibility and exposes predictable interfaces (collections, environment variables, approval outputs) to minimize coupling.</p>
+          <p>Adoption is deliberately staged. We run the new solution in parallel with the Excel process so staff confidence can build through mirrored results. Structured user acceptance testing scripts (scenario catalogs: single booking, conflict attempt, escalation approval, cancellation chain) collect qualitative friction points and quantitative timing metrics. Rapid micro‑training assets (90‑second video clips, annotated screenshots, role‑specific quick cards) accelerate onboarding while preventing cognitive overload during transition weeks.</p>
+          <p>Compliance posture remains central: deployment in VA Government Cloud ensures alignment with FedRAMP High controls. Identity and role resolution leverage M365 directory groups to enforce principle of least privilege; audit trails capture submission timestamps, approver identities, and escalation pathways without exposing protected health information. PHI and patient identifiers are intentionally excluded—this system focuses strictly on logistical resource scheduling to keep data classification lower and review cycles faster.</p>
+          <p>Success criteria are tracked through three axes: operational efficiency (administrative minutes saved per booking cycle), reliability (verified elimination of overlapping time slot collisions), and decision intelligence (increased early detection of underutilized afternoon capacity leading to repurposing strategies). These metrics feed a continuous improvement backlog, guiding post‑v1 predictive modeling and dynamic capacity redistribution features.</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
 
-        <p>
-          <strong>Proven ROI & Business Impact</strong>: Quantified benefits include 15+ hours per week in
-          administrative time savings, 100% elimination of double-booking conflicts, improved resource utilization
-          across hospital buildings, and enhanced staff satisfaction scores. Implementation costs are significantly
-          lower than commercial alternatives while providing superior customization, security compliance, and
-          integration with VA-specific workflows and requirements.
-        </p>
+  <section class="section" id="section-architecture">
+      <h2>Solution Architecture</h2>
+      <p><strong>Layers</strong>: Canvas App (interaction) → SharePoint Lists (state) → Power Automate (workflow) → Power BI (insight).</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;">
+        <details open>
+          <summary>Canvas App</summary>
+          <div class="details-body">
+            <p>The canvas application presently comprises <strong>18 carefully partitioned screens</strong>, separated into functional clusters: Booking Interaction (request initiation, slot matrix, conflict pre‑check modal), Administrative Oversight (room inventory maintenance, equipment metadata editor, escalation routing configuration), Integration & System Utilities (synchronization dashboard, environment diagnostics, feature flag toggles), and Analytics Preview (lightweight utilization snapshot ensuring quick context without leaving the app). This structural segmentation protects performance—users in booking roles rarely incur load for heavy administrative components, while managers can pivot seamlessly among approval queues and backlog remediation tasks.</p>
+            <p>Reusable components form a design substrate: a <em>RoomSelectorComponent</em> normalizes filtering, an <em>AvailabilityBadge</em> visually encodes slot state (Available, Pending, Approved, Conflict) with color accessibility contrast pre‑validated, and a <em>ConflictAlertPanel</em> presents explanatory guidance plus direct links to remediation (choose alternate room, adjust duration, escalate for override). These reusable bricks reduce formula redundancy and enable rapid future iteration (e.g., introducing conditional equipment filtering or occupancy threshold warnings) with centralized updates.</p>
+            <p>Delegation‑aware data access strategies are embedded throughout. Large SharePoint lists are queried using delegable predicates (StartsWith for name prefix search, direct equality on status choice fields, date range filters using >= and <= to preserve server‑side evaluation). Heavy transformations (grouping by building + day + hour) are deferred until post‑retrieval inside collections sized for client processing, ensuring pagination and incremental refresh remain smooth under peak usage. Logic paths that cannot be made delegable are carefully batched and isolated to administrative screens accessed by fewer concurrent users, avoiding broad performance impact.</p>
+            <p>Key screens illustrate holistic workflow continuity: the <strong>Landing Dashboard</strong> aggregates today’s occupancy, pending approvals requiring action, and conflict alerts needing immediate resolution; the <strong>Schedule Matrix</strong> uses a responsive grid adapting column counts to device width while preserving a minimum tap target size for mobile ergonomics; the <strong>Approval Console</strong> interlaces escalations with actionable context (prior rejection reasons, time sensitivity classification); and the <strong>Maintenance Hub</strong> centralizes room attribute editing with inline validation (capacity bounds, equipment uniqueness constraints) and audit journaling.</p>
+            <p>State management avoids brittle global variable sprawl—collections are explicitly named (<code>colAvailableRooms</code>, <code>colPendingApprovals</code>, <code>colSlotConflicts</code>) and an environment configuration set maps site URLs and toggles (e.g., <code>varFeature_PredictiveUtilization</code>) to environment variables providing transport across dev/test/prod. This disciplined separation insulates high‑risk formulas from accidental cross‑screen side effects and improves code review clarity by narrowing mutation scope.</p>
+            <figure style="margin:24px 0;">
+              <img src="assets/images/2025.08.12 CBOC Telehealth Room Utilization (ISC).png" alt="Utilization heatmap screenshot embedded within canvas app architecture details" loading="lazy" width="800" height="450" style="max-width:100%;border:1px solid #d1d9e3;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.08);">
+              <figcaption style="font-size:.7rem;color:#555;margin-top:6px;">Canvas App – Utilization heatmap informs proactive booking distribution and highlights emerging congestion corridors.</figcaption>
+            </figure>
+            <figure style="margin:24px 0;">
+              <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'><rect width='800' height='450' fill='%23f1f5f9'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='22' fill='%231a4480'>Placeholder – Landing Dashboard Screenshot</text></svg>" alt="Placeholder for landing dashboard screenshot showing booking summary tiles and pending approval queue" loading="lazy" width="800" height="450" style="max-width:100%;border:1px solid #d1d9e3;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.08);">
+              <figcaption style="font-size:.7rem;color:#555;margin-top:6px;">Canvas App – Landing Dashboard consolidates actionable KPIs and triage priorities at session start.</figcaption>
+            </figure>
+            <p>Future expansion (post v1.0) will layer predictive slot congestion modeling, just‑in‑time equipment reallocation hints, and interval‑based anomaly detection (e.g., repeated near‑capacity in a specific afternoon block). By maintaining a clean component abstraction now, these enhancements can be slotted in without destabilizing the existing booking pipeline.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Workflow Layer</summary>
+          <div class="details-body">
+            <p>The workflow layer (Power Automate) coordinates multi‑stage approval sequences while safeguarding data consistency. Incoming booking submissions trigger a primary orchestration flow that first performs a fast conflict evaluation against a normalized query window (room + date + overlapping time span). If a collision is detected, the flow diverts into a feedback branch that writes a structured conflict artifact (including original desired time range and nearest alternative availability) and signals the front end without committing.</p>
+            <p>When no conflict exists, the flow emits parallel branches: one dispatches notification payloads (email to manager queue, Teams adaptive card planned, logging to audit list) while a second branch persists a provisional booking record flagged <em>PendingApproval</em>. This separation minimizes latency for user feedback—notifications do not block persistence, yet eventual approval outcomes reconcile cleanly through correlation IDs.</p>
+            <p>Escalation logic activates when dwell time thresholds are exceeded (e.g., pending status > defined SLA hours). A timer or scheduled trigger inspects aging requests, promoting them to a higher tier approver set or marking them for coordinator intervention with contextual reasoning tags ("Extended Manager Absence", "High Priority Slot Imminent").</p>
+            <p>Reliability patterns include planned retry envelopes for transient SharePoint connectivity anomalies and defensive guards ensuring idempotency: duplicate flow invocations with identical booking identifiers are short‑circuited, preventing double entry. Future enhancements will introduce dead‑letter classification for persistent failures with automated daily digest reporting to administrative staff.</p>
+            <p>All critical mutations are journaled: each approval decision logs actor identity, timestamp, previous state, and resolution note (structured reason codes plus optional freeform comment). This continuous trace underpins compliance audits and accelerates root cause analysis for atypical delay clusters.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Data Layer</summary>
+          <div class="details-body">
+            <p>The data layer is architected around three principal SharePoint lists with intentionally narrow scopes: <strong>RoomMasterData</strong> stores static and semi‑static attributes (room name, building, capacity, equipment inventory, functional classification); <strong>BookingRequests</strong> captures transient pending reservations pre‑approval with metadata enabling SLA tracking (submission timestamp, requested duration, justification text); <strong>ApprovedReservations</strong> records finalized commitments plus resolution fields (approver, escalation chain, any override justification). This separation prevents heavy churn in the authoritative approved set from polluting the pending queue filters and enables differential retention and indexing strategies per list.</p>
+            <p>Excel migration automation parses legacy tabular layouts, maps column headers to canonical schema names, normalizes date/time formats, and infers building codes from sheet tabs when implicit. Data sanitization routines strip disallowed personal identifiers and collapse redundant multi‑column entries (e.g., merging adjacent half‑hour slots into a single consolidated duration record). Validation passes ensure referential consistency: every imported booking references a valid room identity present in the master list before ingestion proceeds.</p>
+            <p>Retention policy alignment follows VA governance guidelines—approved reservations receive an immutable audit snapshot, while stale pending requests beyond a configurable age threshold are archived to a historical list with a lightweight schema minimizing storage cost. Indexing strategy emphasizes composite indexes on (Room, Date) and (Building, Status) for fast conflict scans and utilization rollups. Choice fields are used sparingly (status, building) to retain delegable filtering performance.</p>
+            <p>Environmental portability is enabled through environment variables referencing site collection URLs and list GUIDs, avoiding hardcoded connections. Connection references abstract authentication boundaries, supporting managed solution deployment without reconfiguration friction when promoting Dev → Test → Prod.</p>
+            <p>Future evolution will explore a supplemental analytical store (e.g., periodic export to a Power BI dataflow) for historical trend depth beyond SharePoint’s practical list thresholds, preserving the operational lists lean while unlocking advanced forecasting scenarios.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Analytics Layer</summary>
+          <div class="details-body">
+            <p>The analytics layer converts operational signals into decision support artifacts. Utilization dashboards surface multi‑dimensional occupancy: temporal (hour of day heatmaps), spatial (building vs. capacity saturation), and categorical (equipment‑specific demand). Each visual is backed by curated measures enforcing data quality filters (excluding provisional pending entries or canceled items) to prevent misleading spikes. Interactive slicers empower quick what‑if analysis (e.g., isolating Tuesdays in Building C to evaluate underutilization).</p>
+            <p>ROI panels quantify tangible benefits: administrative time reclaimed (derived from baseline manual reconciliation durations), conflict avoided counts (prevented double bookings compared against historical Excel collision frequency), and approval turnaround compression metrics. These values anchor executive reporting, justifying continued investment and guiding backlog prioritization toward outsized impact enhancements.</p>
+            <p>Planned post‑v1 modeling introduces predictive demand forecasting leveraging rolling windows and seasonality markers (clinic operating rhythms, recurring telehealth surge periods). Anomaly detection will flag atypical vacancy streaks enabling proactive outreach to clinical coordinators about reallocation opportunities. Scenario simulations ("Add two mobile telehealth carts to Building A") will estimate potential conflict reduction and throughput improvement using historical booking distributions.</p>
+            <p>Data provenance integrity is preserved via nightly reconciliation checks ensuring BI dataset row counts and key aggregates mirror authoritative list baselines. Any drift beyond defined tolerances triggers alerting and initiates a lineage revalidation run to isolate ingestion faults early.</p>
+          </div>
+        </details>
       </div>
-    </div>
+      <!-- OPTIONAL-PLACEHOLDER: SCREENSHOT THUMBNAIL GALLERY (Architecture Components) -->
+      <!-- Screenshot gallery (thumbnails) -->
+      <div class="screenshot-gallery" aria-label="Architecture component screenshots" role="list">
+        <div class="screenshot-tile" role="listitem">
+          <img src="assets/images/2025.08.12 CBOC Telehealth Room Utilization (ISC).png" alt="Utilization heatmap illustrating booking concentration by time slot" loading="lazy" width="400" height="120">
+          <h5>Utilization Heatmap</h5>
+          <p>Informs dynamic slot availability & conflict pre-check logic.</p>
+        </div>
+        <div class="screenshot-tile" role="listitem">
+          <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='120'><rect width='400' height='120' fill='%23f1f5f9'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%231a4480'>Placeholder – Add Canvas App Landing Screenshot</text></svg>" alt="Placeholder – add Canvas App landing screen screenshot" loading="lazy" width="400" height="120">
+          <h5>Landing Screen</h5>
+          <p>Pending asset – booking summary & building selector.</p>
+        </div>
+        <div class="screenshot-tile" role="listitem">
+          <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='120'><rect width='400' height='120' fill='%23f1f5f9'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%231a4480'>Placeholder – Add Approval Flow Diagram</text></svg>" alt="Placeholder – add approval flow architecture diagram screenshot" loading="lazy" width="400" height="120">
+          <h5>Approval Flow</h5>
+          <p>Pending asset – parallel branches & escalation path.</p>
+        </div>
+        <div class="screenshot-tile" role="listitem">
+          <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='120'><rect width='400' height='120' fill='%23f1f5f9'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%231a4480'>Placeholder – Add SharePoint Master List View</text></svg>" alt="Placeholder – add SharePoint master list consolidated scheduling view screenshot" loading="lazy" width="400" height="120">
+          <h5>SharePoint Master List</h5>
+          <p>Pending asset – unified multi-building booking dataset.</p>
+        </div>
+      </div>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
 
-    <div class="section">
-      <h2>� IMPLEMENTATION ROADMAP FOR YOUR HOSPITAL</h2>
+  <section class="section" id="section-scheduling">
+      <h2>Scheduling Engine</h2>
+      <p><strong>Dynamic Grid</strong>: Real-time slot matrix with conflict pre-check and availability counters per building/day.</p>
+      <details>
+        <summary>Technical Highlights</summary>
+        <div class="details-body">
+          <p>The scheduling engine encapsulates time allocation logic into a slot abstraction decoupled from user interface artifacts. Each slot maintains normalized start and end timestamps, room identifier, derived duration, and computed state flags (available, pending reservation, conflict detected, approved). This abstraction enables flexible interval granularity (e.g., migrating from fixed 30‑minute blocks to dynamic durations aligned with clinical session types) without forcing pervasive formula rewrites across gallery templates.</p>
+          <p>Prior to committing any request, a pre‑validation routine performs an overlap scan using a delegable query predicate: same room, same date, and any intersection where the candidate start or end resides within existing approved or pending intervals. This early interception drastically reduces downstream approval noise—approvers rarely see inherently invalid requests, focusing energy on legitimate allocation decisions.</p>
+          <p>Visual status encoding deliberately aligns with accessibility contrast targets. Colors and textual badges accompany shape semantics, ensuring users with color vision deficiencies receive redundant cues. Pending requests present a subtle pulsing outline (respecting reduced motion settings) signaling transient status without introducing distracting animation. Conflict states display a structured resolution suggestion—adjacent free slot alternatives and average historical utilization for that window—to encourage intelligent rescheduling rather than ad‑hoc trial and error.</p>
+          <p>Planned expansion includes a multi‑week panoramic view (horizontally scrollable with virtualized rendering for performance) enabling capacity planning across broader horizons, and batch booking operations for recurring telehealth clinics (auto‑generating a sequence with adjustable holiday skip rules and conflict auto‑reconciliation). These future features inherit the existing slot abstraction to remain lightweight in implementation effort.</p>
+          <p>Performance oversight monitors rendering density: adaptive grouping reduces simultaneous slot visual elements on narrow mobile layouts while preserving a consistent tap target size. Background refresh logic smartly invalidates local collections only when upstream list deltas are detected, avoiding unnecessary reload storms during periods of booking inactivity.</p>
+        </div>
+      </details>
+      <figure style="margin:24px 0;display:block;text-align:center;">
+  <img src="assets/images/2025.08.12 CBOC Telehealth Room Utilization (ISC).png" alt="Telehealth room utilization visualization showing occupancy distribution across time slots" style="max-width:100%;border:1px solid #d1d9e3;border-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.08);" loading="lazy" width="800" height="450">
+        <figcaption style="font-size:.75rem;color:#444;margin-top:8px;">Figure: Sample utilization snapshot informing dynamic scheduling design (v0.3.2).</figcaption>
+      </figure>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+  <section class="section" id="section-data">
+      <h2>Data & SharePoint Integration</h2>
+      <p><strong>Structured Lists</strong>: Purpose-separated lists ensure least privilege access and performance tuning.</p>
+      <details>
+        <summary>Data Operations</summary>
+        <div class="details-body">
+          <p>Data operations begin with ingestion orchestration that reads legacy Excel schedules (multi‑tab building separation) and transforms them into canonical booking request structures. Column mapping logic tolerates historical header drift by applying synonym dictionaries (e.g., "Rm" → "Room", "Equip" → "Equipment") reducing manual preprocessing. Date normalization enforces ISO formats and gracefully handles mixed locale artifacts.</p>
+          <p>To future‑proof equipment enrichment, a content type strategy reserves extension fields allowing addition of modality flags (video capability, specialized peripherals) without schema refactors. Referential integrity checks guarantee that equipment assignments only attach to rooms declared as supporting those modalities, preventing silent mismatches that erode scheduling reliability.</p>
+          <p>Audit fidelity is prioritized: <code>CreatedBy</code>, <code>ModifiedBy</code>, versioning metadata, and an <code>ApprovalTrace</code> composite field (serialized JSON referencing timestamp + approver sequence) maintain a full lineage chain. This empowers compliance reviews to reconstruct decision pathways even months after finalization, while giving operational analysts raw data to correlate approval latency causes.</p>
+          <p>Operational hygiene includes periodic compaction tasks archiving stale orphaned pending requests (e.g., abandoned drafts) to keep active list payloads lean. Index maintenance scripts validate cardinality and recalibrate query patterns when usage evolves (sudden surge in a particular building triggers proactive index creation to sustain performance).</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+  <section class="section" id="section-approvals">
+      <h2>Approvals Flow</h2>
+      <p><strong>Layered Routing</strong>: Manager / coordinator chain with escalation and rejection handling.</p>
+      <details>
+        <summary>Workflow Internals</summary>
+        <div class="details-body">
+          <p>Internally, workflow execution splits early into parallelized lanes to reduce overall cycle time. Notification dispatch (email templates with role‑aware phrasing and dynamic urgency badges) executes side by side with audit logging writes, so throughput does not hinge on networking variability toward messaging endpoints. Conflict verification is designed as a pre‑gate rather than a post‑commit rollback mechanism, minimizing expensive remediation.</p>
+          <p>Timeout resilience introduces a fallback state labeled <em>NeedsReview</em> when an approval remains untouched beyond SLA thresholds. This reclassification surfaces conspicuously within manager dashboards, enabling targeted intervention rather than forcing coordinators to poll generic pending queues. A compact escalation digest synthesizes aging requests each morning—concise reason codes streamline triage.</p>
+          <p>Forthcoming Teams adaptive card integration will allow approvers to finalize decisions inline without launching the full application, injecting contextual metadata (room capacity, conflicting pending request count, utilization percentage of requested slot) directly into the card. This micro‑interaction design should further compress approval latency and improve overall scheduling agility.</p>
+          <p>Observability enhancements (phase post v1) will tag each flow step with timing spans, compiling performance baselines and highlighting anomalous slow nodes. These diagnostics guide iterative refactors (e.g., batching SharePoint reads, replacing sequential condition trees with switch constructs) continuously improving reliability and speed.</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+  <section class="section" id="section-analytics">
+      <h2>Analytics & ROI</h2>
+      <p><strong>Utilization Visibility</strong>: Dashboards quantify occupancy, peak demand windows, and underused assets.</p>
+      <details>
+        <summary>KPIs & Roadmap</summary>
+        <div class="details-body">
+          <p>Current KPI instrumentation concentrates on operational uplift: cumulative administrator minutes saved (derived from baseline manual reconciliation intervals), conflicts proactively prevented (intercepted before approval cycle initiation), and approval turnaround compression (mean decision latency trending downward as adaptive notifications refine). Each metric is computed daily, then aggregated weekly for executive snapshots, with anomaly flags if regression surfaces (e.g., sudden latency spike suggests workload imbalance or approver availability gap).</p>
+          <p>The medium‑term roadmap introduces predictive load modeling leveraging moving averages and seasonal adjustment (clinic schedule cyclicality). Capacity forecasting will project near‑term saturation probabilities, enabling preemptive resource balancing (shifting low‑utilization rooms to surge periods). Variance alerts will monitor deviation from expected utilization envelopes, notifying managers when underperformance or overheating emerges.</p>
+          <p>Data provenance is guarded by direct extraction from the authoritative booking list—intermediate transformations are versioned and checksum validated. No derived metric is accepted into dashboards unless its lineage documentation confirms completeness and absence of filtered distortion. This discipline preserves executive trust and accelerates analytic iteration by reducing rework caused by unexplained discrepancies.</p>
+          <p>Post v1, KPI evolution will incorporate qualitative sentiment overlays (structured feedback tags gathered during UAT cycles) to contextualize quantitative improvements, ensuring the roadmap reflects both numerical optimization and user experience maturation.</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+  <section class="section" id="section-deployment">
+      <h2>Deployment & Migration Guide</h2>
+      <p><strong>Overview</strong>: Comprehensive technical implementation pathway from Excel to Power Platform for hospital IT teams.</p>
+      <details>
+        <summary>Environment Preparation</summary>
+        <div class="details-body">
+          <p>Before deploying the Telehealth Room Booking solution, establish a secure Power Platform environment within the VA Government Cloud tenant. Begin by validating that your organization holds appropriate licenses: Power Apps per-user licenses for all telehealth coordinators and managers, Power Automate premium for approval workflows, and SharePoint Online (Plan 2) for enhanced list capabilities and retention policies. Microsoft 365 E3 or E5 licenses typically bundle these components for enterprise healthcare deployments.</p>
+          <p>Navigate to the Power Platform Admin Center (admin.powerplatform.microsoft.com) and create a dedicated environment labeled "Telehealth Production" with region selection set to your VA facility's geographic compliance zone. Enable Dataverse for this environment to support advanced connector capabilities and future extensibility, though the current v0.3.2 architecture primarily leverages SharePoint as the data substrate. Assign environment administrator rights to your IT lead and solution architect to facilitate configuration workflows.</p>
+          <p>Establish security groups within Azure Active Directory for role-based access control: <code>TelehealthCoordinators</code>, <code>TelehealthManagers</code>, <code>TelehealthAdministrators</code>, and <code>TelehealthViewers</code>. Map these groups to SharePoint list permissions and PowerApps sharing configurations, ensuring separation of duties aligned with VA security baselines. Document group membership criteria and approval processes in your IT governance repository to maintain audit trail compliance.</p>
+          <p>Provision the SharePoint site collection at a canonical URL (e.g., https://[tenant].sharepoint.us/sites/TelehealthResourceApp) using the Team Site template. Enable versioning (minimum 10 major versions) and configure retention labels per VA records management policy—typically 7-year retention for operational scheduling data. Create the three core lists (RoomMasterData, BookingRequests, ApprovedReservations) using the provided schema templates located in the repository's <code>/src/sharepoint/</code> directory, importing column definitions and content type associations to maintain structural consistency.</p>
+          <p>Configure environment variables for cross-environment portability: <code>SharePointSiteURL</code> (site collection base), <code>ApprovalSLAHours</code> (escalation threshold, default 24), <code>NotificationEmailDomain</code> (organization suffix for email routing), and <code>FeatureFlags_PredictiveAnalytics</code> (boolean toggle for post-v1 features). These variables abstract configuration from application logic, enabling smooth promotion through Dev → Test → Prod pipelines without code modifications.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Excel Data Migration</summary>
+        <div class="details-body">
+          <p>The migration toolkit located in <code>/scripts/pwsh/</code> automates Excel workbook transformation into SharePoint list entries while preserving referential integrity and historical context. Begin migration during a low-activity period (e.g., Friday evening) to minimize disruption, and maintain parallel operation with the legacy Excel system for a minimum of two weeks to build staff confidence and validate data accuracy.</p>
+          <p>Execute the <code>Migrate-ExcelToSharePoint.ps1</code> script with administrative PowerShell privileges, providing parameters for the source Excel directory path, target SharePoint site URL, and optional date range filter for historical data (recommend importing the most recent 90 days initially, then backfilling older records incrementally). The script performs column name normalization (e.g., "Rm #" → "RoomNumber", "Equip" → "EquipmentList"), date format standardization (converting locale-specific formats to ISO 8601), and duplicate detection based on composite keys (Building + Room + Date + StartTime).</p>
+          <p>Validation routines embedded in the migration script verify that every imported booking references a valid room entry in RoomMasterData; orphaned records (bookings for non-existent rooms) are logged to an exception CSV file for manual review and correction. Equipment metadata undergoes enrichment passes—generic "video" labels are expanded to structured attributes (codec type, bandwidth capacity, peripheral support) when matching entries exist in the equipment master catalog.</p>
+          <p>Post-migration reconciliation compares row counts, booking date distributions, and building-level aggregates between Excel source and SharePoint destination. Generate a migration audit report capturing total records processed, successful imports, validation warnings, and data transformation notes. Retain this report as part of the deployment documentation package for compliance and future reference. Schedule a follow-up validation session with telehealth coordinators to confirm bookings appear correctly and historical context is preserved (e.g., recurring weekly telehealth clinics imported as expected sequences).</p>
+        </div>
+      </details>
+      <details>
+        <summary>PowerApps Deployment</summary>
+        <div class="details-body">
+          <p>Import the managed solution package (TelehealthBooking_v0.3.2_managed.zip) located in <code>/releases/v0.3.2/</code> via the Power Platform Admin Center or Power Apps Studio. Managed solutions encapsulate all application components (canvas app, connection references, environment variables) into a single deployable unit with dependency tracking and rollback capabilities. Before importing, validate that all prerequisite connectors (SharePoint, Office 365 Users, Office 365 Outlook) are enabled in your environment; if connector governance policies restrict auto-enablement, submit approval requests through your IT security board.</p>
+          <p>During import, the wizard prompts for connection reference assignments—create new connections authenticated as the designated service account (e.g., svc_telehealthapp@va.gov) rather than personal credentials to ensure continuity when personnel changes occur. Map environment variables to production values: set SharePointSiteURL to your provisioned site collection, configure notification email templates with organization branding, and initialize approval routing tables with manager email addresses and escalation hierarchies specific to your facility's telehealth organizational chart.</p>
+          <p>Post-import, share the PowerApps application with security groups using "Can Use" permissions for coordinators and "Can Edit" permissions for designated power users and administrators. Enable embedded mode in SharePoint (add the app to a site page) or distribute the direct application URL via Microsoft Teams channels and email distribution lists. Configure the app's onboarding splash screen with facility-specific welcome messaging, contact information for technical support, and links to training videos stored in your SharePoint asset library.</p>
+          <p>Conduct smoke testing across representative user personas: validate that a coordinator can initiate a booking request, a manager receives and can approve/reject via email action link, conflict detection triggers correctly when overlapping time slots are selected, and the schedule grid displays real-time availability updates. Document any environment-specific adjustments (e.g., custom approval routing rules, extended SLA thresholds for satellite facilities) in your deployment runbook for future reference and knowledge transfer.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Power Automate Configuration</summary>
+        <div class="details-body">
+          <p>Import the approval orchestration flows from the solution package and configure trigger connections to monitor the BookingRequests SharePoint list for new item creation events. The primary flow (ReservationRequestOrchestration_v0.3.2) implements parallel branching: one branch performs conflict validation queries, another dispatches notification emails, and a third writes audit log entries. Review conditional logic branches to ensure manager identification resolves correctly—the default implementation queries the Office 365 Users connector to match room buildings with manager email addresses stored in user profile extensionAttributes; customize this lookup if your organization maintains manager-building mappings in a separate directory or database.</p>
+          <p>Configure email templates with organization branding and compliance footers. Approval request emails should include contextual details (room name, date, time range, requestor identity, justification text) and actionable buttons (Approve, Reject, Request More Info) leveraging the built-in Microsoft Approvals connector. Set approval timeout policies: requests pending for longer than the configured SLA threshold (default 24 hours) trigger escalation emails to senior managers and flag the booking record with "NeedsReview" status for coordinator follow-up.</p>
+          <p>Enable flow analytics and error handling: configure "Run after" failure branches to log detailed error diagnostics (including HTTP response codes, SharePoint throttling indicators, and network timeout events) to a dedicated FlowErrorLog SharePoint list. Implement retry logic with exponential backoff for transient failures—SharePoint throttling errors (HTTP 429) should retry after progressively increasing delays (5s, 15s, 45s) before ultimately marking the flow execution as failed and alerting administrators.</p>
+          <p>Test the end-to-end approval workflow across multiple scenarios: standard approval, manager rejection with feedback, escalation due to timeout, and concurrent booking attempts for the same slot (conflict scenario). Validate that notification emails route correctly, approval responses update SharePoint list status atomically, and audit logs capture complete decision trails with timestamps and actor identities for compliance reporting.</p>
+        </div>
+      </details>
+      <details>
+        <summary>User Acceptance Testing</summary>
+        <div class="details-body">
+          <p>Execute structured UAT scenarios with representative users from each role category: coordinators who create booking requests, managers who approve or reject, and viewers who monitor occupancy without edit privileges. Develop a test scenario catalog covering happy paths (straightforward booking approval), edge cases (same-day urgent requests, multi-day recurring bookings), and error conditions (network disconnection mid-submission, conflicting simultaneous requests). Equip testers with standardized test data sets (sample room names, realistic date ranges, typical justification text) to ensure consistency across testing sessions.</p>
+          <p>Collect qualitative feedback via structured questionnaires: assess perceived ease of use (5-point Likert scale), time required to complete common tasks compared to legacy Excel workflow, clarity of error messaging and conflict resolution guidance, and mobile usability on hospital-issued tablets. Quantitative metrics to capture include: average booking submission time, approval turnaround duration, number of user errors or assistance requests during testing, and successful conflict detection rate (verified by intentionally attempting double-booking scenarios).</p>
+          <p>Prioritize feedback remediation based on severity and frequency: critical usability blockers (e.g., inaccessible controls on mobile, confusing approval notification language) must be resolved before go-live, while minor cosmetic improvements can be deferred to post-launch incremental releases. Conduct regression testing after each fix to ensure new changes do not introduce unintended side effects. Maintain a UAT findings log tracking identified issues, assigned remediation owners, resolution status, and verification results—this artifact feeds continuous improvement backlog and demonstrates due diligence for compliance audits.</p>
+          <p>Schedule a formal signoff meeting with stakeholder representatives (telehealth program director, IT security officer, clinical operations lead) to review UAT results, confirm acceptance criteria are met, and authorize transition to production deployment. Document any open items with agreed-upon mitigation strategies or acceptance of residual risk, capturing these decisions in meeting minutes and approval signatures for audit trail purposes.</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+  <section class="section" id="section-security">
+      <h2>Security & Compliance</h2>
+      <p><strong>Framework</strong>: FedRAMP High, HIPAA, VA Handbook 6500 alignment with continuous monitoring and audit readiness.</p>
+      <details>
+        <summary>Federal Authorization</summary>
+        <div class="details-body">
+          <p>The Telehealth Room Booking Solution operates exclusively within Microsoft's Government Cloud (GCC High) environment, which maintains FedRAMP High authorization (authorization date revalidated annually, current authorization package available via FedRAMP Marketplace). This authorization tier ensures infrastructure controls meet the stringent security requirements mandated for Department of Defense and Department of Veterans Affairs information systems processing controlled unclassified information (CUI) and sensitive healthcare data.</p>
+          <p>FedRAMP High compliance encompasses over 400 security controls derived from NIST SP 800-53 Rev 5, including rigorous requirements for access control (AC family), audit and accountability (AU family), identification and authentication (IA family), and system and communications protection (SC family). Microsoft's Government Cloud infrastructure undergoes continuous monitoring by independent third-party assessors, with assessment reports and Plan of Action & Milestones (POA&M) documentation available to authorized government personnel through the FedRAMP repository.</p>
+          <p>VA-specific overlay requirements (VA Handbook 6500.6 and associated technical implementation guides) are satisfied through configuration of encryption at rest (SharePoint data encrypted using FIPS 140-2 validated cryptographic modules), encryption in transit (TLS 1.2 minimum with forward secrecy cipher suites), and multi-factor authentication enforcement for all user access (PIV/CAC credential integration with Azure Active Directory federation services). Network isolation ensures tenant separation with dedicated IP address ranges and egress filtering preventing cross-tenant data leakage.</p>
+          <p>Compliance artifacts generated automatically from the Power Platform admin center include security assessment reports, data loss prevention policy configurations, and connector usage audits. Schedule quarterly reviews of these artifacts with your VA information system security officer (ISSO) to validate ongoing adherence to authorization boundaries and detect configuration drift. Any changes to connector permissions, data storage locations, or integration endpoints require assessment for potential impact to the system's authorization posture and may necessitate submission of a significant change request to the authorizing official.</p>
+        </div>
+      </details>
+      <details>
+        <summary>HIPAA & PHI Handling</summary>
+        <div class="details-body">
+          <p>While the Telehealth Room Booking Solution is architecturally designed to avoid processing Protected Health Information (PHI) or individually identifiable patient data, operational workflows within a healthcare context demand rigorous boundary enforcement to prevent inadvertent PHI introduction. The application intentionally excludes fields for patient names, medical record numbers, diagnoses, or clinical justifications—booking justifications are limited to administrative context (e.g., "Weekly telehealth dermatology clinic," "Urgent equipment testing session") without patient-specific details.</p>
+          <p>Data governance policies implemented via Power Platform data loss prevention (DLP) configurations prevent connectors capable of exfiltrating data to non-compliant external systems. The solution's connector allowlist includes only Microsoft first-party services (SharePoint Online, Office 365 Outlook, Office 365 Users, Microsoft Teams) operating within the Government Cloud boundary. Third-party connectors and custom connectors are explicitly blocked, reducing attack surface and ensuring all data flows traverse HIPAA Business Associate Agreement (BAA) covered services.</p>
+          <p>User training emphasizes PHI avoidance: coordinators receive explicit guidance during onboarding that free-text justification fields must never contain patient identifiers, and automated scanning (via Power Automate content inspection actions) flags common PHI patterns (Social Security Number formats, medical record number patterns, date-of-birth sequences) for immediate administrative review and potential record sanitization. False positive detections are logged for training refinement, while true positive detections trigger incident response workflows including notification to the Privacy Officer and documentation in the facility's breach log (pending determination of actual breach versus near-miss).</p>
+          <p>Audit trails maintained in SharePoint versioning and Power Automate run history provide forensic evidence for HIPAA minimum necessary review: each access event records user identity, timestamp, action performed (view, edit, approve, delete), and IP address origin. Retention of audit logs aligns with VA record retention schedules (minimum 7 years for operational scheduling data, indefinite retention for security incident artifacts). Export audit data quarterly to your centralized security information and event management (SIEM) platform for correlation with broader facility access patterns and anomaly detection.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Role-Based Access Control</summary>
+        <div class="details-body">
+          <p>Access control architecture implements defense-in-depth through layered permission enforcement at Azure AD group membership, SharePoint list item-level security, and PowerApps formula-driven UI element visibility. Four principal roles structure the authorization model: Viewers (read-only access to approved schedules and occupancy dashboards), Coordinators (create and edit booking requests, view pending approvals), Managers (approve or reject booking requests, access administrative reports), and Administrators (full CRUD permissions, configure system settings, manage user roles).</p>
+          <p>Azure AD security group provisioning follows least-privilege principles: new telehealth coordinators are added to the TelehealthCoordinators group only after completing mandatory training and supervisor approval documented in the personnel access request system. Group membership reviews occur quarterly, with automated attestation workflows prompting managers to confirm continued business need for each member—any unconfirmed memberships are flagged for deprovisioning. Separation of duties constraints prevent a single individual from holding both Coordinator and Manager roles to mitigate approval collusion risks.</p>
+          <p>SharePoint list permissions cascade from site-level inheritance with targeted breaks for sensitive administrative lists: the FlowErrorLog list restricts access solely to Administrators and the IT security team, preventing general users from viewing potentially sensitive diagnostic details. Item-level security policies (implemented via Power Automate workflows) dynamically adjust permissions on ApprovedReservations entries—only the original requestor, approving manager, and administrators retain edit rights post-approval, while coordinators drop to read-only to preserve audit integrity.</p>
+          <p>PowerApps control visibility rules reinforce authorization boundaries within the user interface: administrative screens (room inventory editor, manager assignment configurator, approval routing rules) render only for users authenticated as Administrators, enforced via <code>If(User().Email in AdminGroup.Email, Visible, Collapsed)</code> formula patterns. Unauthorized access attempts (detected via telemetry indicating control interaction attempts despite visibility settings) trigger security alerts logged to Azure Monitor for investigation as potential privilege escalation indicators.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Incident Response & Monitoring</summary>
+        <div class="details-body">
+          <p>Continuous monitoring infrastructure integrates Power Platform admin center analytics, Azure Monitor log aggregation, and custom alerting rules tailored to telehealth-specific threat patterns. High-priority alerts include: unexpected surge in booking deletion operations (potential malicious data destruction), repeated approval workflow failures (service disruption or targeted denial-of-service), login attempts from geographically anomalous IP addresses (potential credential compromise), and bulk data export operations (possible exfiltration attempt).</p>
+          <p>Incident response procedures documented in the facility's Computer Security Incident Response Plan (CSIRP) designate primary and alternate responders from both IT operations and telehealth program management. Upon alert activation, responders execute triage workflows: isolate affected user accounts (temporary MFA reset, session revocation), capture forensic snapshots of SharePoint list states and Power Automate run histories, notify VA Cyber Security Operations Center (CSOC) within mandated timeframes (1 hour for critical incidents, 4 hours for moderate), and initiate root cause analysis in parallel with containment activities.</p>
+          <p>Post-incident activities include comprehensive after-action reviews (AAR) capturing incident timeline, containment efficacy, lessons learned, and remediation recommendations. Remediation may encompass security control enhancements (tightened DLP policies, additional MFA enforcement checkpoints), user re-training (if incident stemmed from social engineering or policy non-compliance), or architectural changes (introduction of additional approval gates for high-risk operations). AAR findings feed the continuous improvement backlog and inform annual security control assessments mandated by VA authorization processes.</p>
+          <p>Quarterly tabletop exercises simulate incident scenarios (ransomware affecting SharePoint, insider threat deleting critical schedules, third-party connector compromise) to validate response procedures and cross-team coordination. Exercise outcomes generate readiness scorecards tracking mean time to detection (MTTD), mean time to containment (MTTC), and compliance with notification requirements—these metrics trend over time to demonstrate security program maturation and justify resource requests for security capability enhancements.</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+  <section class="section" id="section-development">
+      <h2>Development Workflow & Version Control</h2>
+      <p><strong>Methodology</strong>: Git-based source control with Power Platform CLI, semantic versioning, and automated quality gates.</p>
+      <details>
+        <summary>Source Control Strategy</summary>
+        <div class="details-body">
+          <p>The project maintains a Git repository hosted on GitHub (github.com/KCoderVA/Telehealth-Scheduling-App) with branch protection rules enforcing peer review, automated testing, and approval signoff before merging to the <code>main</code> branch. Development follows a feature-branch workflow: developers create descriptive branches (e.g., <code>feature/multi-week-view</code>, <code>bugfix/approval-timeout-handling</code>) from <code>main</code>, implement changes in isolation, and submit pull requests for code review before integration.</p>
+          <p>PowerApps canvas applications resist traditional line-by-line source control due to their proprietary .msapp binary format. To enable meaningful version tracking and collaborative development, the repository employs Power Platform CLI to "unpack" .msapp files into human-readable JSON and YAML representations stored in <code>/src/power-apps/v0.3.x/v0.3.2/.unpacked/</code>. This unpacked structure exposes screen definitions, component properties, formula logic, and asset references as discrete files amenable to diff comparison, merge conflict resolution, and granular change attribution.</p>
+          <p>Commit message discipline follows Conventional Commits specification: messages structured as <code>type(scope): description</code> where type categorizes the change (feat, fix, docs, refactor, test), scope identifies the affected component (scheduling-grid, approval-flow, data-migration), and description summarizes the modification in present tense. Automated commit hooks (implemented via PowerShell pre-commit script in <code>/scripts/pre-commit-hook.ps1</code>) enforce changelog updates—developers must add corresponding entries to CHANGELOG.md documenting user-facing changes before commits are accepted, ensuring release notes remain synchronized with code evolution.</p>
+          <p>Semantic versioning governs release numbering: v0.3.2 denotes major version 0 (pre-production), minor version 3 (feature addition since v0.2.x), and patch 2 (incremental fix or refinement). The project adopts a policy of incrementing minor version for new capabilities (dynamic grid, real-time counters), patch version for bug fixes or performance enhancements, and major version upon production readiness (anticipated v1.0.0). Version tags in Git align precisely with Power Platform solution version numbers to maintain traceability across artifact repositories and deployment pipelines.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Continuous Integration & Quality Gates</summary>
+        <div class="details-body">
+          <p>Automated workflows triggered on pull request submission execute validation routines ensuring code quality, security compliance, and architectural consistency. The CI pipeline (configured via GitHub Actions in <code>/.github/workflows/ci.yml</code>, though currently manual pending GitHub-VA integration approval) performs linting of PowerShell automation scripts (PSScriptAnalyzer rules enforcing best practices), validation of JSON schema conformance for unpacked Power Apps components, and markdown link checking across documentation files to detect broken cross-references.</p>
+          <p>Static security analysis scans repository contents for accidentally committed secrets (API keys, connection strings, passwords) using open-source tools (git-secrets, TruffleHog). Any detection of high-entropy strings or pattern matches against known secret formats blocks the pull request merge and triggers immediate security incident notification. Developers receive remediation guidance (credential rotation, .gitignore pattern updates, history rewriting to purge sensitive data) and must confirm corrective actions before re-submitting for review.</p>
+          <p>Quality gate checks include documentation coverage assessment: every new PowerApps screen or Power Automate flow must include corresponding entries in technical documentation (architecture diagrams, user guides, troubleshooting runbooks). Automated scripts parse unpacked source files to inventory screens and components, cross-reference against documentation indices, and flag any newly introduced elements lacking descriptive narrative. This discipline prevents documentation debt accumulation and ensures knowledge artifacts remain current as the codebase evolves.</p>
+          <p>Manual review checkpoints augment automated gates: at least one peer reviewer (designated senior developer or solution architect) must approve pull requests, validating not just syntactic correctness but adherence to architectural patterns (reusable component usage, delegation-aware formula construction, environment variable externalization). Reviewers assess formula complexity (flagging deeply nested conditionals or non-delegable operations for refactor), UI/UX consistency (ensuring new screens align with established design tokens and interaction patterns), and test coverage (requiring evidence of UAT scenario execution for user-facing changes).</p>
+        </div>
+      </details>
+      <details>
+        <summary>Release Management & Deployment Automation</summary>
+        <div class="details-body">
+          <p>Release candidates undergo promotion through a three-stage pipeline: Development → Test → Production environments. Each environment maintains isolated Power Platform instances with independent SharePoint site collections, preventing test data contamination of production systems and enabling safe experimentation with breaking changes. Environment parity is preserved via Infrastructure-as-Code definitions (environment variable manifests, connector configuration templates, security group role assignments) stored in <code>/deployment/</code> ensuring consistent infrastructure across promotion stages.</p>
+          <p>Solution export from Development environment leverages Power Platform CLI <code>pac solution export</code> command, generating both managed and unmanaged solution packages. Managed solutions (deployment artifact for Test and Production) prevent downstream modification of core components, enforcing architectural integrity and simplifying rollback procedures. Unmanaged solutions (retained for Development environment only) enable iterative refinement and component-level customization during active development cycles. Export processes execute via PowerShell automation scripts (<code>/scripts/pwsh/Export-Solution.ps1</code>) invoked manually by release managers following sprint conclusion or critical hotfix completion.</p>
+          <p>Deployment to Test environment occurs within 24 hours of Development export, accompanied by automated smoke testing—scripted API calls verify core workflows (booking creation, approval processing, conflict detection) execute without error and return expected results. Test environment remains accessible for a minimum 72-hour soak period during which coordinators and managers perform exploratory testing, validating new features against real-world usage patterns without production system risk. Critical defects identified during soak trigger rollback to prior version, defect resolution in Development, and re-initiation of the promotion cycle; minor issues are documented in the backlog for inclusion in subsequent releases.</p>
+          <p>Production deployment follows formal change control procedures aligned with VA Change Advisory Board (CAB) governance: release managers submit change requests documenting solution version, deployment window (typically low-activity weekend periods), rollback plan, success criteria, and stakeholder notification plan. CAB review assesses deployment risk, business impact, and readiness evidence (Test soak results, UAT signoff, security scan clearances) before authorizing production cutover. Post-deployment validation includes production smoke testing identical to Test procedures, plus hyper-care monitoring (24-hour elevated alert thresholds, on-call responder availability, stakeholder communication channels activated) to rapidly detect and remediate any production-specific issues arising from environment-specific configurations or data characteristics not replicated in Test.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Technical Debt & Backlog Management</summary>
+        <div class="details-body">
+          <p>Technical debt inventory (tracked in GitHub Issues with "technical-debt" label) catalogs known suboptimal implementations requiring future refactor: non-delegable formulas in high-traffic screens (documented with performance impact assessment and target delegation refactor date), tightly coupled components hindering reusability (architectural redesign proposals linked in issue comments), and deprecated API usage (migration pathways to replacement APIs annotated with timeline estimates). Quarterly technical debt reviews prioritize remediation based on severity (user-impacting performance degradation receives highest priority), frequency of affected code path execution, and architectural risk (components blocking future scalability enhancements).</p>
+          <p>Backlog grooming sessions with product owner (telehealth program director) and development team balance feature delivery velocity against quality investment. A sustainable 80/20 allocation targets 80% sprint capacity toward new features and enhancements, 20% toward technical debt reduction, testing automation, and documentation improvements. This ratio prevents debt accumulation from overwhelming future development while maintaining stakeholder confidence through visible feature progression. Metrics tracked include debt-to-code ratio (lines of identified technical debt divided by total codebase lines), mean time to debt resolution (from identification to remediation completion), and escaped defect rate (production issues attributable to deferred debt items).</p>
+          <p>Knowledge sharing rituals disseminate architectural decisions and implementation patterns across the development team: biweekly brown-bag sessions present recent design challenges and selected solutions, encouraging collaborative problem-solving and cross-pollination of techniques. Architectural decision records (ADRs) stored in <code>/docs/architecture-decisions/</code> document significant choices (selected data architecture, delegation strategy patterns, error handling approaches) with context (problem statement), considered alternatives, chosen solution, and rationale—these artifacts provide onboarding material for new team members and historical reference when revisiting past decisions.</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+  <section class="section" id="section-performance">
+      <h2>Performance Optimization & Scalability</h2>
+      <p><strong>Focus Areas</strong>: Delegation patterns, caching strategies, responsive rendering, and load management for enterprise healthcare scale.</p>
+      <details>
+        <summary>Delegation Strategy & Formula Optimization</summary>
+        <div class="details-body">
+          <p>PowerApps delegation determines whether data operations execute server-side (SharePoint's query engine processes filters and sorts) or client-side (Power Apps retrieves full dataset and performs operations locally). Client-side processing triggers when operations exceed the data row limit (default 500 rows, configurable to 2000 maximum), causing incomplete results and user confusion. The Telehealth application enforces delegation-compatible formula construction throughout—filters leverage delegable predicates (StartsWith for text prefix matching, direct equality for choice fields, >= and <= for date ranges), avoiding non-delegable functions (Search, Upper, Lower, complex nested Or conditions) that force client-side evaluation.</p>
+          <p>Gallery controls displaying schedule grids employ pre-filtered collections rather than live SharePoint queries to balance responsiveness with data freshness. The pattern: OnVisible triggers for screens containing galleries execute ClearCollect() operations loading filtered data subsets (e.g., "bookings for current building within next 30 days") into named collections (<code>colBuildingSchedule</code>). These collections source gallery Items properties, delivering instant scrolling and sorting without round-trip network latency. Refresh logic invalidates collections when underlying data changes (detected via SharePoint webhook callbacks or periodic timer controls polling for update timestamps), ensuring users observe recent bookings without refresh button dependency.</p>
+          <p>Complex filtering requirements decompose into multi-step transformations: instead of a single filter combining ten conditions (risking delegation failure), the approach chains delegable filters sequentially—first filter by building (delegable equality), store intermediate result in collection, second filter by date range (delegable comparison), store refined result, third filter by approval status (delegable choice lookup). Each step processes server-side; only the final refined dataset crosses the network boundary. This multi-pass strategy trades minor latency increase (additional round trips) for guaranteed delegation and complete result sets regardless of overall dataset growth.</p>
+          <p>Formula complexity monitoring uses PowerApps Studio's formula bar delegation indicators (blue underline signals delegable, yellow dot warns non-delegable). Regular audits (quarterly code reviews) inventory all gallery and data table Items formulas, measuring delegation compliance percentage as a quality metric. Non-delegable formulas receive justification annotations documenting why delegation is infeasible (e.g., "Group by hour requires AddColumns with non-delegable time functions; dataset bounded by 30-day filter ensuring < 500 row limit") and mitigation strategies (pre-aggregated summary tables in SharePoint, offload grouping to Power Automate scheduled flows populating cached result lists).</p>
+        </div>
+      </details>
+      <details>
+        <summary>Caching & Data Refresh Strategies</summary>
+        <div class="details-body">
+          <p>Client-side caching minimizes redundant SharePoint queries for semi-static reference data (room master list, equipment catalog, building directory) that changes infrequently. The application initializes global collections on App.OnStart holding this reference data, accessed throughout the user session without repeated server calls. Cache invalidation triggers include: explicit "Refresh Data" button action (clearing and reloading all collections), automatic time-based expiration (15-minute cache lifetime tracked via context variable timestamps), and change notifications from SharePoint webhooks (future v1.1 enhancement enabling real-time push updates when administrators modify room attributes).</p>
+          <p>Incremental refresh patterns optimize dynamic data (pending approvals, today's schedule) balancing freshness with performance. Instead of full collection reload on each screen navigation, the application queries "delta" changes—only bookings created or modified since the last refresh timestamp. Power Automate flows maintain a ChangeLog SharePoint list recording entity updates (RoomID, ChangeType, ModifiedDateTime); Power Apps queries this log for entries newer than its last refresh, fetches affected booking records, and merges updates into existing collections. This delta sync approach reduces network payload by 80–90% for typical usage patterns where most bookings remain unchanged across short time intervals.</p>
+          <p>Lazy loading defers data retrieval until user interaction demands it: administrative screens (room inventory editor, approval history archive) load data only when navigated to, avoiding upfront latency during app launch for functionality accessed infrequently. Galleries employ virtualization automatically (PowerApps renders only visible rows plus buffer), but custom implementations optimize further—dynamically adjusting buffer size based on scroll velocity (faster scrolling increases preload buffer reducing visible lag) and device capabilities (mobile devices receive smaller buffers conserving memory, desktop browsers leverage larger buffers for smoother experience).</p>
+          <p>Server-side aggregation offloads computationally intensive operations from client formulas: instead of PowerApps calculating building-level occupancy percentages across thousands of booking records, scheduled Power Automate flows (executing nightly at 2 AM) compute aggregate statistics and write results to a summary SharePoint list. PowerApps reads pre-computed values, trading slight staleness (statistics reflect yesterday's final state) for instant rendering. This pattern extends to dashboard analytics—all charts and KPI tiles source pre-aggregated data, ensuring dashboard load times remain under 2 seconds regardless of underlying transaction volume growth.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Responsive Rendering & UI Performance</summary>
+        <div class="details-body">
+          <p>Adaptive layout strategies adjust UI complexity based on device form factor and network conditions. The application detects device width via <code>App.Width</code> property, categorizing sessions as Mobile (< 768px), Tablet (768–1024px), or Desktop (> 1024px). Mobile layouts simplify information density—schedule grid reduces visible columns (omitting optional metadata fields, collapsing multi-line room details into single-line summaries), limits displayed time slots (next 7 days instead of 30-day panoramic view), and replaces complex dropdown multi-select controls with sequential single-selection screens to accommodate touch targets and limited screen real estate.</p>
+          <p>Control visibility optimization hides non-essential UI elements until user interaction reveals them: advanced filter panels remain collapsed by default (expandable via "Show Filters" button), detailed booking metadata displays in modal dialogs triggered by row selection rather than inline in grid cells (reducing initial render overhead), and inactive buildings (no current bookings, no equipment available) auto-hide from selector dropdowns with "Show All" toggle override. These progressive disclosure patterns prioritize core workflow (view schedule, select slot, submit booking) while maintaining access to advanced functionality when needed.</p>
+          <p>Image asset optimization employs responsive image techniques: room photos stored in multiple resolutions (thumbnail 200×150px, medium 800×600px, full 1600×1200px) with Power Apps selecting appropriate size based on display context. Thumbnail images load in gallery list views (minimizing aggregate payload for 50-row galleries), medium images appear in booking detail panels, full resolution reserves for administrative photo management screens. Lazy loading applies to images—galleries load placeholder icons initially, fetch actual images as rows scroll into viewport, and maintain LRU cache (least recently used eviction policy, 100-image capacity) preventing memory exhaustion during extended browsing sessions.</p>
+          <p>Animation and transition tuning respects user accessibility preferences: the app queries browser prefers-reduced-motion media feature, disabling decorative animations (spinner fade-ins, panel slide transitions, pulsing indicators) for users who've opted out via operating system accessibility settings. Essential animations conveying state changes (loading spinner during data fetch, success checkmark on submission) remain enabled but use simplified keyframes and shorter durations. This accommodation ensures inclusive user experience for individuals with vestibular disorders or motion sensitivity while preserving polished interaction feel for users without such constraints.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Scalability & Capacity Planning</summary>
+        <div class="details-body">
+          <p>Current architecture supports up to 200 concurrent users (telehealth coordinators and managers across all facility buildings) with target response times under 3 seconds for interactive operations (booking submission, approval action) and under 5 seconds for reporting queries (building utilization dashboard, 30-day schedule export). Load testing (simulated via Power Apps Test Studio executing automated user scenarios in parallel) validates these targets quarterly, identifying performance regressions introduced by feature additions or data volume growth. Baseline performance metrics (established during initial deployment with 10,000 booking records) serve as comparison points—sustained degradation beyond 20% of baseline triggers performance tuning sprints prioritized ahead of new feature work.</p>
+          <p>SharePoint list thresholds (5000-item view limit, 20,000-item list operation throttle) shape data lifecycle management: the ApprovedReservations list undergoes monthly archival, moving records older than 90 days to a separate ArchiveReservations list (linked via view-only Power Apps screen for historical lookup). This archival process executes via Power Automate flow leveraging batching APIs to avoid throttling, preserving recent operational data in the active list while maintaining historical records accessible but segregated. Archived data exports to Excel files stored in SharePoint document library (organized by year and month) supporting offline analysis and long-term regulatory retention without burdening active operational queries.</p>
+          <p>Horizontal scaling strategies anticipate growth beyond single-tenant capacity: the application's modular architecture (separate lists per major entity, environment variable configuration externalization, role-based data scoping) enables partitioning by building or organizational unit. Future expansion to satellite clinics or additional hospitals deploys independent Power Platform environments (each with dedicated SharePoint site and solution instance), federating booking visibility via cross-environment Power BI reports aggregating metrics from multiple tenants. This federated topology preserves local autonomy (each clinic controls room configurations and approval workflows) while enabling enterprise-wide utilization analytics and resource optimization insights.</p>
+          <p>Disaster recovery and business continuity planning aligns with VA requirements for Category III systems (moderate availability impact tolerance—up to 24-hour recovery time objective acceptable). SharePoint's native geo-redundant storage and point-in-time restore capabilities (90-day retention of previous versions) provide primary recovery mechanisms. Supplemental backups export SharePoint list data weekly via Power Automate flows to Azure Blob Storage (encrypted with customer-managed keys, cross-region replicated), ensuring recovery from catastrophic tenant-level failures. Recovery testing exercises (annual simulation drills) validate restore procedures, measure actual recovery time, and identify documentation gaps or process improvements enhancing resilience posture.</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+  <section class="section" id="section-training">
+      <h2>User Adoption & Training</h2>
+      <p><strong>Change Management</strong>: Structured onboarding, role-based training materials, and continuous support ensuring smooth Excel-to-Power Platform transition.</p>
+      <details>
+        <summary>Training Program Structure</summary>
+        <div class="details-body">
+          <p>Comprehensive training curriculum segments content by user role (Coordinator, Manager, Administrator) and delivery modality (self-paced video tutorials, live instructor-led sessions, hands-on lab exercises). Coordinator training emphasizes core workflows—logging into Power Apps, navigating the schedule grid, submitting booking requests, interpreting conflict warnings, and monitoring approval status. Manager training extends to approval decision-making, escalation handling, and utilization report generation. Administrator curriculum covers system configuration, user role management, troubleshooting procedures, and performance monitoring.</p>
+          <p>Video training modules (90-second micro-learning segments stored in SharePoint asset library) demonstrate discrete tasks with voice-over narration and on-screen annotations highlighting key interface elements and recommended actions. Module sequencing follows just-in-time learning principles—coordinators watch introductory navigation and booking submission videos before first use, then access advanced modules (recurring booking setup, equipment-specific filtering) as proficiency develops. Videos employ accessibility best practices: closed captions auto-generated via Azure Cognitive Services (manually corrected for domain terminology accuracy), audio descriptions for visually impaired users, keyboard-only interaction demonstrations for motor accessibility.</p>
+          <p>Hands-on lab exercises provide sandboxed Power Apps environment (separate from production) populated with realistic but synthetic data (fictitious room names, anonymized user identities, plausible booking scenarios). Trainees complete guided exercises following step-by-step instructions—create a booking for "Conference Room A on next Tuesday 2-3 PM," approve a pending request as manager persona, resolve a scheduling conflict by selecting alternate time slot. Completion tracking (quiz questions embedded at module conclusion, lab exercise submission via form) generates individual training transcripts documenting fulfillment of mandatory competency requirements before production access grants.</p>
+          <p>Certification pathways motivate proficiency development and recognize subject matter expertise: Coordinators achieving 95% quiz scores and completing all hands-on labs earn "Certified Telehealth Scheduler" designation, qualifying them to mentor peers and participate in UAT for future enhancements. Manager certification requires additional modules covering approval workflow configuration and utilization analytics interpretation. Certificates (digital badges issued via Credly integration, tangible for professional development portfolios) provide career development incentives aligning organizational capability building with individual advancement opportunities.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Change Management & Communication</summary>
+        <div class="details-body">
+          <p>Stakeholder engagement initiates months before production deployment, building awareness and securing buy-in from clinical leadership (telehealth program director, department chiefs), administrative stakeholders (scheduling coordinators, facility managers), and governance bodies (Privacy Officer, ISSO, Change Advisory Board). Early engagement presentations articulate business case (quantified time savings, conflict reduction, improved visibility), demonstrate prototype workflows (click-through mockups, recorded demo videos), and solicit feedback shaping requirements prioritization and interface design decisions.</p>
+          <p>Communication campaign employs multi-channel strategy reaching diverse user populations: monthly newsletter articles (distributed via email to all telehealth staff) provide progress updates, feature highlights, and countdown-to-launch messaging. Posters in coordinator workspaces (physical signage and digital displays in common areas) reinforce key messages and advertise training session schedules. Intranet portal (SharePoint communication site) hosts comprehensive project information—FAQs, training schedules, contact information for support, archived newsletters, and video testimonials from early adopters praising system benefits.</p>
+          <p>Super-user network establishes peer support infrastructure supplementing formal IT helpdesk channels: identify 1–2 coordinators per building demonstrating strong system aptitude and willingness to assist colleagues. Provide super-users with advanced training (additional hands-on practice, troubleshooting deep-dive, direct access to development team via dedicated Slack channel) preparing them as first-line support resources. Super-users earn recognition (acknowledgment in leadership meetings, inclusion in project "credits" published on intranet) and professional development benefits (resume-building IT skills, leadership experience mentoring peers).</p>
+          <p>Feedback loops capture user sentiment and operational pain points throughout rollout: weekly pulse surveys (3-question micro-surveys delivered via Teams chatbot, < 1 minute completion time) gauge satisfaction, identify usability friction, and surface feature requests. Aggregated feedback informs bi-weekly iteration planning—highly requested enhancements fast-tracked to next sprint, recurring pain points prioritized for remediation, positive feedback shared broadly celebrating successes and motivating continued adoption. Transparent feedback-to-action reporting (monthly "You Asked, We Delivered" summaries) demonstrates responsive development approach building trust and encouraging ongoing participation in continuous improvement.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Post-Launch Support & Continuous Improvement</summary>
+        <div class="details-body">
+          <p>Hyper-care period (first 30 days post-production launch) provides elevated support staffing and responsiveness: dedicated helpdesk queue routes telehealth booking questions to trained tier-1 agents (super-users and IT specialists), target response SLA compressed to 1 hour (versus standard 4-hour SLA), and development team on standby for critical production issues requiring hotfix deployment. Daily standup meetings during hyper-care review incident trends, coordinate rapid responses to emerging issues, and communicate status to executive sponsors maintaining stakeholder confidence.</p>
+          <p>Knowledge base development captures recurring questions and resolutions as self-service articles published to intranet support portal: "How do I change booking times after submission?" (answer: contact approving manager for revision or cancel and resubmit), "What does 'Conflict Detected' warning mean?" (explanation of overlapping time slot logic with screenshot examples), "Who do I contact for room equipment issues?" (redirect to facilities management, distinct from booking system support). Search optimization ensures users discover relevant articles via natural language queries matching their mental models, reducing ticket volume and empowering self-sufficiency.</p>
+          <p>Office hours (weekly open forum sessions, 30-minute Zoom meetings) invite users to join live Q&A with development team, demonstrate workarounds for known issues, preview upcoming features soliciting feedback on design mockups, and share best practices discovered by power users. Sessions recorded and archived (with searchable transcripts) extend value beyond live attendance. Office hours foster community among geographically distributed telehealth staff, facilitating peer learning and collaborative problem-solving transcending formal support channels.</p>
+          <p>Continuous improvement roadmap evolves based on user feedback, utilization analytics, and strategic vision alignment: quarterly roadmap review sessions with product owner and stakeholder representatives prioritize backlog enhancements balancing quick wins (high user value, low implementation complexity), strategic initiatives (foundational capabilities enabling future expansion), and technical debt reduction (performance optimizations, architectural refactors improving maintainability). Transparent roadmap publication (visible on intranet project portal with target quarter assignments) manages expectations, aligns organizational planning, and demonstrates sustained investment signaling long-term commitment to platform evolution.</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+  <section class="section" id="section-troubleshooting">
+      <h2>Troubleshooting & FAQ</h2>
+      <p><strong>Common Issues</strong>: Resolution guidance for frequently encountered user difficulties and system behaviors.</p>
+      <details>
+        <summary>Login & Access Problems</summary>
+        <div class="details-body">
+          <p><strong>Issue:</strong> "Access Denied" message when launching Power Apps application despite having valid VA account.</p>
+          <p><strong>Diagnosis:</strong> User account not added to appropriate Azure AD security group (TelehealthCoordinators or TelehealthManagers). Application sharing configuration restricts access to explicitly authorized groups.</p>
+          <p><strong>Resolution:</strong> Contact IT helpdesk to verify group membership. Provide employee ID and justification for access (job role, supervisor approval). Helpdesk validates request against authorized user roster, submits access request ticket, and adds user to appropriate group. Access propagates within 15 minutes (Azure AD group membership synchronization interval); user may need to sign out of Power Apps and sign back in to refresh security token.</p>
+          <p><strong>Prevention:</strong> Onboarding checklist for new telehealth coordinators includes Power Apps access request as standard provisioning step, initiated concurrently with other IT account creations reducing delay. Quarterly access review process (automated attestation workflow prompting managers to confirm ongoing business need for each team member) identifies stale accounts for deprovisioning, maintaining accurate authorization roster.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Booking Submission Failures</summary>
+        <div class="details-body">
+          <p><strong>Issue:</strong> Booking request submission button unresponsive or displays "An error occurred" message without detail.</p>
+          <p><strong>Diagnosis:</strong> Common causes include network connectivity interruption (VA network firewall blocking Power Platform endpoints during submission), required field validation failure (user skipped mandatory justification text), or SharePoint throttling (excessive concurrent submissions exceeding service limits).</p>
+          <p><strong>Resolution:</strong> Check network connectivity—verify browser can access other SharePoint sites; if not, contact network operations for firewall rule verification. Validate all required fields populated (red asterisk indicators highlight mandatory inputs); re-enter missing information and retry. If throttling suspected (multiple users reporting simultaneous failures during peak periods), wait 5 minutes and retry—SharePoint throttling typically clears within short intervals as request backlog processes.</p>
+          <p><strong>Prevention:</strong> Enhanced client-side validation (JavaScript checks pre-flight validating required fields before server submission) provides immediate feedback preventing incomplete submissions reaching backend. Retry logic with exponential backoff (automatic retry after 5s, 15s, 45s delays) gracefully handles transient throttling without requiring manual user intervention. Error messages enhanced with actionable guidance ("Please complete all required fields highlighted in red" versus generic "Submission failed").</p>
+        </div>
+      </details>
+      <details>
+        <summary>Schedule Grid Display Issues</summary>
+        <div class="details-body">
+          <p><strong>Issue:</strong> Schedule grid shows "Loading..." spinner indefinitely or displays empty state despite bookings existing in SharePoint.</p>
+          <p><strong>Diagnosis:</strong> Browser cache corruption storing stale JavaScript or CSS preventing proper rendering, SharePoint list permission misconfiguration restricting user's read access to booking data, or network proxy interfering with HTTPS connections to Microsoft data centers.</p>
+          <p><strong>Resolution:</strong> Clear browser cache and cookies (Ctrl+Shift+Delete in most browsers, select "All time" range), close browser completely, reopen and navigate to Power Apps URL. If issue persists, verify SharePoint site permissions—navigate directly to site URL (separate from Power Apps), confirm booking list visible and contains expected records. Test from alternate network (e.g., mobile hotspot bypassing VA network) to isolate proxy interference; if successful on alternate network, engage network team to whitelist Power Platform domains (*.powerapps.com, *.dynamics.com, *.office.com, *.sharepoint.com).</p>
+          <p><strong>Prevention:</strong> Centralized browser configuration management pushes standard cache retention policies and proxy PAC file updates preventing per-user configuration drift. Power Apps connection health diagnostics (built-in telemetry monitoring SharePoint connector status) proactively alert administrators to connectivity degradation before user impact, enabling preemptive remediation.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Approval Notification Delays</summary>
+        <div class="details-body">
+          <p><strong>Issue:</strong> Manager reports not receiving approval request email despite booking submitted hours ago; requestor sees "Pending" status with no activity.</p>
+          <p><strong>Diagnosis:</strong> Email stuck in Exchange quarantine (false positive spam classification), Power Automate flow execution failure (error in approval routing logic or SharePoint timeout during record update), or manager's email address misconfigured in user profile directory.</p>
+          <p><strong>Resolution:</strong> Check Power Automate flow run history (accessible to administrators via make.powerautomate.com): locate flow execution corresponding to booking submission timestamp, review action statuses identifying failure point. Common failures: "InvalidRecipient" error indicates bad email address—update manager profile in Azure AD; "Throttled" status indicates SharePoint rate limiting—flow automatically retries after backoff delay. If email delivered but quarantined, request manager check Junk Email folder or submit helpdesk ticket to Email Security team for message release and sender whitelist addition.</p>
+          <p><strong>Prevention:</strong> Approval notification templates include fallback mechanisms: if email delivery fails (bounced, rejected by spam filter), Power Automate sends Teams channel notification to backup communication path ensuring manager awareness. Periodic validation flow (monthly scheduled check) tests email delivery to all manager accounts, flagging delivery failures for proactive correction before real approval scenarios encounter issues.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Performance & Slowness</summary>
+        <div class="details-body">
+          <p><strong>Issue:</strong> Power Apps screens load slowly (> 10 seconds), galleries scroll jerkily, or application becomes unresponsive during interaction requiring browser refresh.</p>
+          <p><strong>Diagnosis:</strong> Client device resource constraints (insufficient RAM, CPU throttling due to thermal limits or power-saving mode), large dataset retrieval exceeding delegation thresholds forcing client-side processing, or network bandwidth saturation (concurrent video calls or file transfers consuming available capacity).</p>
+          <p><strong>Resolution:</strong> Close unnecessary browser tabs and applications reducing memory pressure; disable browser extensions (particularly ad blockers and privacy tools potentially interfering with Power Platform JavaScript execution). If using mobile device, plug into charger and disable battery saver mode—many devices throttle CPU/GPU performance when on battery to extend runtime. Check network utilization (via Task Manager Network tab or OS network monitor)—if saturated, pause large downloads or disconnect from VPN if on personal network with better bandwidth availability.</p>
+          <p><strong>Prevention:</strong> Device minimum specifications published in deployment documentation (8 GB RAM, modern processor within last 5 years, broadband internet minimum 10 Mbps download) guide procurement and ensure user endpoints meet performance baseline. Application optimization efforts (formula delegation, collection caching, responsive image sizing) reduce client-side processing demands making application functional even on lower-spec devices. Performance monitoring dashboards track user session metrics (load times, error rates segmented by device type) identifying cohorts experiencing degraded performance for targeted remediation (e.g., hardware refresh for aging workstation fleet).</p>
+        </div>
+      </details>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
+    </section>
+
+    <div class="section" id="section-roadmap">
+      <h2>Implementation Roadmap</h2>
 
       <div class="priority-list">
         <div class="priority-item">
@@ -654,13 +1194,14 @@
           </ul>
         </div>
       </div>
+      <a href="#top" class="back-to-top" aria-label="Back to top of page">Back to top</a>
     </div>
 
-    <div class="kpi-section">
-      <h2>📈 PROJECT TECHNICAL METRICS</h2>
+    <div class="kpi-section" id="section-metrics">
+      <h2>Technical Metrics</h2>
 
-      <h3>Application Architecture Statistics</h3>
-      <table>
+  <h3>Application Architecture Statistics (v0.3.2)</h3>
+      <table class="table-paginated" data-paginated="true" data-page-size="10" aria-describedby="metrics-pagination-desc">
         <thead>
           <tr>
             <th>Metric</th>
@@ -695,15 +1236,15 @@
             <td>Complete application logic</td>
           </tr>
           <tr>
-            <td><strong>Repository Health</strong></td>
-            <td>99%</td>
-            <td>Enhanced automation with v0.2.0 architecture</td>
+            <td><strong>Dynamic Grid Slots</strong></td>
+            <td>35+ example</td>
+            <td>Real-time availability counter integrated</td>
           </tr>
         </tbody>
       </table>
 
-      <h3>Development Infrastructure</h3>
-      <table>
+  <h3>Development Infrastructure & New Features</h3>
+      <table class="table-paginated" data-paginated="true" data-page-size="10">
         <thead>
           <tr>
             <th>Component</th>
@@ -723,9 +1264,9 @@
             <td>Automation and utility functions</td>
           </tr>
           <tr>
-            <td><strong>Markdown Documentation</strong></td>
+            <td><strong>Documentation Files</strong></td>
             <td>15</td>
-            <td>Technical and user documentation</td>
+            <td>Updated to include v0.3.2 schedule & flow screenshots</td>
           </tr>
           <tr>
             <td><strong>VBA Legacy Files</strong></td>
@@ -733,9 +1274,9 @@
             <td>Enhanced with Apache 2.0 licensing</td>
           </tr>
           <tr>
-            <td><strong>SharePoint Lists</strong></td>
-            <td>3</td>
-            <td>Production data storage architecture</td>
+            <td><strong>Approval Flow Layers</strong></td>
+            <td>Multi-branch</td>
+            <td>Layered conditionals & parallel notification refinement</td>
           </tr>
           <tr>
             <td><strong>Excel Master Schedules</strong></td>
@@ -745,7 +1286,7 @@
         </tbody>
       </table>
 
-      <h3>🔍 Technical Analysis Summary</h3>
+  <h3>Technical Analysis Summary</h3>
       <table>
         <thead>
           <tr>
@@ -784,15 +1325,21 @@
           </tr>
         </tbody>
       </table>
+      <div id="metrics-pagination-desc" class="sr-only">Tables above support future pagination (10 rows per page).</div>
+      <div class="table-pagination-controls" aria-label="Pagination controls (placeholder)">
+        <button type="button" disabled>Prev</button>
+        <button type="button" disabled>Next</button>
+      </div>
+      <!-- OPTIONAL-PLACEHOLDER: TABLE PAGINATION LOGIC IMPLEMENTATION -->
     </div>
 
     <div class="content">
       <div class="section">
-        <h2>🎯 PROJECT OVERVIEW</h2>
+  <h2 id="overview">Project Overview</h2>
 
         <h3>Current Project Status</h3>
         <ul>
-          <li><strong>Version</strong>: v0.2.1 (pre-release development)</li>
+          <li><strong>Version</strong>: v0.3.2 (pre-release development)</li>
           <li><strong>Target Production</strong>: v1.0.0 (September 2025)</li>
           <li><strong>Platform Focus</strong>: Microsoft Power Platform (PowerApps, SharePoint, Power Automate)</li>
           <li><strong>Deployment Environment</strong>: VA Government Cloud (secure, HIPAA-compliant)</li>
@@ -800,12 +1347,10 @@
 
         <h3>Maturity Assessment</h3>
         <ul>
-          <li><strong>Technical Foundation</strong>: 95% complete (enterprise-grade architecture with comprehensive
-            documentation)</li>
+          <li><strong>Technical Foundation</strong>: 95% complete (enterprise-grade architecture with dynamic scheduling enhancements)</li>
           <li><strong>Feature Implementation</strong>: 70% complete (core functionality operational)</li>
           <li><strong>Testing & Validation</strong>: 60% complete (user acceptance testing in progress)</li>
-          <li><strong>Documentation</strong>: 98% complete (comprehensive technical documentation with external
-            references)</li>
+          <li><strong>Documentation</strong>: 98% complete (updated for v0.3.2 features and screenshots)</li>
         </ul>
 
         <h3>Migration Strategy</h3>
@@ -819,12 +1364,90 @@
     </div>
   </div>
 
-  <div class="footer">
+  <div class="footer" role="contentinfo">
+  <!-- OPTIONAL-PLACEHOLDER: ACCESSIBILITY AUDIT RESULTS SECTION -->
+  <div class="section" id="section-screenshots" style="margin-top:25px;">
+  <h2>Screenshot Reference (v0.3.2)</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:.9em;">
+        <thead>
+          <tr style="background:#f8f9fa;">
+            <th style="padding:8px 10px;text-align:left;">Image</th>
+            <th style="padding:8px 10px;text-align:left;">Filename</th>
+            <th style="padding:8px 10px;text-align:left;">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:6px 10px;">Landing</td>
+            <td style="padding:6px 10px;"><code>app-landing-v0.3.2.png</code></td>
+            <td style="padding:6px 10px;">Reservation summary, building selector, counters</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px;">Schedule Grid</td>
+            <td style="padding:6px 10px;"><code>schedule-grid-v0.3.2.png</code></td>
+            <td style="padding:6px 10px;">Interactive weekly availability & conflict prevention</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px;">Master Schedule</td>
+            <td style="padding:6px 10px;"><code>sharepoint-master-schedule-v0.3.2.png</code></td>
+            <td style="padding:6px 10px;">Consolidated multi-building SharePoint list view</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px;">Approval Flow</td>
+            <td style="padding:6px 10px;"><code>approval-flow-architecture-v0.3.2.png</code></td>
+            <td style="padding:6px 10px;">Parallel Power Automate branches & escalation logic</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <p><strong>Repository</strong>: <a
         href="https://github.com/KCoderVA/Telehealth-Scheduling-App.git">https://github.com/KCoderVA/Telehealth-Scheduling-App.git</a>
     </p>
-    <p><strong>Current Version</strong>: v0.2.1 | <strong>Last Updated</strong>: September 17, 2025</p>
-    <p><strong>VA Healthcare Innovation</strong> | Edward Hines Jr. VA Hospital</p>
+  <p><strong>Current Version</strong>: v0.3.2 | <strong>Last Updated</strong>: October 21, 2025</p>
+    <p><strong>VA Healthcare Innovation</strong> • Edward Hines Jr. VA Hospital</p>
+    <div class="section" id="section-changelog" style="margin-top:35px;text-align:left;">
+      <h2>Changelog Highlights</h2>
+      <table style="font-size:.85em;">
+        <thead><tr><th>Version</th><th>Date</th><th>Key Enhancements</th></tr></thead>
+        <tbody>
+          <tr><td>0.3.2</td><td>2025-10-21</td><td>Dynamic schedule grid • Availability counters • Layered approvals • Interactive docs</td></tr>
+          <tr><td>0.3.1</td><td>2025-09</td><td>SharePoint list grouping optimizations • Approval flow refactor (phase 1)</td></tr>
+          <tr><td>0.3.0</td><td>2025-09</td><td>Promotion to v0.3.x line • Initial dynamic grid prototype</td></tr>
+          <tr><td>0.2.x</td><td>2025-08</td><td>Excel migration tooling • Early BI analytics foundations</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="section" id="section-support" style="margin-top:25px;text-align:left;">
+      <h2>Support & Contact</h2>
+      <ul style="list-style:disc;padding-left:22px;">
+        <li>Open a GitHub issue for enhancement requests & deployment Q&A.</li>
+        <li>Internal coordination via VA Teams channel: Telehealth Resource App.</li>
+        <li>PowerApps Environment: <code>578 Telehealth Resource App</code> (ID: 4b4e5be9-cc6e-4856-81fa-dfbe6cff7d9b).</li>
+        <li>Avoid PHI / sensitive info in public channels – use approved VA communication paths.</li>
+      </ul>
+    </div>
+    <div class="section" id="section-resources" style="margin-top:35px;text-align:left;">
+      <h2>Resources</h2>
+      <p>Key external artifacts and deeper technical documentation.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;">
+        <a href="./CHANGELOG.md" target="_blank" style="display:block;padding:16px;border:1px solid #1a4480;border-radius:8px;background:#0f1f33;color:#ffffff;text-decoration:none;">
+          <strong>Full CHANGELOG</strong>
+          <span style="display:block;font-size:.8em;margin-top:6px;">Complete version history & release notes.</span>
+        </a>
+        <a href="./README.md" target="_blank" style="display:block;padding:16px;border:1px solid #1a4480;border-radius:8px;background:#0f1f33;color:#ffffff;text-decoration:none;">
+          <strong>Implementation README</strong>
+          <span style="display:block;font-size:.8em;margin-top:6px;">Setup, configuration, environment strategy.</span>
+        </a>
+        <a href="https://dvagov.sharepoint.com/sites/578TelehealthResourceApp" target="_blank" style="display:block;padding:16px;border:1px solid #1a4480;border-radius:8px;background:#0f1f33;color:#ffffff;text-decoration:none;">
+          <strong>SharePoint Site</strong>
+          <span style="display:block;font-size:.8em;margin-top:6px;">Data layer schemas & operational lists.</span>
+        </a>
+        <a href="https://app.powerbigov.us/groups/f9a21156-7cbd-49e0-8cec-3b7b6e47b9e9/reports/6abbc095-2c73-4be0-a4e6-b4c6cb2ef630" target="_blank" style="display:block;padding:16px;border:1px solid #1a4480;border-radius:8px;background:#0f1f33;color:#ffffff;text-decoration:none;">
+          <strong>ROI Dashboard</strong>
+          <span style="display:block;font-size:.8em;margin-top:6px;">Utilization & efficiency analytics.</span>
+        </a>
+      </div>
+    </div>
   </div>
   </div>
 
@@ -833,15 +1456,15 @@
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "Telehealth Scheduling Project v0.2.0 - Progress Summary",
+  "headline": "Telehealth Scheduling Project v0.3.2 - Progress Summary",
     "description": "Comprehensive progress report on VA Healthcare's PowerApps-based telehealth scheduling solution with enhanced version control architecture",
     "author": {
       "@type": "Person",
       "name": "Kyle J. Coder",
       "jobTitle": "VA Healthcare Innovation Developer"
     },
-    "datePublished": "2025-09-17",
-    "dateModified": "2025-09-17",
+  "datePublished": "2025-10-21",
+  "dateModified": "2025-10-21",
     "publisher": {
       "@type": "Organization",
       "name": "VA Healthcare Innovation",
@@ -853,11 +1476,180 @@
         "name": "578 Telehealth Resource App",
         "applicationCategory": "Healthcare Management",
         "operatingSystem": "Microsoft Power Platform",
-        "softwareVersion": "0.2.1"
+  "softwareVersion": "0.3.2"
       }
     ],
     "keywords": ["VA Healthcare", "Telehealth", "PowerApps", "Power Platform", "Hospital Scheduling", "Room Booking", "Version Control", "Source Management"]
   }
+  </script>
+  <script>
+    // Minimal scroll-top behavior retained; future enhancement: scroll spy & details controls
+    (function(){
+      const topBtn = document.getElementById('scroll-top');
+      topBtn && topBtn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+    })();
+    // Enhance native <details> for accessibility (ARIA state reflection) + Scroll Spy
+    document.addEventListener('DOMContentLoaded', function(){
+      const groups = document.querySelectorAll('details');
+      groups.forEach(d => {
+        const summary = d.querySelector('summary');
+        if(!summary) return;
+        const contentId = 'panel-' + Math.random().toString(36).slice(2,9);
+        // Wrap remaining nodes (except summary) for controlled region labeling
+        let panelWrapper = document.createElement('div');
+        while(summary.nextSibling){ panelWrapper.appendChild(summary.nextSibling); }
+        panelWrapper.setAttribute('id', contentId);
+        panelWrapper.setAttribute('role','region');
+        panelWrapper.setAttribute('aria-labelledby', summary.id || (summary.id = 'summary-' + contentId));
+        d.appendChild(panelWrapper);
+        summary.setAttribute('role','button');
+        summary.setAttribute('aria-controls', contentId);
+        summary.setAttribute('aria-expanded', d.open ? 'true':'false');
+        d.addEventListener('toggle', () => {
+          summary.setAttribute('aria-expanded', d.open ? 'true':'false');
+          // Persist open state
+          try {
+            const key = summary.textContent.trim().toLowerCase().replace(/\s+/g,'-');
+            const stored = new Set(JSON.parse(sessionStorage.getItem('openDetails')||'[]'));
+            if(d.open) { stored.add(key); } else { stored.delete(key); }
+            sessionStorage.setItem('openDetails', JSON.stringify(Array.from(stored)));
+          } catch(e){ /* no-op */ }
+        });
+        // Apply persisted state
+        try {
+          const key = summary.textContent.trim().toLowerCase().replace(/\s+/g,'-');
+          const storedArr = JSON.parse(sessionStorage.getItem('openDetails')||'[]');
+          if(storedArr.includes(key)) { d.open = true; summary.setAttribute('aria-expanded','true'); }
+        } catch(e){ }
+      });
+      // Expand / collapse all controls
+      const expandAll = document.getElementById('expand-all');
+      const collapseAll = document.getElementById('collapse-all');
+      expandAll && expandAll.addEventListener('click', () => {
+        document.querySelectorAll('details').forEach(d => { d.open = true; const s = d.querySelector('summary'); s && s.setAttribute('aria-expanded','true'); });
+        try {
+          const all = Array.from(document.querySelectorAll('details > summary')).map(s=>s.textContent.trim().toLowerCase().replace(/\s+/g,'-'));
+          sessionStorage.setItem('openDetails', JSON.stringify(all));
+        } catch(e){ }
+      });
+      collapseAll && collapseAll.addEventListener('click', () => {
+        document.querySelectorAll('details').forEach(d => { d.open = false; const s = d.querySelector('summary'); s && s.setAttribute('aria-expanded','false'); });
+        try { sessionStorage.setItem('openDetails','[]'); } catch(e){ }
+      });
+
+      // Scroll spy for side navigation
+      const sectionIds = Array.from(document.querySelectorAll('[id^="section-"]')).map(sec => sec.id);
+      const navLinks = Array.from(document.querySelectorAll('.side-nav [data-spy-target]'));
+      const linkMap = new Map(navLinks.map(l => [l.getAttribute('href').replace('#',''), l]));
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            const id = entry.target.id;
+            if(linkMap.has(id)) {
+              navLinks.forEach(l => { l.classList.remove('active'); l.removeAttribute('aria-current'); });
+              const activeLink = linkMap.get(id);
+              activeLink.classList.add('active');
+              activeLink.setAttribute('aria-current','true');
+            }
+          }
+        });
+      }, { rootMargin: '0px 0px -60% 0px', threshold: 0.25 });
+      sectionIds.forEach(id => { const el = document.getElementById(id); el && observer.observe(el); });
+      // Mobile drawer logic
+      const navToggle = document.querySelector('.nav-toggle-btn');
+      const sideNav = document.getElementById('mobile-drawer');
+      let drawerOpen = false;
+      function closeDrawer(){
+        if(!drawerOpen) return;
+        sideNav.classList.remove('drawer-active');
+        document.body.classList.remove('drawer-open');
+        navToggle.setAttribute('aria-expanded','false');
+        overlay.classList.remove('active');
+        drawerOpen=false;
+        navToggle.focus();
+      }
+      const overlay = document.createElement('div');
+      overlay.className='drawer-overlay';
+      overlay.addEventListener('click', closeDrawer);
+      document.body.appendChild(overlay);
+      navToggle && navToggle.addEventListener('click', () => {
+        drawerOpen = !drawerOpen;
+        if(drawerOpen){
+          sideNav.classList.add('drawer-active');
+          document.body.classList.add('drawer-open');
+          navToggle.setAttribute('aria-expanded','true');
+          overlay.classList.add('active');
+          // focus first link
+          const firstLink = sideNav.querySelector('a, button');
+          firstLink && firstLink.focus();
+          // setup focus trap
+          const focusables = Array.from(sideNav.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])'));
+          const firstFocusable = focusables[0];
+          const lastFocusable = focusables[focusables.length - 1];
+          document.addEventListener('keydown', function trap(e){
+            if(!drawerOpen) return;
+            if(e.key === 'Tab'){
+              if(e.shiftKey && document.activeElement === firstFocusable){ e.preventDefault(); lastFocusable.focus(); }
+              else if(!e.shiftKey && document.activeElement === lastFocusable){ e.preventDefault(); firstFocusable.focus(); }
+            }
+            if(e.key === 'Escape'){ closeDrawer(); }
+          });
+        } else { closeDrawer(); }
+      });
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
+
+      // Basic pagination activation (client-side) for tables with data-paginated
+      const paginatedTables = document.querySelectorAll('table.table-paginated[data-paginated="true"]');
+      paginatedTables.forEach(tbl => {
+        const pageSize = parseInt(tbl.getAttribute('data-page-size'),10) || 10;
+        const tbody = tbl.querySelector('tbody');
+        if(!tbody) return;
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        if(rows.length <= pageSize) return; // no need to paginate
+        let currentPage = 1;
+        const totalPages = Math.ceil(rows.length / pageSize);
+        const controls = tbl.nextElementSibling && tbl.nextElementSibling.classList.contains('table-pagination-controls') ? tbl.nextElementSibling : null;
+        function renderPage(){
+          rows.forEach((r,i)=>{ const page = Math.floor(i/pageSize)+1; r.style.display = page === currentPage ? '' : 'none'; });
+          if(controls){
+            const [prevBtn,nextBtn] = Array.from(controls.querySelectorAll('button'));
+            prevBtn.disabled = currentPage===1;
+            nextBtn.disabled = currentPage===totalPages;
+          }
+        }
+        renderPage();
+        if(controls){
+          const [prevBtn,nextBtn] = Array.from(controls.querySelectorAll('button'));
+          prevBtn.disabled=false; nextBtn.disabled=false;
+          prevBtn.addEventListener('click', ()=>{ if(currentPage>1){ currentPage--; renderPage(); }});
+          nextBtn.addEventListener('click', ()=>{ if(currentPage<totalPages){ currentPage++; renderPage(); }});
+        }
+      });
+      // Keyboard shortcuts for expand/collapse (Alt+Shift+E / Alt+Shift+C)
+      document.addEventListener('keydown', (e)=>{
+        if(e.altKey && e.shiftKey && e.code==='KeyE'){ e.preventDefault(); expandAll && expandAll.click(); }
+        if(e.altKey && e.shiftKey && e.code==='KeyC'){ e.preventDefault(); collapseAll && collapseAll.click(); }
+      });
+      // High contrast toggle
+      const contrastBtn = document.getElementById('toggle-contrast');
+      if(contrastBtn){
+        const applyContrast = (on) => {
+          document.body.classList.toggle('high-contrast', on);
+          contrastBtn.setAttribute('aria-pressed', on ? 'true':'false');
+          contrastBtn.textContent = on ? 'Contrast: On' : 'Contrast';
+        };
+        let hc = false;
+        try { hc = localStorage.getItem('highContrast')==='true'; } catch(e){ hc=false; }
+        applyContrast(hc);
+        contrastBtn.addEventListener('click', () => {
+          hc = !document.body.classList.contains('high-contrast');
+          applyContrast(hc);
+          try { localStorage.setItem('highContrast', hc ? 'true':'false'); } catch(e){ }
+        });
+      }
+    });
+    // OPTIONAL-PLACEHOLDER: PERFORMANCE DEFER / LAZY INIT BLOCK (Wrap observers in requestIdleCallback if needed)
+    // OPTIONAL-PLACEHOLDER: PERFORMANCE DEFER / LAZY INIT BLOCK (Wrap observers in DOMContentLoaded if needed)
   </script>
 </body>
 
