@@ -37,9 +37,879 @@
 		"markdown.extension.print.imgToBase64": true,
 		"markdown.extension.print.theme": "dark",
 		"markdown.extension.showActionButtons": true,
-		"chat.tools.edits.autoApprove": {
-			"**/.vscode/tasks.json": true
-		}
+"chat.tools.terminal.autoApprove": {
+
+
+  // =========================================================
+  // Git Commands (Safe, Read-Only / Non-Mutating)
+  // =========================================================
+  "git blame": true,               // PREVIOUS VALUE: true (v4).
+                                   // DEFINITION: Annotates each line of a file with the commit hash and author who last modified it.
+                                   // RISK POTENTIAL: Reveals authorship and change history (low confidentiality concern).
+                                   // RECOMMENDATION: Keep enabled; disable only if contributor privacy is mandated.
+
+  "git branch": true,              // PREVIOUS VALUE: true.
+                                   // DEFINITION: Lists local branches (without destructive flags).
+                                   // RISK POTENTIAL: Exposes repository structure (minimal).
+                                   // RECOMMENDATION: Keep true; destructive variants are blocked via regex below.
+
+  "git describe": true,            // PREVIOUS VALUE: true.
+                                   // DEFINITION: Generates a readable name for a commit based on the nearest tag and distance.
+                                   // RISK POTENTIAL: Minor metadata exposure.
+                                   // RECOMMENDATION: Keep true; useful for build/version tagging.
+
+  "git diff": true,                // PREVIOUS VALUE: true.
+                                   // DEFINITION: Shows line-level differences between revisions, index, and working tree.
+                                   // RISK POTENTIAL: May expose sensitive code or secrets in diffs.
+                                   // RECOMMENDATION: Keep true; rely on secret scanning and code review processes.
+
+  "git diff --name-only": true,    // PREVIOUS VALUE: true.
+                                   // DEFINITION: Lists only names of changed files (lightweight change inspection).
+                                   // RISK POTENTIAL: Lower than full diff; still reveals repository file naming.
+                                   // RECOMMENDATION: Keep true; preferable for quick change scopes.
+
+  "git grep": true,                // PREVIOUS VALUE: true.
+                                   // DEFINITION: Searches tracked repository content for a pattern.
+                                   // RISK POTENTIAL: Can surface embedded credentials or sensitive strings.
+                                   // RECOMMENDATION: Keep true; mitigate with .gitignore + secret scanning.
+
+  "git log": true,                 // PREVIOUS VALUE: true.
+                                   // DEFINITION: Shows commit history chronologically.
+                                   // RISK POTENTIAL: Reveals work cadence; low sensitivity.
+                                   // RECOMMENDATION: Keep true.
+
+  "git ls-files": true,            // PREVIOUS VALUE: true.
+                                   // DEFINITION: Lists all files tracked by git index.
+                                   // RISK POTENTIAL: Reveals internal file inventory.
+                                   // RECOMMENDATION: Keep true for audit/automation; disable if repository enumeration should be restricted.
+
+  "git remote -v": true,           // PREVIOUS VALUE: true.
+                                   // DEFINITION: Lists configured remotes and their fetch/push URLs.
+                                   // RISK POTENTIAL: Could expose private remote endpoints.
+                                   // RECOMMENDATION: Keep true; ensure remotes never embed credentials.
+
+  "git rev-parse": true,           // PREVIOUS VALUE: true.
+                                   // DEFINITION: Resolves revision tokens (refs) to full hashes.
+                                   // RISK POTENTIAL: Minimal; hashes are derivable.
+                                   // RECOMMENDATION: Keep true.
+
+  "git show": true,                // PREVIOUS VALUE: true.
+                                   // DEFINITION: Displays an object’s contents (commit, tag, blob).
+                                   // RISK POTENTIAL: Similar to viewing any file/diff.
+                                   // RECOMMENDATION: Keep true.
+
+  "git status": true,              // PREVIOUS VALUE: true.
+                                   // DEFINITION: Shows working directory and staging state.
+                                   // RISK POTENTIAL: Can expose names of untracked sensitive files.
+                                   // RECOMMENDATION: Keep true; avoid keeping secrets locally untracked.
+
+  "git submodule status": true,    // PREVIOUS VALUE: true.
+                                   // DEFINITION: Shows each submodule and its current commit pointer.
+                                   // RISK POTENTIAL: Reveals dependency repos.
+                                   // RECOMMENDATION: Keep true.
+
+  "git tag": true,                 // PREVIOUS VALUE: true.
+                                   // DEFINITION: Lists tags labeling specific commits.
+                                   // RISK POTENTIAL: Minimal.
+                                   // RECOMMENDATION: Keep true.
+
+  // ---------------------------------------------------------
+  // Git Restrictive Patterns (Prevent Destructive or Heavy Operations)
+  // ---------------------------------------------------------
+  "/^git branch\\b.*-(d|D|m|M|-delete|-force)\\b/": false, // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks branch deletion/move/force operations.
+                                                           // RISK POTENTIAL: Data loss or branch pointer manipulation.
+                                                           // RECOMMENDATION: Keep blocked; manually approve branch cleanup.
+
+  "/^git\\s+reset\\b.*/": false,                          // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks all 'git reset' variants.
+                                                           // RISK POTENTIAL: Loss of staged/unstaged work; index upheaval.
+                                                           // RECOMMENDATION: Keep blocked; manually run resets with explicit intent.
+
+  "/^git\\s+reset\\b.*--hard\\b/": false,                 // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Explicitly blocks hard resets discarding working tree changes.
+                                                           // RISK POTENTIAL: Irrecoverable local changes.
+                                                           // RECOMMENDATION: Keep blocked; no auto hard resets.
+
+  "/^git\\s+clean\\b.*(-d|--force| -f)/": false,          // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks aggressive deletion of untracked files.
+                                                           // RISK POTENTIAL: Loss of generated or draft assets.
+                                                           // RECOMMENDATION: Keep blocked.
+
+  "/^git\\s+checkout\\b.*(-f|--force)/": false,           // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks forced checkout overwriting modifications.
+                                                           // RISK POTENTIAL: Silent loss of unsaved changes.
+                                                           // RECOMMENDATION: Keep blocked.
+
+  "/^git\\s+rebase\\b/": false,                           // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks all rebase operations (history rewriting).
+                                                           // RISK POTENTIAL: History divergence, confusion, accidental squashing.
+                                                           // RECOMMENDATION: Keep blocked; use merges or manual rebase oversight.
+
+  "/^git\\s+stash\\b(?!\\s+list)/": false,                // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Allows only `git stash list`; blocks stash modifications.
+                                                           // RISK POTENTIAL: Hidden or lost work via stash misuse.
+                                                           // RECOMMENDATION: Keep blocked.
+
+  "/^git\\s+am\\b/": false,                               // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks mailbox patch application.
+                                                           // RISK POTENTIAL: Bulk unreviewed code injection.
+                                                           // RECOMMENDATION: Keep blocked; prefer PR workflow.
+
+  "/^git\\s+apply\\b/": false,                            // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks raw patch application.
+                                                           // RISK POTENTIAL: Silent code changes.
+                                                           // RECOMMENDATION: Keep blocked.
+
+  "/^git\\s+config\\b.*(--global|--system)\\b/": false,   // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks modifications to global/system Git config.
+                                                           // RISK POTENTIAL: Persistent environment alterations.
+                                                           // RECOMMENDATION: Keep blocked.
+
+  "/^git\\s+gc\\b/": false,                               // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks repository garbage collection.
+                                                           // RISK POTENTIAL: Heavy I/O; possible user confusion.
+                                                           // RECOMMENDATION: Keep blocked; run manually when needed.
+
+  "/^git\\s+fsck\\b/": false,                             // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks integrity checking (expensive).
+                                                           // RISK POTENTIAL: Performance impact.
+                                                           // RECOMMENDATION: Keep blocked.
+
+  "/^git\\s+reflog\\b/": false,                           // PREVIOUS VALUE: false.
+                                                           // DEFINITION: Blocks reflog enumeration (internal ref movements).
+                                                           // RISK POTENTIAL: Exposure of internal recovery history.
+                                                           // RECOMMENDATION: Keep blocked unless forensic analysis required.
+
+  // =========================================================
+  // POSIX / Shell Navigation & Environment (Hardened)
+  // =========================================================
+  "cd": true,                     // PREVIOUS VALUE: true.
+                                   // DEFINITION: Changes current working directory context.
+                                   // RISK POTENTIAL: Very low; only shifts context.
+                                   // RECOMMENDATION: Keep true—essential for path-relative operations.
+
+  "pwd": true,                    // PREVIOUS VALUE: true.
+                                   // DEFINITION: Prints current directory path.
+                                   // RISK POTENTIAL: Reveals directory structure (minimal).
+                                   // RECOMMENDATION: Keep true.
+
+  "echo": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Outputs text and expands variables.
+                                   // RISK POTENTIAL: Can accidentally expose secrets if variables printed.
+                                   // RECOMMENDATION: Keep true; avoid echoing secret tokens.
+
+  "sleep": true,                  // PREVIOUS VALUE: true.
+                                   // DEFINITION: Pauses execution for a duration.
+                                   // RISK POTENTIAL: Workflow delay or hung automation if misused.
+                                   // RECOMMENDATION: Keep true; enforce max duration externally.
+
+  "date": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Displays current system date/time.
+                                   // RISK POTENTIAL: Minimal.
+                                   // RECOMMENDATION: Keep true; mutation blocked below.
+
+  "whoami": true,                 // PREVIOUS VALUE: true.
+                                   // DEFINITION: Prints the effective current user name.
+                                   // RISK POTENTIAL: Slight identity disclosure.
+                                   // RECOMMENDATION: Keep true; low security impact.
+
+  "hostname": false,              // PREVIOUS VALUE: false.
+                                   // DEFINITION: Displays system network name.
+                                   // RISK POTENTIAL: Host fingerprinting for targeted exploits.
+                                   // RECOMMENDATION: Keep false; enable if scripts require host-based logic.
+
+  "id": false,                    // PREVIOUS VALUE: false.
+                                   // DEFINITION: Shows UID/GID/group memberships.
+                                   // RISK POTENTIAL: Privilege mapping exposure.
+                                   // RECOMMENDATION: Keep false unless role-based branching needed.
+
+  "groups": false,                // PREVIOUS VALUE: false.
+                                   // DEFINITION: Lists groups a user belongs to.
+                                   // RISK POTENTIAL: Reveals authorization context.
+                                   // RECOMMENDATION: Keep false.
+
+  "uname": false,                 // PREVIOUS VALUE: false.
+                                   // DEFINITION: Kernel/system information (OS, architecture).
+                                   // RISK POTENTIAL: OS fingerprinting.
+                                   // RECOMMENDATION: Keep false; enable only if platform-dependent logic required.
+
+  "uptime": false,                // PREVIOUS VALUE: false.
+                                   // DEFINITION: System runtime and load averages.
+                                   // RISK POTENTIAL: Operational environment profiling.
+                                   // RECOMMENDATION: Keep false.
+
+  "locale": false,                // PREVIOUS VALUE: false.
+                                   // DEFINITION: Display locale environment settings.
+                                   // RISK POTENTIAL: Minor; reveals regional config.
+                                   // RECOMMENDATION: Keep false.
+
+  "free": false,                  // PREVIOUS VALUE: false.
+                                   // DEFINITION: Memory usage summary.
+                                   // RISK POTENTIAL: Resource disclosure aiding optimization targeting.
+                                   // RECOMMENDATION: Keep false.
+
+  "lscpu": false,                 // PREVIOUS VALUE: false.
+                                   // DEFINITION: CPU architecture details.
+                                   // RISK POTENTIAL: Hardware fingerprinting.
+                                   // RECOMMENDATION: Keep false.
+
+  "/^date\\b.*(-s|--set)\\b/": false,  // PREVIOUS VALUE: false.
+                                       // DEFINITION: Blocks system clock alteration flags.
+                                       // RISK POTENTIAL: Timeline tampering affecting logs/build reproducibility.
+                                       // RECOMMENDATION: Keep blocked.
+
+  // =========================================================
+  // POSIX / Shell File & Path Utilities
+  // =========================================================
+  "basename": true,               // PREVIOUS VALUE: true.
+                                   // DEFINITION: Extracts filename portion from a path.
+                                   // RISK POTENTIAL: None.
+                                   // RECOMMENDATION: Keep true.
+
+  "dirname": true,                // PREVIOUS VALUE: true.
+                                   // DEFINITION: Returns directory part of a path.
+                                   // RISK POTENTIAL: None.
+                                   // RECOMMENDATION: Keep true.
+
+  "realpath": true,               // PREVIOUS VALUE: true.
+                                   // DEFINITION: Resolves canonical absolute path (follows symlinks).
+                                   // RISK POTENTIAL: May reveal final resolved mount points.
+                                   // RECOMMENDATION: Keep true.
+
+  "readlink": true,               // PREVIOUS VALUE: true.
+                                   // DEFINITION: Displays symlink target.
+                                   // RISK POTENTIAL: Slight structural exposure.
+                                   // RECOMMENDATION: Keep true.
+
+  "which": true,                  // PREVIOUS VALUE: true.
+                                   // DEFINITION: Locates executable in PATH.
+                                   // RISK POTENTIAL: PATH disclosure (low).
+                                   // RECOMMENDATION: Keep true.
+
+  "stat": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Shows detailed file metadata.
+                                   // RISK POTENTIAL: Leaks timestamps/permissions; low severity.
+                                   // RECOMMENDATION: Keep true.
+
+  "file": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Determines file type via magic signatures.
+                                   // RISK POTENTIAL: Minimal.
+                                   // RECOMMENDATION: Keep true.
+
+  "du": false,                    // PREVIOUS VALUE: false.
+                                   // DEFINITION: Recursive disk usage per path.
+                                   // RISK POTENTIAL: Resource consumption; reveals directory size patterns.
+                                   // RECOMMENDATION: Keep false; approve manually for storage audits.
+
+  "df": false,                    // PREVIOUS VALUE: false.
+                                   // DEFINITION: Filesystem capacity usage summary.
+                                   // RISK POTENTIAL: Infrastructure layout exposure.
+                                   // RECOMMENDATION: Keep false.
+
+  "ls": true,                     // PREVIOUS VALUE: true.
+                                   // DEFINITION: Lists directory entries.
+                                   // RISK POTENTIAL: Reveals file names; baseline functionality.
+                                   // RECOMMENDATION: Keep true.
+
+  // =========================================================
+  // POSIX / Shell Content Viewing & Text Processing
+  // =========================================================
+  "cat": true,                    // PREVIOUS VALUE: true.
+                                   // DEFINITION: Outputs file contents.
+                                   // RISK POTENTIAL: Secret exposure if sensitive files read.
+                                   // RECOMMENDATION: Keep true; rely on secret hygiene.
+
+  "cmp": true,                    // PREVIOUS VALUE: true.
+                                   // DEFINITION: Byte-by-byte file comparison.
+                                   // RISK POTENTIAL: None; read-only.
+                                   // RECOMMENDATION: Keep true.
+
+  "column": true,                 // PREVIOUS VALUE: true.
+                                   // DEFINITION: Formats input into columns.
+                                   // RISK POTENTIAL: Terminal flooding if wide; mitigated by regex.
+                                   // RECOMMENDATION: Keep true.
+
+  "cut": true,                    // PREVIOUS VALUE: true.
+                                   // DEFINITION: Extracts specified sections from lines.
+                                   // RISK POTENTIAL: None.
+                                   // RECOMMENDATION: Keep true.
+
+  "find": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Search directory trees for matching files.
+                                   // RISK POTENTIAL: Broad enumeration; destructive predicates blocked.
+                                   // RECOMMENDATION: Keep true.
+
+  "grep": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Pattern matching across text.
+                                   // RISK POTENTIAL: Data leakage if scanning secrets.
+                                   // RECOMMENDATION: Keep true; optionally add path filters later.
+
+  "head": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Displays first N lines.
+                                   // RISK POTENTIAL: Low.
+                                   // RECOMMENDATION: Keep true.
+
+  "join": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Joins lines of two files by common field.
+                                   // RISK POTENTIAL: Data recombination only; safe.
+                                   // RECOMMENDATION: Keep true.
+
+  "paste": true,                  // PREVIOUS VALUE: true.
+                                   // DEFINITION: Horizontal merge of lines from multiple files.
+                                   // RISK POTENTIAL: Low.
+                                   // RECOMMENDATION: Keep true.
+
+  "sed": false,                   // PREVIOUS VALUE: false.
+                                   // DEFINITION: Stream editor for scripted transformations.
+                                   // RISK POTENTIAL: In-place editing risk (blocked); complex patterns may mislead.
+                                   // RECOMMENDATION: Keep false base; rely on safe non -i pattern.
+
+  "/^sed\\b(?!.*-i)/": true,      // PREVIOUS VALUE: true.
+                                   // DEFINITION: Allows sed usage without -i to prevent direct file mutation.
+                                   // RISK POTENTIAL: Output can still be redirected (guarded by redirection regex).
+                                   // RECOMMENDATION: Keep true; monitor large transformations.
+
+  "/^sed\\b.*-i(\\S*)\\b/": false,// PREVIOUS VALUE: false.
+                                   // DEFINITION: Blocks any in-place sed modification including suffix backup forms.
+                                   // RISK POTENTIAL: Direct file alteration.
+                                   // RECOMMENDATION: Keep blocked.
+
+  "sort": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Sorts lines of text.
+                                   // RISK POTENTIAL: Memory usage on large datasets; overwrite flag blocked.
+                                   // RECOMMENDATION: Keep true.
+
+  "tail": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Shows last N lines.
+                                   // RISK POTENTIAL: Low.
+                                   // RECOMMENDATION: Keep true.
+
+  "tr": true,                     // PREVIOUS VALUE: true.
+                                   // DEFINITION: Character translation/deletion.
+                                   // RISK POTENTIAL: None.
+                                   // RECOMMENDATION: Keep true.
+
+  "tree": false,                  // PREVIOUS VALUE: false.
+                                   // DEFINITION: Recursive visual directory tree.
+                                   // RISK POTENTIAL: Large traversal reveals structure; resource usage.
+                                   // RECOMMENDATION: Keep false; approve manually if needed.
+
+  "uniq": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Removes adjacent duplicate lines.
+                                   // RISK POTENTIAL: None.
+                                   // RECOMMENDATION: Keep true.
+
+  "wc": true,                     // PREVIOUS VALUE: true.
+                                   // DEFINITION: Counts lines, words, bytes.
+                                   // RISK POTENTIAL: None.
+                                   // RECOMMENDATION: Keep true.
+
+  // Text / Utility Restrictive Patterns
+  "/^column\\b.*-c\\s+[0-9]{4,}/": false,                // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks excessively wide column output.
+                                                          // RISK POTENTIAL: Terminal flooding/performance cost.
+                                                          // RECOMMENDATION: Keep false.
+
+  "/^find\\b.*-(delete|exec|execdir|fprint|fprintf|fls|ok|okdir)\\b/": false, // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks embedded destructive/executing find actions.
+                                                          // RISK POTENTIAL: Arbitrary command execution / deletion.
+                                                          // RECOMMENDATION: Keep false.
+
+  "/^sort\\b.*-(o|S)\\b/": false,                        // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks overwriting (-o) or large memory (-S) usage.
+                                                          // RISK POTENTIAL: Data overwrite or resource exhaustion.
+                                                          // RECOMMENDATION: Keep false.
+
+  "/^tree\\b.*-o\\b/": false,                            // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks writing tree output to file.
+                                                          // RISK POTENTIAL: Unintended file creation.
+                                                          // RECOMMENDATION: Keep false.
+
+  "/^(cat|grep|head|tail|wc)\\b.*(>|>>)/": false,        // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks redirection of common read-only commands to files.
+                                                          // RISK POTENTIAL: Silent file overwrite/creation.
+                                                          // RECOMMENDATION: Keep false.
+
+  // Additional Protective Regex
+  "/^rm\\b.*-rf\\b/": false,                             // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks recursive forced deletion.
+                                                          // RISK POTENTIAL: Catastrophic data loss.
+                                                          // RECOMMENDATION: Keep false.
+
+  "/^rm\\b.*--no-preserve-root\\b/": false,              // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks unsafe root deletion override.
+                                                          // RISK POTENTIAL: System wipe.
+                                                          // RECOMMENDATION: Keep false.
+
+  "/^chmod\\b.*\\s777\\b/": false,                       // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks world-access permission assignments.
+                                                          // RISK POTENTIAL: Security exposure.
+                                                          // RECOMMENDATION: Keep false.
+
+  "/^chmod\\b.*-R\\b.*[0-7]{3,4}\\b/": false,            // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks recursive permission changes.
+                                                          // RISK POTENTIAL: Large-scale privilege weakening.
+                                                          // RECOMMENDATION: Keep false.
+
+  "/^chown\\b.*-R\\b/": false,                           // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks recursive ownership changes.
+                                                          // RISK POTENTIAL: Privilege reassignment misuse.
+                                                          // RECOMMENDATION: Keep false.
+
+  "/^tee\\b/": false,                                    // PREVIOUS VALUE: false.
+                                                          // DEFINITION: Blocks tee writing to new files.
+                                                          // RISK POTENTIAL: Unauthorized data duplication.
+                                                          // RECOMMENDATION: Keep false.
+
+  // =========================================================
+  // POSIX / Shell Destructive / High-Risk Commands
+  // =========================================================
+  "chmod": false,                // PREVIOUS VALUE: false.
+                                  // DEFINITION: Change file/directory permissions.
+                                  // RISK POTENTIAL: Privilege escalation/misconfiguration.
+                                  // RECOMMENDATION: Keep false; approve explicit cases manually.
+
+  "chown": false,                // PREVIOUS VALUE: false.
+                                  // DEFINITION: Change ownership of files.
+                                  // RISK POTENTIAL: Unauthorized access reallocation.
+                                  // RECOMMENDATION: Keep false.
+
+  "dd": false,                   // PREVIOUS VALUE: false.
+                                  // DEFINITION: Low-level copying and conversion (block devices).
+                                  // RISK POTENTIAL: Disk/data destruction.
+                                  // RECOMMENDATION: Keep false always.
+
+  "del": false,                  // PREVIOUS VALUE: false.
+                                  // DEFINITION: Windows file deletion command.
+                                  // RISK POTENTIAL: Data removal.
+                                  // RECOMMENDATION: Keep false.
+
+  "erase": false,                // PREVIOUS VALUE: false.
+                                  // DEFINITION: Legacy DOS deletion command.
+                                  // RISK POTENTIAL: Data removal.
+                                  // RECOMMENDATION: Keep false.
+
+  "kill": false,                 // PREVIOUS VALUE: false.
+                                  // DEFINITION: Sends signals (e.g. TERM/KILL) to processes.
+                                  // RISK POTENTIAL: Service disruption.
+                                  // RECOMMENDATION: Keep false.
+
+  "ps": true,                    // PREVIOUS VALUE: true (remained enabled).
+                                  // DEFINITION: Lists running processes.
+                                  // RISK POTENTIAL: Exposure of command lines/environment.
+                                  // RECOMMENDATION: Keep true for diagnostics; disable if sensitive workloads present.
+
+  "rd": false,                   // PREVIOUS VALUE: false.
+                                  // DEFINITION: Windows remove directory.
+                                  // RISK POTENTIAL: Data removal.
+                                  // RECOMMENDATION: Keep false.
+
+  "rmdir": false,                // PREVIOUS VALUE: false.
+                                  // DEFINITION: Remove empty directories.
+                                  // RISK POTENTIAL: Structural cleanup (low), still deletion.
+                                  // RECOMMENDATION: Keep false for consistency with deletion policy.
+
+  "rm": false,                   // PREVIOUS VALUE: false.
+                                  // DEFINITION: Remove files/directories.
+                                  // RISK POTENTIAL: Data loss.
+                                  // RECOMMENDATION: Keep false; rely on manual approval.
+
+  "taskkill": false,             // PREVIOUS VALUE: false.
+                                  // DEFINITION: Windows process termination.
+                                  // RISK POTENTIAL: Service interruption.
+                                  // RECOMMENDATION: Keep false.
+
+  "taskkill.exe": false,         // PREVIOUS VALUE: false.
+                                  // DEFINITION: Explicit binary for task termination.
+                                  // RISK POTENTIAL: Same as taskkill.
+                                  // RECOMMENDATION: Keep false.
+
+  "top": false,                  // PREVIOUS VALUE: false.
+                                  // DEFINITION: Interactive process monitor.
+                                  // RISK POTENTIAL: Info leakage & resource use.
+                                  // RECOMMENDATION: Keep false.
+
+  "xargs": true,                 // PREVIOUS VALUE: true.
+                                  // DEFINITION: Build and execute command lines from input lists.
+                                  // RISK POTENTIAL: Amplifies operations; could mass-process files.
+                                  // RECOMMENDATION: Keep true if supervised; disable for strict minimalism.
+
+  // =========================================================
+  // POSIX / Shell Networking / External I/O
+  // =========================================================
+  "curl": false,                 // PREVIOUS VALUE: false.
+                                  // DEFINITION: Remote URL data transfer.
+                                  // RISK POTENTIAL: Data exfiltration or untrusted code ingestion.
+                                  // RECOMMENDATION: Keep false.
+
+  "wget": false,                 // PREVIOUS VALUE: false.
+                                  // DEFINITION: Non-interactive network download tool.
+                                  // RISK POTENTIAL: Same as curl.
+                                  // RECOMMENDATION: Keep false.
+
+  // =========================================================
+  // POSIX / Shell Evaluation / Dynamic Execution
+  // =========================================================
+  "eval": false,                 // PREVIOUS VALUE: false.
+                                  // DEFINITION: Executes constructed shell content strings.
+                                  // RISK POTENTIAL: Arbitrary command injection.
+                                  // RECOMMENDATION: Keep false permanently.
+
+  // =========================================================
+  // Compression / Archive Inspection
+  // =========================================================
+  "tar": true,                   // PREVIOUS VALUE: true.
+                                  // DEFINITION: Archive manipulation utility.
+                                  // RISK POTENTIAL: Extraction/creation may overwrite or stage data (both blocked below).
+                                  // RECOMMENDATION: Keep true with creation/extraction restrictions enforced.
+
+  "/^tar\\b.*\\s-tf?\\b/": true, // PREVIOUS VALUE: true.
+                                  // DEFINITION: Allows listing archive contents only.
+                                  // RISK POTENTIAL: Read-only; minimal.
+                                  // RECOMMENDATION: Keep true.
+
+  "/^tar\\b.*\\s-x\\b/": false,  // PREVIOUS VALUE: false.
+                                  // DEFINITION: Blocks extraction (-x).
+                                  // RISK POTENTIAL: Overwriting paths, unpacking malicious structures.
+                                  // RECOMMENDATION: Keep false; approve manually if needed.
+
+  "/^tar\\b.*\\s-c\\b/": false,  // PREVIOUS VALUE: false.
+                                  // DEFINITION: Blocks archive creation (-c).
+                                  // RISK POTENTIAL: Staging unintended bundles.
+                                  // RECOMMENDATION: Keep false.
+
+  "gzip": true,                  // PREVIOUS VALUE: true.
+                                  // DEFINITION: Compress/decompress (writes possible).
+                                  // RISK POTENTIAL: Overwriting compressed assets.
+                                  // RECOMMENDATION: Keep true; low risk; handle overwrites manually.
+
+  "/^gzip\\b.*-l\\b/": true,     // PREVIOUS VALUE: true.
+                                  // DEFINITION: Lists compression metadata (sizes, ratios).
+                                  // RISK POTENTIAL: Minimal.
+                                  // RECOMMENDATION: Keep true.
+
+  "zcat": false,                 // PREVIOUS VALUE: false.
+                                  // DEFINITION: Streams decompressed content.
+                                  // RISK POTENTIAL: Large content dumps; potential secret exposure.
+                                  // RECOMMENDATION: Keep false; manually approve large decompressions.
+
+  // =========================================================
+  // Hashing / Integrity Tools
+  // =========================================================
+  "sha256sum": true,             // PREVIOUS VALUE: true.
+                                  // DEFINITION: Strong hash for integrity verification.
+                                  // RISK POTENTIAL: Minimal (read-only).
+                                  // RECOMMENDATION: Keep true.
+
+  "sha1sum": false,              // PREVIOUS VALUE: false.
+                                  // DEFINITION: Weak hash (collision-prone).
+                                  // RISK POTENTIAL: False trust in integrity checks.
+                                  // RECOMMENDATION: Keep false.
+
+  "md5sum": false,               // PREVIOUS VALUE: false.
+                                  // DEFINITION: Broken legacy hash.
+                                  // RISK POTENTIAL: Collision exploitation.
+                                  // RECOMMENDATION: Keep false.
+
+  // =========================================================
+  // PowerShell Core Cmdlets
+  // =========================================================
+  "ConvertTo-Csv": true,         // PREVIOUS VALUE: true.
+                                  // DEFINITION: Serializes objects to CSV text.
+                                  // RISK POTENTIAL: Exposes data sets in plain text.
+                                  // RECOMMENDATION: Keep true; audit output destinations.
+
+  "Copy-Item": false,            // PREVIOUS VALUE: false.
+                                  // DEFINITION: Copies files/items.
+                                  // RISK POTENTIAL: Unwanted duplication or overwriting.
+                                  // RECOMMENDATION: Keep false; approve explicit copy operations.
+
+  "ForEach-Object": true,        // PREVIOUS VALUE: true.
+                                  // DEFINITION: Pipeline iteration with script blocks.
+                                  // RISK POTENTIAL: Mass operations if combined with risky commands.
+                                  // RECOMMENDATION: Keep true; destructive cmds remain blocked.
+
+  "Get-ChildItem": true,         // PREVIOUS VALUE: true.
+                                  // DEFINITION: Enumerates filesystem or container nodes.
+                                  // RISK POTENTIAL: Structural exposure.
+                                  // RECOMMENDATION: Keep true.
+
+  "Get-Content": true,           // PREVIOUS VALUE: true.
+                                  // DEFINITION: Reads file content line by line.
+                                  // RISK POTENTIAL: Sensitive data exposure.
+                                  // RECOMMENDATION: Keep true; maintain secret hygiene.
+
+  "Get-Date": true,              // PREVIOUS VALUE: true.
+                                  // DEFINITION: Current date/time.
+                                  // RISK POTENTIAL: None.
+                                  // RECOMMENDATION: Keep true.
+
+  "Get-FileHash": true,          // PREVIOUS VALUE: true.
+                                  // DEFINITION: Computes a cryptographic hash of a file.
+                                  // RISK POTENTIAL: None.
+                                  // RECOMMENDATION: Keep true.
+
+  "Get-Help": true,              // PREVIOUS VALUE: true.
+                                  // DEFINITION: Retrieves help documentation for commands.
+                                  // RISK POTENTIAL: None.
+                                  // RECOMMENDATION: Keep true.
+
+  "Get-Item": true,              // PREVIOUS VALUE: true.
+                                  // DEFINITION: Retrieves a single item (file/object) by path.
+                                  // RISK POTENTIAL: Minimal.
+                                  // RECOMMENDATION: Keep true.
+
+  "Get-Location": true,          // PREVIOUS VALUE: true.
+                                  // DEFINITION: Current working path.
+                                  // RISK POTENTIAL: None.
+                                  // RECOMMENDATION: Keep true.
+
+  "Get-Module": true,            // PREVIOUS VALUE: true.
+                                  // DEFINITION: Lists available or loaded modules.
+                                  // RISK POTENTIAL: Environment fingerprinting.
+                                  // RECOMMENDATION: Keep true; disable only in locked-down contexts.
+
+  "Get-Command": true,           // PREVIOUS VALUE: true.
+                                  // DEFINITION: Enumerates all visible commands/functions.
+                                  // RISK POTENTIAL: Capability mapping for escalation.
+                                  // RECOMMENDATION: Keep true; reconsider if minimizing reconnaissance.
+
+  "Get-Random": true,            // PREVIOUS VALUE: true.
+                                  // DEFINITION: Generates random numbers/objects.
+                                  // RISK POTENTIAL: None.
+                                  // RECOMMENDATION: Keep true.
+
+  "Get-Acl": true,               // PREVIOUS VALUE: true.
+                                  // DEFINITION: Fetches permissions of items.
+                                  // RISK POTENTIAL: Reveals access boundaries.
+                                  // RECOMMENDATION: Keep true; disable if ACL privacy is critical.
+
+  "Join-Path": true,             // PREVIOUS VALUE: true.
+                                  // DEFINITION: Safely constructs file paths.
+                                  // RISK POTENTIAL: None.
+                                  // RECOMMENDATION: Keep true.
+
+  "Out-String": true,            // PREVIOUS VALUE: true.
+                                  // DEFINITION: Converts pipeline objects to a string representation.
+                                  // RISK POTENTIAL: Large object dump disclosure.
+                                  // RECOMMENDATION: Keep true; watch for huge outputs.
+
+  "Resolve-Path": true,          // PREVIOUS VALUE: true.
+                                  // DEFINITION: Resolves relative/complex paths to absolute.
+                                  // RISK POTENTIAL: Reveals real location of symlink targets.
+                                  // RECOMMENDATION: Keep true.
+
+  "Split-Path": true,            // PREVIOUS VALUE: true.
+                                  // DEFINITION: Parses a path into elements (parent, leaf).
+                                  // RISK POTENTIAL: Minimal.
+                                  // RECOMMENDATION: Keep true.
+
+  "Start-Sleep": true,           // PREVIOUS VALUE: true.
+                                  // DEFINITION: Pauses execution for a specified time.
+                                  // RISK POTENTIAL: Potential slowdown or denial of automation throughput.
+                                  // RECOMMENDATION: Keep true; constrain externally.
+
+  "Test-Path": true,             // PREVIOUS VALUE: true.
+                                  // DEFINITION: Tests existence of a path.
+                                  // RISK POTENTIAL: Enables probing for presence of restricted files.
+                                  // RECOMMENDATION: Keep true; add path deny regex if needed.
+
+  "Where-Object": true,          // PREVIOUS VALUE: true.
+                                  // DEFINITION: Filters pipeline objects based on conditions.
+                                  // RISK POTENTIAL: None.
+                                  // RECOMMENDATION: Keep true.
+
+  "Write-Host": true,            // PREVIOUS VALUE: true.
+                                  // DEFINITION: Write directly to console (not pipeline).
+                                  // RISK POTENTIAL: Minimal; may reveal data chosen for display.
+                                  // RECOMMENDATION: Keep true.
+
+  "Write-Output": true,          // PREVIOUS VALUE: true.
+                                  // DEFINITION: Sends objects to pipeline.
+                                  // RISK POTENTIAL: Minimal.
+                                  // RECOMMENDATION: Keep true.
+
+  // Pattern-Based Safe Cmdlets
+  "/^Select-[a-z0-9]/i": true,    // PREVIOUS VALUE: true.
+                                   // DEFINITION: Property projection cmdlets (Select-*).
+                                   // RISK POTENTIAL: Data formatting only.
+                                   // RECOMMENDATION: Keep true.
+
+  "/^Measure-[a-z0-9]/i": true,   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Aggregation and statistics (Measure-*).
+                                   // RISK POTENTIAL: None.
+                                   // RECOMMENDATION: Keep true.
+
+  "/^Compare-[a-z0-9]/i": true,   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Difference comparison operations (Compare-*).
+                                   // RISK POTENTIAL: Read-only analysis.
+                                   // RECOMMENDATION: Keep true.
+
+  "/^Format-[a-z0-9]/i": true,    // PREVIOUS VALUE: true.
+                                   // DEFINITION: Output formatting cmdlets (Format-*).
+                                   // RISK POTENTIAL: Presentation only.
+                                   // RECOMMENDATION: Keep true.
+
+  "/^Sort-[a-z0-9]/i": true,      // PREVIOUS VALUE: true.
+                                   // DEFINITION: Sorting operations (Sort-*).
+                                   // RISK POTENTIAL: None.
+                                   // RECOMMENDATION: Keep true.
+
+  // PowerShell Destructive / Risk
+  "Remove-Item": false,           // PREVIOUS VALUE: false.
+                                   // DEFINITION: Deletes files/directories.
+                                   // RISK POTENTIAL: Data removal.
+                                   // RECOMMENDATION: Keep false.
+
+  "ri": false,                    // PREVIOUS VALUE: false.
+                                   // DEFINITION: Alias for Remove-Item.
+                                   // RISK POTENTIAL: Same.
+                                   // RECOMMENDATION: Keep false.
+
+  "sp": false,                    // PREVIOUS VALUE: false.
+                                   // DEFINITION: Alias for Set-ItemProperty (writing properties).
+                                   // RISK POTENTIAL: Configuration tampering.
+                                   // RECOMMENDATION: Keep false.
+
+  "Set-ItemProperty": false,      // PREVIOUS VALUE: false.
+                                   // DEFINITION: Modify file/registry properties.
+                                   // RISK POTENTIAL: Silent config change.
+                                   // RECOMMENDATION: Keep false.
+
+  "Set-Acl": false,               // PREVIOUS VALUE: false.
+                                   // DEFINITION: Change permissions/ACLs.
+                                   // RISK POTENTIAL: Security policy alteration.
+                                   // RECOMMENDATION: Keep false.
+
+  "Stop-Process": false,          // PREVIOUS VALUE: false.
+                                   // DEFINITION: Terminates processes.
+                                   // RISK POTENTIAL: Service disruption.
+                                   // RECOMMENDATION: Keep false.
+
+  "spps": false,                  // PREVIOUS VALUE: false.
+                                   // DEFINITION: Alias likely for Stop-Process.
+                                   // RISK POTENTIAL: Same.
+                                   // RECOMMENDATION: Keep false.
+
+  // PowerShell Web / Network
+  "Invoke-RestMethod": false,     // PREVIOUS VALUE: false.
+                                   // DEFINITION: REST API invocation and response parsing.
+                                   // RISK POTENTIAL: Data exfiltration / ingress of untrusted payloads.
+                                   // RECOMMENDATION: Keep false.
+
+  "Invoke-WebRequest": false,     // PREVIOUS VALUE: false.
+                                   // DEFINITION: General-purpose HTTP requests.
+                                   // RISK POTENTIAL: Same as above.
+                                   // RECOMMENDATION: Keep false.
+
+  "irm": false,                   // PREVIOUS VALUE: false.
+                                   // DEFINITION: Alias for Invoke-RestMethod.
+                                   // RISK POTENTIAL: Same.
+                                   // RECOMMENDATION: Keep false.
+
+  "iwr": false,                   // PREVIOUS VALUE: false.
+                                   // DEFINITION: Alias for Invoke-WebRequest.
+                                   // RISK POTENTIAL: Same.
+                                   // RECOMMENDATION: Keep false.
+
+  // Dynamic / Expression Invocation
+  "Invoke-Expression": false,     // PREVIOUS VALUE: false.
+                                   // DEFINITION: Executes arbitrary PowerShell code from a string.
+                                   // RISK POTENTIAL: Code injection vector.
+                                   // RECOMMENDATION: Keep false permanently.
+
+  "iex": false,                   // PREVIOUS VALUE: false.
+                                   // DEFINITION: Alias for Invoke-Expression.
+                                   // RISK POTENTIAL: Same.
+                                   // RECOMMENDATION: Keep false.
+
+  // Hardening Patterns (Remote Code / Dynamic Instantiation)
+  "/Invoke-Expression\\b/": false,                     // PREVIOUS VALUE: false.
+                                                        // DEFINITION: Blocks any direct invocation of Invoke-Expression.
+                                                        // RISK POTENTIAL: Arbitrary code execution.
+                                                        // RECOMMENDATION: Keep false.
+
+  "/Invoke-Expression\\b.*DownloadString/": false,     // PREVIOUS VALUE: false.
+                                                        // DEFINITION: Blocks pattern where remote code is fetched then executed.
+                                                        // RISK POTENTIAL: Remote malicious execution.
+                                                        // RECOMMENDATION: Keep false.
+
+  "/(New-Object|Add-Type)\\b.*System\\.Net\\.WebClient/": false, // PREVIOUS VALUE: false.
+                                                        // DEFINITION: Blocks dynamic network client instantiation.
+                                                        // RISK POTENTIAL: Data exfiltration/untrusted download.
+                                                        // RECOMMENDATION: Keep false.
+
+  // =========================================================
+  // VS Code Command Integration
+  // =========================================================
+  "code": true,                   // PREVIOUS VALUE: true.
+                                   // DEFINITION: Launches or opens files/folders in VS Code.
+                                   // RISK POTENTIAL: Could open sensitive files if path selection is unsafe.
+                                   // RECOMMENDATION: Keep true; rely on workspace trust model.
+
+  // =========================================================
+  // Script Executions & Specific Approved Expressions
+  // =========================================================
+  "(Get-ChildItem 'preparedForDeletion' | Measure-Object).Count": {
+    "approve": true,
+    "matchCommandLine": true
+    // PREVIOUS VALUE: approve true / matchCommandLine true.
+    // DEFINITION: PowerShell pipeline counting items in a target directory.
+    // RISK POTENTIAL: Directory enumeration only (low).
+    // RECOMMENDATION: Keep approved; safe introspection.
+  },
+
+  "pwsh scripts/utilities/generate_manifest_diff.ps1": {
+    "approve": true,
+    "matchCommandLine": true
+    // PREVIOUS VALUE: approve true / matchCommandLine true.
+    // DEFINITION: Executes a manifest-diff comparison script.
+    // RISK POTENTIAL: Depends on script contents; read-only assumed.
+    // RECOMMENDATION: Keep approved; audit script for unexpected writes periodically.
+  },
+
+  // =========================================================
+  // Structural / Command-Line Pattern Safety (Refined)
+  // =========================================================
+  "/\\$\\(.+\\)/": {
+    "approve": false,
+    "matchCommandLine": true
+    // PREVIOUS VALUE: approve false / matchCommandLine true.
+    // DEFINITION: Blocks command substitution $(...) which enables dynamic embedded execution.
+    // RISK POTENTIAL: Arbitrary nested command injection.
+    // RECOMMENDATION: Keep blocked.
+  },
+
+  "/\\{.+\\}/s": {
+    "approve": false,
+    "matchCommandLine": true
+    // PREVIOUS VALUE: approve false / matchCommandLine true.
+    // DEFINITION: Blocks inline script blocks enclosed in braces.
+    // RISK POTENTIAL: Multi-statement execution beyond simple commands.
+    // RECOMMENDATION: Keep blocked unless enabling scripted flows intentionally.
+  },
+
+  "/`.+`/s": {
+    "approve": false,
+    "matchCommandLine": true
+    // PREVIOUS VALUE: approve false / matchCommandLine true.
+    // DEFINITION: Blocks legacy backtick-style command substitution.
+    // RISK POTENTIAL: Same injection risk as $(...).
+    // RECOMMENDATION: Keep blocked.
+  },
+
+  "/.*\\bsudo\\b.*/": false       // PREVIOUS VALUE: false.
+                                   // DEFINITION: Blocks any attempt to escalate privileges via sudo.
+                                   // RISK POTENTIAL: Full system modification potential.
+                                   // RECOMMENDATION: Keep false; manual elevation only.
+
+  // (All fragment / partial variable assignment approvals removed to reduce unintended pattern matches.)
+},
+"chat.tools.edits.autoApprove": {
+	"S:\\Informatics\\Data Team\\Coder - Informatics\\App Programing\\Telehealth Schedule & Booking\\": true,
+	"**/.git/*.md": true
+},
 	},
 	"extensions": {
 		"recommendations": [
