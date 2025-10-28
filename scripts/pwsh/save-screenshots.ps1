@@ -3,7 +3,7 @@
     Helper script to save telehealth scheduling screenshots into assets/images with standardized filenames.
 .DESCRIPTION
     Prompts user to select PNG files (exported from screenshots) and copies/renames them to the repository
-    assets/images directory using the required v0.3.2 naming convention. Optionally compresses images if
+  assets/images directory using the required v0.3.3 naming convention. Optionally compresses images if
     they exceed the recommended size threshold (300 KB) using System.Drawing.
 .NOTES
     Copyright 2025 Kyle J. Coder
@@ -16,7 +16,7 @@ param(
   [int]$MaxKb = 300
 )
 
-Write-Host "🖼️ Telehealth Screenshot Save Utility (v0.3.2)" -ForegroundColor Cyan
+Write-Host "🖼️ Telehealth Screenshot Save Utility (v0.3.3)" -ForegroundColor Cyan
 Write-Host "Source: $SourceFolder" -ForegroundColor Gray
 Write-Host "Target: $TargetFolder" -ForegroundColor Gray
 
@@ -26,8 +26,8 @@ if (!(Test-Path $TargetFolder)) {
 }
 
 $mapping = @{
-  "app-landing"                = "app-landing-v0.3.2.png"
-  "schedule-grid"              = "schedule-grid-v0.3.2.png"
+  "app-landing"                = "app-landing-v0.3.3.png"
+  "schedule-grid"              = "schedule-grid-v0.3.3.png"
   "sharepoint-master-schedule" = "sharepoint-master-schedule-v0.3.2.png"
   "approval-flow-architecture" = "approval-flow-architecture-v0.3.2.png"
 }

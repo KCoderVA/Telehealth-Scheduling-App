@@ -5,16 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
-    content="VA Telehealth Room Booking Solution v0.3.2 – enterprise Power Platform scheduling with conflict prevention, approval orchestration, and real-time availability supporting Veteran care coordination.">
+    content="VA Telehealth Room Booking Solution v0.3.3 – enterprise Power Platform scheduling with conflict prevention, approval orchestration, issue intake automation, and real-time availability supporting Veteran care coordination.">
   <meta name="keywords"
     content="VA Healthcare, Telehealth, PowerApps, Microsoft Power Platform, Hospital Scheduling, Room Booking, VA Innovation, Version Control, Source Management, Documentation Architecture">
   <meta name="author" content="Kyle J. Coder - VA Healthcare Innovation">
-  <meta property="og:title" content="VA Telehealth Room Booking Solution v0.3.2 – Enterprise Deployment Overview">
+  <meta property="og:title" content="VA Telehealth Room Booking Solution v0.3.3 – Enterprise Deployment Overview">
   <meta property="og:description"
     content="Power Platform solution for VA hospitals: dynamic schedule grid, availability intelligence, layered approvals, SharePoint integration, and ROI analytics.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kcoderva.github.io/Telehealth-Scheduling-App/">
-  <title>VA Telehealth Room Booking Solution v0.3.2 | Enterprise Deployment Overview</title>
+  <title>VA Telehealth Room Booking Solution v0.3.3 | Enterprise Deployment Overview</title>
   <link rel="canonical" href="https://kcoderva.github.io/Telehealth-Scheduling-App/">
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23112e51'/><text x='50%' y='55%' font-size='32' text-anchor='middle' fill='white' font-family='Arial'>VA</text></svg>">
@@ -643,7 +643,7 @@
   <header class="site-header" role="banner">
     <div class="masthead-inner">
       <h1>VA Telehealth Room Booking Solution</h1>
-      <p class="subtitle">Enterprise Power Platform scheduling & approval orchestration for multi-building telehealth operations (Version v0.3.2).</p>
+  <p class="subtitle">Enterprise Power Platform scheduling, approval orchestration & issue intake automation for multi-building telehealth operations (Version v0.3.3).</p>
       <div class="header-links" aria-label="Quick links">
         <a href="#section-executive-summary">Overview</a>
         <a href="#chapter-technical">Technical</a>
@@ -680,7 +680,7 @@
     <div class="micro-metrics" aria-label="Key project indicators" role="list">
         <div class="metric" role="listitem">
             <h4>Project Version</h4>
-            <p>v0.3.2 <small>Pre-Release</small></p>
+            <p>v0.3.3 <small>Pre-Release</small></p>
         </div>
         <div class="metric" role="listitem">
             <h4>Total Files</h4>
@@ -773,6 +773,12 @@
 ======================================================================
 | SECTION 3: SOLUTION PACKAGING MAP                                  |
 ======================================================================
+      <tr>
+        <td><strong>Issue Intake Automation</strong></td>
+        <td><span class="status-tag" style="background-color: #2E8540;">Operational</span></td>
+        <td>PowerShell (REST), GitHub Issues</td>
+        <td>Scripted verbal/email report capture, auto-labeling, diagnostic artifact generation (markdown, payload JSON, error body, transcript, debug dump).</td>
+      </tr>
 -->
 <section class="section" id="section-packaging-map">
     <h2>Solution Packaging Map</h2>
@@ -782,6 +788,23 @@
             <tr>
                 <th>Artifact Type</th>
                 <th>Source Location (in Repo)</th>
+
+<!--
+======================================================================
+| SECTION (ADDED): ISSUE INTAKE AUTOMATION OVERVIEW                  |
+======================================================================
+-->
+<section class="section" id="section-issue-intake-automation">
+  <h2>Issue Intake Automation (v0.3.3)</h2>
+  <p>A lightweight, enterprise-safe pipeline converts verbal/email staff reports into structured GitHub issues without relying on external CLI tools (pure PowerShell + REST). Designed for restricted VA environments.</p>
+  <ul>
+    <li><strong>Workflow:</strong> Staff report → Intake script → Labeled issue (<code>intake</code>, <code>bug</code>, <code>verbal</code>) → Optional auto-close script post-fix.</li>
+    <li><strong>Scripts:</strong> <code>test-github-connectivity.ps1</code> (token validation) & <code>intake-create-issue.ps1</code> (issue generation & diagnostics).</li>
+    <li><strong>Artifacts Generated:</strong> Markdown body, pretty & raw JSON payload, error response (if any), transcript run log, consolidated debug dump.</li>
+    <li><strong>Large Payload Handling:</strong> Parameters <code>-MaxConsolePayloadLines</code>, <code>-NoConsolePayload</code>, <code>-SaveRawPayload</code>, <code>-DumpAll</code>, <code>-CaptureLog</code> prevent console flooding while preserving forensic detail.</li>
+    <li><strong>Token Strategy:</strong> Uses <code>$env:GITHUB_TOKEN</code> fallback; opens browser with pre-filled form if token missing (zero disruption).</li>
+  </ul>
+  <pre style="background:#f8f9fa; border:1px solid #e2e8f0; padding:14px; border-radius:6px; font-size:.8rem; white-space:pre-wrap;">pwsh -File .\scripts\pwsh\intake-create-issue.ps1 `
                 <th>Packaged Component</th>
                 <th>Description</th>
             </tr>
@@ -789,6 +812,9 @@
         <tbody>
             <tr>
                 <td><strong>Canvas App</strong></td>
+  <p><em>Result:</em> Triage turnaround time reduced; standardized metadata improves downstream analytics on reported issues.</p>
+  <a class="back-to-top" href="#section-executive-summary">Back to top</a>
+</section>
                 <td><code>/src/power-apps/v0.3.x/</code></td>
                 <td><code>thb_TelehealthBookingApp</code></td>
                 <td>The primary user interface for booking and managing rooms. Unpacked into source files for version control.</td>
@@ -819,7 +845,7 @@
             </tr>
             <tr>
                 <td><strong>Release Artifacts</strong></td>
-                <td><code>/releases/v0.3.2/</code></td>
+                <td><code>/releases/v0.3.3/</code></td>
                 <td>Managed/Unmanaged Solutions</td>
                 <td>The final `.zip` files (`TelehealthBooking_managed.zip`) used for importing into target Power Platform environments.</td>
             </tr>
@@ -853,7 +879,7 @@
         <li><strong>Import Solution:</strong>
             <ul>
                 <li>Navigate to the Power Platform Admin Center, select the target environment.</li>
-                <li>Import the managed solution from <code>/releases/v0.3.2/TelehealthBooking_managed.zip</code>.</li>
+                <li>Import the managed solution from <code>/releases/v0.3.3/TelehealthBooking_managed.zip</code>.</li>
                 <li>During import, create/configure connection references for SharePoint and Office 365, authenticating with a service account.</li>
                 <li>Set the `SharePointSiteURL` environment variable to the URL of the site created in the previous step.</li>
             </ul>
@@ -1109,17 +1135,17 @@
     <h2>Versioning & Release Cadence</h2>
     <p>A structured versioning and release process ensures stability and predictability.</p>
     <ul>
-        <li><strong>Versioning Scheme:</strong> The project follows **Semantic Versioning (SemVer)**, in the format `MAJOR.MINOR.PATCH` (e.g., `v0.3.2`).
+  <li><strong>Versioning Scheme:</strong> The project follows **Semantic Versioning (SemVer)**, in the format `MAJOR.MINOR.PATCH` (e.g., `v0.3.3`).
             <ul>
                 <li>`MAJOR`: Incremented for incompatible, significant production changes (target: `v1.0.0`).</li>
                 <li>`MINOR`: Incremented for new, backward-compatible functionality (e.g., adding the dynamic grid).</li>
                 <li>`PATCH`: Incremented for backward-compatible bug fixes and minor tweaks.</li>
             </ul>
         </li>
-        <li><strong>Current Version:</strong> `v0.3.2` (as per `CHANGELOG.md`).</li>
+  <li><strong>Current Version:</strong> `v0.3.3` (as per `CHANGELOG.md`).</li>
         <li><strong>Release Cadence:</strong> The project is currently in a pre-release development phase with rapid iteration. Post-v1.0, a cadence of quarterly minor releases and monthly patch bundles is anticipated.</li>
         <li><strong>Source Control:</strong> All changes are tracked in a **Git repository**. The `CHANGELOG.md` file is the authoritative source for the history of changes in each version.</li>
-        <li><strong>Release Artifacts:</strong> For each release, managed and unmanaged Power Platform solution files are generated and stored in the `/releases/` directory (e.g., `/releases/v0.3.2/`).</li>
+  <li><strong>Release Artifacts:</strong> For each release, managed and unmanaged Power Platform solution files are generated and stored in the `/releases/` directory (e.g., `/releases/v0.3.3/`).</li>
     </ul>
 </section>
 

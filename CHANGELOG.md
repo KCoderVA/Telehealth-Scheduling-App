@@ -11,6 +11,35 @@ This project is currently in **pre-release development** (0.x.x versions). The f
 - **1.0.0** - First production-ready release
 - **1.x.x** - Production releases with new features and bug fixes
 
+## [0.3.3] - 2025-10-28
+### Added
+- **Issue Intake Automation Toolkit**: Introduced scripted verbal/email report → GitHub issue workflow using pure PowerShell (`scripts/pwsh/intake-create-issue.ps1`) avoiding external CLI dependencies; supports automated labeling (`intake`, `bug`, `verbal`) and assignee routing.
+- **Connectivity Validation Script**: Added `test-github-connectivity.ps1` for token scope and repository access verification prior to automated issue creation.
+- **Advanced Diagnostic Logging**: Multi-layer logging (markdown body, pretty + raw JSON payload, server error body capture, transcript run log, consolidated debug dump) enabling rapid resolution of API errors (HTTP 400) without console flooding.
+- **Payload Management Switches**: New script parameters for large JSON handling: `-DebugPayload`, `-MaxConsolePayloadLines`, `-NoConsolePayload`, `-SaveRawPayload`, `-PrettyPrintPayload`, `-DumpAll`, `-CaptureLog`.
+- **Secure Token Handling Pattern**: Environment variable fallback (`$env:GITHUB_TOKEN`) with optional direct parameter input; guidance documented for PAT creation minimal scopes (repo:issues + metadata).
+
+### Enhanced
+- **Stability of VS Code Tasks**: Refactored issue-related tasks to call external scripts, eliminating prior inline quoting/escape failures in `tasks.json` and improving maintainability.
+- **Error Resilience**: Improved REST invocation logic with explicit headers (`Content-Type: application/json`), structured status code capture, response body persistence, and graceful fallback to manual browser creation when token absent.
+- **Documentation Coverage**: Prepared for README and `index.html` updates referencing new automation and debugging capabilities (pending inclusion in main docs as of this entry).
+- **Transcript Reliability**: Ensured full diagnostic output is captured within run log even when console payload suppressed.
+
+### Changed
+- **Issue Creation Flow**: Migration from GitHub CLI dependency to native PowerShell/REST approach for compatibility with restricted enterprise environments.
+- **Diagnostics Strategy**: Transition from console-only payload debugging to file-based artifact set improving readability and archival traceability.
+
+### Technical Metrics (Delta since 0.3.2)
+- **New Scripts**: +2 PowerShell automation scripts (connectivity + intake) raising total script count.
+- **Logging Artifacts**: Up to 5 generated files per intake event (markdown, pretty JSON, raw JSON, error body, debug dump, transcript) enabling forensically complete audit.
+- **Task Reliability**: Elimination of prior JSON corruption incidents in task definitions through externalization.
+
+### Repository
+- **Automation Hardening**: Intake workflow now fully reproducible and token-aware with minimal manual steps.
+- **Governance Alignment**: Changelog updated to reflect emerging operational tooling ahead of next feature increment (v0.4.x planning for enhanced analytics & archiving).
+
+---
+
 ## [0.3.2] - 2025-10-21
 ### Added
 - **Dynamic Schedule Grid Interaction**: Time-slot matrix now supports direct cell selection that auto-populates new reservation request form fields (date, time range, building, room) reducing user input friction.

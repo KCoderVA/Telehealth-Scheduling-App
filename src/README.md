@@ -10,7 +10,7 @@ src/
 │   ├── v0.1.x/         # Legacy versions (archived)
 │   │   └── v0.1.3/     # Version 0.1.3 (archived)
 │   └── v0.3.x/         # Current development branch (promoted 2025-10-21; v0.2.x now prior lineage)
-│       └── v0.3.2/     # Version 0.3.2 release (October 21, 2025)
+│       └── v0.3.3/     # Version 0.3.3 release (October 28, 2025)
 │           ├── .unpacked/   # Power Platform CLI source files
 │           ├── .zip/        # Archive packages for deployment
 │           └── .msapp/      # Binary application files
@@ -23,7 +23,7 @@ src/
 
 ### PowerApps Development
 1. **Design**: Use PowerApps Studio web interface ([make.powerapps.com](https://make.powerapps.com/))
-2. **Export**: Download .msapp files to `/power-apps/v0.3.x/v0.3.2/.msapp/`
+2. **Export**: Download .msapp files to `/power-apps/v0.3.x/v0.3.3/.msapp/`
 3. **Source Control**: Use Power Platform CLI to maintain .unpacked/ source files
 4. **Version Control**: Semantic versioning with separate directories for major releases
 5. **Testing**: Use HTML Previewer tool for rapid development (legacy v0.1.x)
@@ -44,7 +44,7 @@ src/
 ## Key Features
 
 ### Production-Ready Components
-- **578 Telehealth Resource App v0.3.2**: Dynamic schedule grid, availability counters, enhanced approval flow architecture (October 21, 2025)
+- **578 Telehealth Resource App v0.3.3**: Adds Issue Intake automation scripts, diagnostic artifact generation; builds upon dynamic grid & approval flow (October 28, 2025)
 - **Version-Controlled Source**: Power Platform CLI integration for collaborative development
 - **SharePoint Integration**: 3 lists + Excel Online bridge for data management (2.85+ MB active data)
 - **Security Model**: VA Government Cloud compliance with role-based access and HIPAA compliance

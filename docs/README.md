@@ -69,20 +69,20 @@ docs/
 - **Technical specifications aligned with implementation**: Cross-referenced with source code in `/src/`
 - **User guides updated with application enhancements**: Linked to multimedia assets in `/assets/`
 - **API documentation maintained with system integrations**: Reference [Power Platform Connectors](https://docs.microsoft.com/en-us/connectors/)
-- **Version Control Integration**: Documentation versioning aligned with application releases (v0.3.2 – October 21, 2025)
+- **Version Control Integration**: Documentation versioning aligned with application releases (v0.3.3 – October 28, 2025)
 
-## v0.3.2 Visual Assets & Interactive Documentation
+## v0.3.3 Visual Assets & Interactive Documentation
 
 **🚀 [View Live Interactive Overview](https://kcoderva.github.io/Telehealth-Scheduling-App/)** – Comprehensive HTML documentation with collapsible architecture sections, technical metrics, screenshot gallery, roadmap, and accessibility features (high contrast mode, keyboard shortcuts).
 
 | Screenshot | File | Purpose |
 |------------|------|---------|
-| Landing Screen | assets/images/app-landing-v0.3.2.png | Displays personalized approved reservation summary pill |
-| Schedule Grid | assets/images/schedule-grid-v0.3.2.png | Interactive weekly matrix enabling direct time-slot selection |
-| Master Schedule List | assets/images/sharepoint-master-schedule-v0.3.2.png | Backend composite view of building/room/time columns |
-| Approval Flow Architecture | assets/images/approval-flow-architecture-v0.3.2.png | Multi-branch Power Automate reservation workflow |
+| Landing Screen | assets/images/app-landing-v0.3.3.png | Displays personalized approved reservation summary pill |
+| Schedule Grid | assets/images/schedule-grid-v0.3.3.png | Interactive weekly matrix enabling direct time-slot selection |
+| Master Schedule List | assets/images/sharepoint-master-schedule-v0.3.3.png | Backend composite view of building/room/time columns |
+| Approval Flow Architecture | assets/images/approval-flow-architecture-v0.3.3.png | Multi-branch Power Automate reservation workflow |
 
-Each image added in v0.3.2 supports onboarding, audit, and stakeholder review of new dynamic scheduling and approval automation capabilities.
+Each image added in v0.3.3 supports onboarding, audit, and stakeholder review of dynamic scheduling, approval automation, and new issue intake diagnostic capabilities.
 - **External Resource Integration**: Links to official Microsoft documentation and VA compliance resources
 
 ### Compliance Requirements
@@ -97,7 +97,7 @@ Each image added in v0.3.2 supports onboarding, audit, and stakeholder review of
 - **User guides for healthcare staff and managers**: Training materials and video resources in `/assets/videos/`
 - **Training materials for system adoption**: Interactive demonstrations and PowerBI analytics in `/assets/pbi/`
 - **Weekly Progress Reports**: Stakeholder updates and milestone tracking in `hidden/WEEKEND-SUMMARY.md`
-- **GitHub Pages Integration**: Public project summary at [kcoderva.github.io/Telehealth-Scheduling-App](https://kcoderva.github.io/Telehealth-Scheduling-App/) (v0.3.2 – October 21, 2025)
+- **GitHub Pages Integration**: Public project summary at [kcoderva.github.io/Telehealth-Scheduling-App](https://kcoderva.github.io/Telehealth-Scheduling-App/) (v0.3.3 – October 28, 2025)
 
 ---
 *For project overview and current status, see `/README.md` in the project root*

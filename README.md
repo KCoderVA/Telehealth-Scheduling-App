@@ -1,7 +1,7 @@
 # 🏥 VA Telehealth Room Booking Solution
 
 [![Power Platform](https://img.shields.io/badge/Power%20Platform-Enterprise%20Solution-blue)](https://powerapps.microsoft.com/)
-[![Version](https://img.shields.io/badge/Version-0.3.2-green)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-0.3.3-green)](./CHANGELOG.md)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready%20Oct%201st-success)](./CHANGELOG.md)
 [![Documentation](https://img.shields.io/badge/Documentation-98%25%20Complete-brightgreen)](./docs/)
 [![Technical Foundation](https://img.shields.io/badge/Technical%20Foundation-95%25%20Complete-success)](./docs/technical-analysis-v0.1.2.md)
@@ -9,13 +9,13 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue)](https://opensource.org/licenses/Apache-2.0)
 [![VA Compliant](https://img.shields.io/badge/VA%20Gov%20Cloud-HIPAA%20Compliant-green)](https://cloud.gov/)
 [![FedRAMP](https://img.shields.io/badge/FedRAMP-Authorized-blue)](https://marketplace.fedramp.gov/)
-Last Updated: 2025-10-23
+Last Updated: 2025-10-28
 
 ---
 
 ## 🚀 **[VIEW LIVE INTERACTIVE OVERVIEW →](https://kcoderva.github.io/Telehealth-Scheduling-App/)**
 
-**Comprehensive v0.3.2 Project Documentation** – Interactive HTML overview with collapsible architecture sections, technical metrics, screenshot gallery, roadmap, and accessibility features (high contrast mode, keyboard shortcuts). Best viewed in browser for full functionality.
+**Comprehensive v0.3.3 Project Documentation** – Interactive HTML overview with collapsible architecture sections, technical metrics, screenshot gallery, roadmap, and accessibility features (high contrast mode, keyboard shortcuts). Best viewed in browser for full functionality.
 
 ---
 
@@ -47,7 +47,7 @@ Last Updated: 2025-10-23
 - ✅ **Role-Based Access**: Granular permissions for staff, coordinators, managers
 - ✅ **Audit Logging**: Complete tracking of all scheduling activities
 
-**Current Release (v0.3.2 – October 21, 2025)** – Introduces dynamic, interactive schedule grid selection, layered approval orchestration, and real-time availability intelligence while sustaining 95%+ technical completion and 98% documentation coverage.
+**Current Release (v0.3.3 – October 28, 2025)** – Introduces automated Issue Intake workflow (native PowerShell + REST), diagnostic artifact generation, and continued scheduling enhancements while sustaining 95%+ technical completion and 98% documentation coverage.
 
 
 ---
@@ -68,7 +68,7 @@ Last Updated: 2025-10-23
 
 
 
-## 🖼️ Screenshot Gallery (v0.3.2)
+## 🖼️ Screenshot Gallery (v0.3.3)
 Overview of key system views (captured Oct 2025).
 
 | Screenshot | Description |
@@ -83,11 +83,11 @@ Overview of key system views (captured Oct 2025).
 
 ## 🚀 Quick Implementation Guide
 
-👉 **[View Interactive Project Overview](https://kcoderva.github.io/Telehealth-Scheduling-App/)** – Comprehensive v0.3.2 documentation with executive summary, architecture deep-dive, ROI analytics, and roadmap
+👉 **[View Interactive Project Overview](https://kcoderva.github.io/Telehealth-Scheduling-App/)** – Comprehensive v0.3.3 documentation with executive summary, architecture deep-dive, ROI analytics, and roadmap
 
 👩‍💻 **Ready-to-Deploy Package Includes**:
 
-- Complete PowerApps application source code (v0.3.2)
+- Complete PowerApps application source code (v0.3.3)
 - Automated deployment scripts and migration tools
 - SharePoint list templates and configuration guides
 - Power Automate workflow definitions
@@ -130,7 +130,7 @@ Overview of key system views (captured Oct 2025).
 ```
 📦 VA-Telehealth-Room-Booking-Solution/
 ├── 🚀 DEPLOYMENT/                    # Ready-to-deploy solution components
-│   ├── 📱 PowerApps-v0.3.2.msapp     # Production-ready application package
+│   ├── 📱 PowerApps-v0.3.3.msapp     # Production-ready application package
 │   ├── ⚡ PowerAutomate-Flows.zip    # Automated workflow templates
 │   ├── 📊 SharePoint-Templates/      # List schemas and site templates
 │   └── 📋 Implementation-Guide.pdf   # Step-by-step deployment instructions
@@ -150,7 +150,7 @@ Overview of key system views (captured Oct 2025).
 │   └── ⚡ .zip/                         # Archive packages for deployment
 ```
 
-### 🏥 Application Features (v0.3.2)
+### 🏥 Application Features (v0.3.3)
 
 #### Core Scheduling Functions
 
@@ -180,6 +180,7 @@ Overview of key system views (captured Oct 2025).
 - [x] Power BI analytics multi-building integration
 - [x] Repository health validation (98% compliance)
 - [x] **v0.3.2 Features**: Dynamic schedule grid, real-time availability counters, layered approval flow (Oct 21, 2025)
+- [x] **v0.3.3 Features**: Automated Issue Intake workflow (PowerShell + REST), diagnostic artifact generation (Oct 28, 2025)
 - [x] Interactive HTML documentation with accessibility features (high contrast, keyboard shortcuts)
 - [x] Asset management (11+ Excel schedules, BI dashboards, multimedia)
 - [x] GitHub Pages deployment with comprehensive project overview
@@ -206,6 +207,62 @@ Overview of key system views (captured Oct 2025).
 - **PowerShell Profile**: Enhanced commands loaded automatically (see `powershell-profile.ps1`)
 - **HTML Previewer**: Legacy development toolchain in `/src/power-apps/v0.1.x/` (archived)
 - **Project Validation**: Automated structure and quality checks
+
+### 🗂️ Issue Intake Automation (v0.3.3)
+
+Streamlined verbal/email report → GitHub issue workflow now available without GitHub CLI dependency. The automation uses native PowerShell and the GitHub REST API for environments with restricted tooling.
+
+| Component | Path | Purpose |
+|-----------|------|---------|
+| Connectivity Test Script | `scripts/pwsh/test-github-connectivity.ps1` | Validates Personal Access Token (PAT) and repo reachability before creating issues. |
+| Intake Creation Script | `scripts/pwsh/intake-create-issue.ps1` | Converts intake details into a markdown body, applies labels (`intake`, `bug`, `verbal`), assigns maintainer, persists diagnostics. |
+| Archive Output | `archive/issue-intake/` | Stores generated markdown, JSON payload(s), error responses, transcripts, and consolidated debug dumps. |
+
+#### Key Parameters (Intake Script)
+
+| Parameter | Description |
+|-----------|-------------|
+| `-Employee` | Name of reporting staff member (required). |
+| `-Title` | Short summary; automatically prefixed with `intake:` in GitHub issue. |
+| `-Description` | Quoted complaint or problem context. |
+| `-Steps` | Reproduction or observation steps. |
+| `-Severity` | One of: low, moderate, high, critical. Default: moderate. |
+| `-Token` | PAT (falls back to `$env:GITHUB_TOKEN` when omitted). |
+| `-Screenshot` | Optional path archived for reference. |
+| `-DebugPayload` | Prints (or truncates) payload JSON to console unless suppressed. |
+| `-MaxConsolePayloadLines` | Limits payload lines in console (default 300). |
+| `-NoConsolePayload` | Suppresses console payload entirely (file artifacts still saved). |
+| `-SaveRawPayload` | Saves minified raw JSON alongside pretty version. |
+| `-PrettyPrintPayload` | Forces pretty formatting for console output (default behavior). |
+| `-DumpAll` | Creates consolidated debug dump (parameters + markdown + payload). |
+| `-CaptureLog` | Starts transcript capturing entire session output. |
+
+#### Generated Artifacts (per run)
+
+- `issue-intake-<timestamp>.md` – Issue body (markdown saved locally)
+- `issue-intake-payload-<timestamp>.json` – Pretty JSON sent to API
+- `issue-intake-payload-raw-<timestamp>.json` – Minified JSON (when `-SaveRawPayload`)
+- `issue-intake-error-<timestamp>.txt` – Raw server response body on failure
+- `issue-intake-runlog-<timestamp>.log` – Full transcript (when `-CaptureLog`)
+- `issue-intake-debugdump-<timestamp>.txt` – Consolidated diagnostic report (when `-DumpAll`)
+
+#### Example (Full Diagnostics)
+```powershell
+pwsh -File .\scripts\pwsh\intake-create-issue.ps1 `
+    -Token $env:GITHUB_TOKEN `
+    -Employee "Doe, Jane" `
+    -Title "Schedule overlap in Aurora 120" `
+    -Description "User reports double-booked 10:00 slot" `
+    -Steps "1. Open grid; 2. Select 10:00; 3. Observe mismatch" `
+    -Severity moderate `
+    -DebugPayload -MaxConsolePayloadLines 80 -SaveRawPayload -DumpAll -CaptureLog
+```
+
+If a token is not supplied, the script opens a pre-filled browser issue page for manual submission (ensuring continuity even in locked-down environments).
+
+> ℹ️ **Token Scope Guidance**: Create a PAT with minimum scopes (`repo` → Issues & Metadata). Store it in `$env:GITHUB_TOKEN` for non-interactive runs.
+
+This automation reduces intake handling overhead and provides auditable, reproducible diagnostics improving turnaround on reported issues.
 
 ## Contributors
 
