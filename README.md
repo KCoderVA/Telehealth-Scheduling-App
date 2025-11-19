@@ -264,6 +264,23 @@ If a token is not supplied, the script opens a pre-filled browser issue page for
 
 This automation reduces intake handling overhead and provides auditable, reproducible diagnostics improving turnaround on reported issues.
 
+## 📚 Documentation & Support
+
+### Available Documentation
+
+- **[GitHub PR Deletion FAQ](docs/GitHub-PR-Deletion-FAQ.md)** - Understanding GitHub pull request limitations and why PRs cannot be fully deleted
+- **Project Overview** - See the live interactive documentation at [GitHub Pages](https://kcoderva.github.io/Telehealth-Scheduling-App/)
+- **Technical Analysis** - See `docs/technical-analysis-v0.1.2.md` for architecture details
+- **Change History** - See [CHANGELOG.md](CHANGELOG.md) for version history and updates
+
+### Common Questions
+
+**Q: Can I delete a pull request from GitHub?**  
+A: No, GitHub does not allow pull requests to be permanently deleted. This is by design to maintain audit trails and git history integrity. See [GitHub PR Deletion FAQ](docs/GitHub-PR-Deletion-FAQ.md) for detailed explanation.
+
+**Q: How do I report issues or bugs?**  
+A: Use the automated issue intake script (`scripts/pwsh/intake-create-issue.ps1`) or manually create a GitHub issue with the appropriate labels.
+
 ## Contributors
 
 - **Repository**: [GitHub - Telehealth Scheduling App](https://github.com/KCoderVA/Telehealth-Scheduling-App.git)
