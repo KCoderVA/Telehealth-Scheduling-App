@@ -63,7 +63,12 @@ if ($CaptureLog) {
 function Normalize-Text($text){
     if ($null -eq $text) { return '' }
     $map = @{
-        '“'='"'; '”'='"'; '‘'="'"; '’'="'"; '—'='-'; '–'='-'
+        [char]0x201C = '"'  # Left double quote
+        [char]0x201D = '"'  # Right double quote
+        [char]0x2018 = "'"  # Left single quote
+        [char]0x2019 = "'"  # Right single quote
+        [char]0x2014 = '-'  # Em dash
+        [char]0x2013 = '-'  # En dash
     }
     $out = $text
     foreach($k in $map.Keys){ $out = $out -replace [regex]::Escape($k), $map[$k] }
@@ -123,7 +128,11 @@ if (-not $Token -or [string]::IsNullOrWhiteSpace($Token)) {
     $encodedBody  = [System.Uri]::EscapeDataString($rawBody)
     $url = 'https://github.com/KCoderVA/Telehealth-Scheduling-App/issues/new?title=' + $encodedTitle + '&body=' + $encodedBody
     Write-Host 'No token detected; opening browser for manual issue creation (add labels intake, bug, verbal).' -ForegroundColor Yellow
-    start $url
+    if ($IsWindows -or $PSVersionTable.PSVersion.Major -lt 6) {
+        Start-Process $url
+    } else {
+        Write-Host "Browser URL: $url" -ForegroundColor Cyan
+    }
     exit 0
 }
 
