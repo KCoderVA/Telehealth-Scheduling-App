@@ -673,7 +673,8 @@ MyAppts As screen:
             Fill: =RGBA(184, 0, 0, 1)
             Height: =45
             HoverFill: =ColorFade(Self.Fill, -20%)
-            OnSelect: =Notify("ALERT - ERROR!!!! Change not correctly recorded or submitted!!!")
+            OnSelect: |-
+                =Remove(App_ReservationLog,varReservationToCancel);UpdateContext({varConfirmCancel:false})
             RadiusBottomLeft: =20
             RadiusBottomRight: =20
             RadiusTopLeft: =20
