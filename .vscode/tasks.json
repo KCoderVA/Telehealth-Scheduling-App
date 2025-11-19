@@ -85,52 +85,6 @@
       "command": "powershell",
       "args": ["-Command", "Write-Host '1) Run 🆕 Intake: Create Issue (blank token -> browser).' -ForegroundColor Cyan; Write-Host '2) Fix & commit (include issue # in message).' -ForegroundColor Cyan; Write-Host '3) Run 🆕 Intake: Close With Fix OR ⚡ Auto-Close Latest.' -ForegroundColor Cyan; Write-Host 'Optional: set $env:GITHUB_TOKEN to skip token prompt.' -ForegroundColor Yellow"],
       "group": "build"
-    },
-    {
-      "label": "🧪 Test: Intake E2E (Full)",
-      "type": "shell",
-      "command": "powershell",
-      "args": [
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        "./scripts/pwsh/test-intake-e2e.ps1",
-        "-Token",
-        "${input:githubToken}",
-        "-VerboseOutput"
-      ],
-      "group": "test"
-    },
-    {
-      "label": "🧪 Test: Intake E2E (Dry Run)",
-      "type": "shell",
-      "command": "powershell",
-      "args": [
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        "./scripts/pwsh/test-intake-e2e.ps1",
-        "-SkipIssueCreation",
-        "-CleanupAfterTest",
-        "-VerboseOutput"
-      ],
-      "group": "test"
-    },
-    {
-      "label": "🧪 Test: Intake E2E (With Cleanup)",
-      "type": "shell",
-      "command": "powershell",
-      "args": [
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        "./scripts/pwsh/test-intake-e2e.ps1",
-        "-Token",
-        "${input:githubToken}",
-        "-CleanupAfterTest",
-        "-VerboseOutput"
-      ],
-      "group": "test"
     }
   ],
   "inputs": [

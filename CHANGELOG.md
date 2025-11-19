@@ -11,22 +11,6 @@ This project is currently in **pre-release development** (0.x.x versions). The f
 - **1.0.0** - First production-ready release
 - **1.x.x** - Production releases with new features and bug fixes
 
-## [Unreleased]
-### Added
-- **Comprehensive E2E Test Suite**: Introduced `test-intake-e2e.ps1` providing comprehensive end-to-end testing for PAT-powered intake automation workflow with multiple test scenarios (connectivity, execution, file generation, error handling).
-- **Test Documentation**: Added `README-TESTS.md` documenting test suite usage, parameters, troubleshooting, and CI/CD integration patterns.
-- **VS Code Test Tasks**: Added three test task variants (Full, Dry Run, With Cleanup) enabling rapid test execution from VS Code task runner.
-
-### Fixed
-- **Cross-Platform Compatibility**: Fixed `intake-create-issue.ps1` browser launch command to work on Linux/macOS using platform detection instead of Windows-only `start` command.
-- **UTF-8 Encoding Issue**: Resolved PowerShell parsing errors in `Normalize-Text` function by replacing UTF-8 smart quotes with ASCII-safe character code definitions using `[char]0xXXXX` syntax.
-
-### Enhanced
-- **Test Coverage**: 11 individual test cases covering token validation, script execution, archive generation, markdown content validation, JSON structure verification, and error handling scenarios.
-- **Test Reporting**: Enhanced test output with pass/fail/skip indicators, detailed error messages, test duration tracking, and pass rate calculation.
-
----
-
 ## [0.3.3] - 2025-10-28
 ### Added
 - **Issue Intake Automation Toolkit**: Introduced scripted verbal/email report → GitHub issue workflow using pure PowerShell (`scripts/pwsh/intake-create-issue.ps1`) avoiding external CLI dependencies; supports automated labeling (`intake`, `bug`, `verbal`) and assignee routing.
