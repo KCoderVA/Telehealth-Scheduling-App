@@ -910,6 +910,7 @@
 	"S:\\Informatics\\Data Team\\Coder - Informatics\\App Programing\\Telehealth Schedule & Booking\\": true,
 	"**/.git/*.md": true
 },
+"sarif-viewer.connectToGithubCodeScanning": "off",
 	},
 	"extensions": {
 		"recommendations": [

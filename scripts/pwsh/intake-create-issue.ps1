@@ -49,7 +49,11 @@ if (-not $Token -or [string]::IsNullOrWhiteSpace($Token)) {
 }
 
 $timestamp = Get-Date -Format 'yyyy-MM-dd-HHmmss'
-$archiveDir = Join-Path -Path '.' -ChildPath 'archive/issue-intake'
+$rootArchiveDir = Join-Path -Path '.' -ChildPath 'archive/issue-intake'
+if (-not (Test-Path $rootArchiveDir)) { New-Item -ItemType Directory -Path $rootArchiveDir | Out-Null }
+
+# Create a dedicated subfolder per intake so all related artifacts stay together
+$archiveDir = Join-Path $rootArchiveDir ("issue-intake-" + $timestamp)
 if (-not (Test-Path $archiveDir)) { New-Item -ItemType Directory -Path $archiveDir | Out-Null }
 
 # Optional transcript logging
@@ -60,13 +64,24 @@ if ($CaptureLog) {
 }
 
 # Normalize smart quotes and curly punctuation to ASCII to avoid downstream escaping issues
-function Normalize-Text($text){
-    if ($null -eq $text) { return '' }
-    $map = @{
-        '“'='"'; '”'='"'; '‘'="'"; '’'="'"; '—'='-'; '–'='-'
+function Normalize-Text($text) {
+    if ($null -eq $text) {
+        return ''
     }
+
+    # Build map using Unicode escape sequences to avoid parser issues with curly quotes
+    $map = @{}
+    $map.Add([char]0x201C, '"') # “
+    $map.Add([char]0x201D, '"') # ”
+    $map.Add([char]0x2018, "'") # ‘
+    $map.Add([char]0x2019, "'") # ’
+    $map.Add([char]0x2014, '-')  # —
+    $map.Add([char]0x2013, '-')  # –
+
     $out = $text
-    foreach($k in $map.Keys){ $out = $out -replace [regex]::Escape($k), $map[$k] }
+    foreach ($k in $map.Keys) {
+        $out = $out -replace [regex]::Escape([string]$k), $map[$k]
+    }
     return $out
 }
 
@@ -216,6 +231,16 @@ try {
     if ($resp.number) {
         Write-Host ('Issue created: #' + $resp.number) -ForegroundColor Green
         Write-Host ('URL: ' + $resp.html_url) -ForegroundColor Cyan
+
+        # Append GitHub issue linkage back into the local intake markdown for traceability
+        try {
+            $linkLine = "**GitHub Issue:** #$($resp.number) - $($resp.html_url)"
+            Add-Content -Path $mdFile -Value "`r`n$linkLine" -Encoding UTF8
+            Write-Host 'Updated intake file with GitHub issue reference.' -ForegroundColor DarkGray
+        } catch {
+            Write-Host ('WARN: Failed to update intake markdown with GitHub issue reference: ' + $_.Exception.Message) -ForegroundColor Yellow
+        }
+
         exit 0
     } else {
         Write-Host 'ERROR: Issue creation returned no number.' -ForegroundColor Red
