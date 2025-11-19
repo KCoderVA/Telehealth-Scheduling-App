@@ -1,0 +1,2970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Copilot Workflow Guide - Telehealth Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 5px solid #3498db;
+        }
+        h3 {
+            color: #16a085;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h4 {
+            color: #27ae60;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .intro {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .workflow-type {
+            background: #e8f4f8;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 5px solid #3498db;
+        }
+        .step {
+            background: #fff;
+            padding: 20px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .step-header {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .why, .what, .how, .variations {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .why::before {
+            content: "💡 WHY: ";
+            font-weight: bold;
+            color: #e67e22;
+        }
+        .what::before {
+            content: "🎯 WHAT: ";
+            font-weight: bold;
+            color: #9b59b6;
+        }
+        .how::before {
+            content: "⚙️ HOW: ";
+            font-weight: bold;
+            color: #16a085;
+        }
+        .variations::before {
+            content: "🔄 VARIATIONS: ";
+            font-weight: bold;
+            color: #34495e;
+        }
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #e83e8c;
+        }
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        pre code {
+            background: transparent;
+            color: #ecf0f1;
+            padding: 0;
+        }
+        .command-block {
+            background: #1e272e;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            margin: 10px 0;
+        }
+        .tip {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tip::before {
+            content: "💡 TIP: ";
+            font-weight: bold;
+            color: #856404;
+        }
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning::before {
+            content: "⚠️ WARNING: ";
+            font-weight: bold;
+            color: #721c24;
+        }
+        .best-practice {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .best-practice::before {
+            content: "✅ BEST PRACTICE: ";
+            font-weight: bold;
+            color: #155724;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .toc ul {
+            list-style-position: inside;
+        }
+        .toc li {
+            margin: 8px 0;
+        }
+        ul, ol {
+            margin-left: 40px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Autonomous Copilot Workflow Guide</h1>
+        <p style="font-size: 0.9em; color: #7f8c8d; margin-bottom: 20px;">
+            <strong>Project:</strong> Telehealth Resources Project<br>
+            <strong>Last Updated:</strong> November 19, 2025<br>
+            <strong>Focus:</strong> Maximum automation, minimal manual intervention
+        </p>
+
+        <div class="intro">
+            <h3>📋 Guide Purpose</h3>
+            <p>This guide provides step-by-step workflows for leveraging GitHub Copilot and the GitHub Pull Request extension in VS Code to maximize autonomous development workflows. Emphasis is placed on automation, using chat participants like <code>@githubpr</code>, and minimizing manual steps.</p>
+
+            <p><strong>🎯 Applicability:</strong> While examples reference the <strong>Telehealth Resources Project</strong>, all workflows are designed to be <strong>universally applicable to any VS Code workspace</strong>. Copilot-based methods work across all project types without requiring workspace-specific configuration.</p>
+
+            <p><strong>Key Principles:</strong></p>
+            <ul>
+                <li>🚀 <strong>Full Automation First:</strong> Prefer Copilot-driven workflows over manual scripting</li>
+                <li>💬 <strong>Chat Participant Usage:</strong> Leverage <code>@githubpr</code>, <code>@workspace</code>, and <code>@terminal</code></li>
+                <li>🎯 <strong>Minimal Manual Steps:</strong> Avoid creating additional scripts, tasks, or configuration</li>
+                <li>📊 <strong>Audit vs. Speed:</strong> Prioritize development speed over extensive audit trails</li>
+                <li>🌍 <strong>Universal Compatibility:</strong> Core workflows work in any workspace; project-specific tasks are clearly marked as optional alternatives</li>
+            </ul>
+        </div>
+
+        <div class="toc">
+            <h3>📖 Table of Contents</h3>
+            <ul>
+                <li><a href="#section-prerequisites">Prerequisites & Extension Setup</a></li>
+                <li><a href="#section-workflow1">Workflow 1: User-Reported Bug/Feature/Issue Lifecycle</a></li>
+                <li><a href="#section-workflow2">Workflow 2: General Development & Daily Progress</a></li>
+                <li><a href="#section-chat-participants">Copilot Chat Participants Reference</a></li>
+                <li><a href="#section-power-platform">Power Platform Specific Workflows</a></li>
+                <li><a href="#section-troubleshooting">Troubleshooting & Common Issues</a></li>
+                <li><a href="#section-resources">Additional Resources & References</a></li>
+            </ul>
+        </div>
+
+        <!-- SECTION: Prerequisites -->
+        <h2 id="section-prerequisites">Prerequisites & Extension Setup</h2>
+
+        <h3>Required Extensions</h3>
+        <p>Two essential VS Code extensions enable autonomous Copilot workflows:</p>
+
+        <div class="step">
+            <div class="step-header">1️⃣ GitHub Copilot Chat (GitHub.copilot-chat)</div>
+            <div class="why">Provides AI-powered coding assistance through natural language chat interface with Agent mode for autonomous multi-step operations</div>
+            <div class="what">Enables conversational AI that can read your workspace, write code, run commands, and make multi-file changes autonomously</div>
+            <div class="how">
+                <strong>Installation:</strong>
+                <ol>
+                    <li>Open VS Code Extensions view (<code>Ctrl+Shift+X</code>)</li>
+                    <li>Search for "GitHub Copilot Chat"</li>
+                    <li>Click <strong>Install</strong> on the extension by GitHub</li>
+                    <li>Reload VS Code if prompted</li>
+                </ol>
+                Or install via command line:
+                <pre><code>code --install-extension GitHub.copilot-chat</code></pre>
+            </div>
+            <div class="variations">
+                <strong>Alternative:</strong> Install from <a href="https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat" target="_blank">VS Code Marketplace website</a>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">2️⃣ GitHub Pull Requests (GitHub.vscode-pull-request-github)</div>
+            <div class="why">Enables direct GitHub integration for managing issues, pull requests, and repository operations without leaving VS Code</div>
+            <div class="what">Provides <code>@githubpr</code> chat participant, PR review UI, issue management, and seamless GitHub workflow integration</div>
+            <div class="how">
+                <strong>Installation:</strong>
+                <ol>
+                    <li>Open VS Code Extensions view (<code>Ctrl+Shift+X</code>)</li>
+                    <li>Search for "GitHub Pull Requests and Issues"</li>
+                    <li>Click <strong>Install</strong> on the extension by GitHub</li>
+                    <li>Reload VS Code if prompted</li>
+                </ol>
+                Or install via command line:
+                <pre><code>code --install-extension GitHub.vscode-pull-request-github</code></pre>
+            </div>
+            <div class="variations">
+                <strong>Alternative:</strong> Install from <a href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github" target="_blank">VS Code Marketplace website</a>
+            </div>
+        </div>
+
+        <h3>Authentication & GitHub Connection</h3>
+
+        <div class="step">
+            <div class="step-header">3️⃣ Sign In to GitHub</div>
+            <div class="why">Authentication allows extensions to access your repositories, create issues, manage PRs, and perform automated operations on your behalf</div>
+            <div class="what">Establishes secure OAuth connection between VS Code and your GitHub account with appropriate scopes for repository management</div>
+            <div class="how">
+                <strong>Sign-in Process:</strong>
+                <ol>
+                    <li>Open VS Code Command Palette (<code>Ctrl+Shift+P</code>)</li>
+                    <li>Type and select <code>GitHub: Sign In</code></li>
+                    <li>Choose authentication method:
+                        <ul>
+                            <li><strong>Browser-based (Recommended):</strong> Opens GitHub in browser for OAuth flow</li>
+                            <li><strong>Token-based:</strong> Use personal access token for automation scenarios</li>
+                        </ul>
+                    </li>
+                    <li>Authorize VS Code access in GitHub</li>
+                    <li>Verify sign-in: Look for GitHub icon in VS Code status bar (bottom-left)</li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Enterprise GitHub:</strong> Configure <code>github.enterpriseUri</code> in VS Code settings before signing in. Example: <code>"github.enterpriseUri": "https://github.va.gov"</code>
+            </div>
+        </div>
+
+        <div class="best-practice">
+            For enhanced security in VA environments, use GitHub Personal Access Tokens (classic) with these scopes: <code>repo</code>, <code>workflow</code>, <code>read:org</code>, <code>user:email</code>
+        </div>
+
+        <h3>Workspace Configuration</h3>
+
+        <div class="step">
+            <div class="step-header">4️⃣ Configure Repository Remotes</div>
+            <div class="why">Extensions need to know which GitHub repositories to monitor for pull requests and issues</div>
+            <div class="what">Sets the remote names that GitHub Pull Requests extension will query (default: origin, upstream)</div>
+            <div class="how">
+                <strong>Configuration Steps:</strong>
+                <ol>
+                    <li>Open VS Code Settings (<code>Ctrl+,</code>)</li>
+                    <li>Search for <code>githubPullRequests.remotes</code></li>
+                    <li>Edit the JSON array to include your remote names</li>
+                    <li>Default configuration works for most repositories:</li>
+                </ol>
+                <pre><code>"githubPullRequests.remotes": ["origin", "upstream"]</code></pre>
+            </div>
+            <div class="variations">
+                <strong>For Telehealth Project:</strong> If you use custom remotes like "production" or "dev", add them to the array: <code>["origin", "upstream", "production"]</code>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">5️⃣ Enable Copilot Agent Mode</div>
+            <div class="why">Agent mode enables fully autonomous multi-step operations where Copilot can execute tasks without constant approval prompts</div>
+            <div class="what">Switches Copilot from interactive assistant to autonomous agent that can make decisions, run commands, and complete complex workflows</div>
+            <div class="how">
+                <strong>Enabling Agent Mode:</strong>
+                <ol>
+                    <li>Open Copilot Chat view (<code>Ctrl+Alt+I</code>)</li>
+                    <li>Click the <strong>Agent picker</strong> dropdown (top of chat)</li>
+                    <li>Select <strong>Agent</strong> mode</li>
+                    <li>Agent mode remains active for the current chat session</li>
+                </ol>
+                <div class="tip">Agent mode is perfect for: creating new features, refactoring code, setting up project structure, implementing multi-file changes, and running automated workflows</div>
+            </div>
+            <div class="variations">
+                <strong>Other Modes:</strong>
+                <ul>
+                    <li><strong>Ask:</strong> Question-answering only, no code changes</li>
+                    <li><strong>Edit:</strong> Targeted editing of specific files</li>
+                    <li><strong>Plan:</strong> Strategic planning without implementation</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Verification & Testing</h3>
+
+        <div class="step">
+            <div class="step-header">6️⃣ Verify Extension Functionality</div>
+            <div class="why">Confirms all extensions are properly installed, authenticated, and ready for autonomous workflows</div>
+            <div class="what">Tests core functionality of Copilot Chat and GitHub Pull Requests extensions</div>
+            <div class="how">
+                <strong>Verification Checklist:</strong>
+                <ol>
+                    <li><strong>Test Copilot Chat:</strong>
+                        <ul>
+                            <li>Open Chat view (<code>Ctrl+Alt+I</code>)</li>
+                            <li>Type: <code>@workspace what is this project about?</code></li>
+                            <li>Verify Copilot responds with project context</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test GitHub Integration:</strong>
+                        <ul>
+                            <li>Open Chat view</li>
+                            <li>Type: <code>@githubpr list open issues</code></li>
+                            <li>Verify extension fetches your repository issues</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Terminal Integration:</strong>
+                        <ul>
+                            <li>In Chat, type: <code>@terminal check git status</code></li>
+                            <li>Verify Copilot can interact with your terminal</li>
+                        </ul>
+                    </li>
+                    <li><strong>Verify GitHub View:</strong>
+                        <ul>
+                            <li>Check Activity Bar for GitHub icon</li>
+                            <li>Click to open GitHub Pull Requests & Issues view</li>
+                            <li>Verify you see your repository's PRs and issues</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Troubleshooting:</strong> If verification fails, see the <a href="#section-troubleshooting">Troubleshooting section</a> for solutions
+            </div>
+        </div>
+
+        <div class="best-practice">
+            Create a test issue in your repository and practice closing it using <code>@githubpr close issue #X</code> to familiarize yourself with the autonomous workflow before handling real user reports.
+        </div>
+
+        <!-- SECTION: Workflow 1 -->
+        <h2 id="section-workflow1">Workflow 1: User-Reported Bug/Feature/Issue Lifecycle</h2>
+
+        <div class="workflow-type">
+            <h3>📋 Overview</h3>
+            <p>This workflow covers the complete lifecycle of handling user-reported bugs, feature requests, or issues from initial intake through resolution and publication. Emphasis is on using Copilot Agent mode and <code>@githubpr</code> participant for maximum automation.</p>
+
+            <p><strong>Workflow Stages:</strong></p>
+            <ul>
+                <li><strong>Intake (Steps 1-3):</strong> Receive, document, and create GitHub issue</li>
+                <li><strong>Investigation (Steps 4-6):</strong> Analyze root cause, plan fix, implement changes</li>
+                <li><strong>Resolution (Steps 7-9):</strong> Document solution, close issue, publish updates</li>
+            </ul>
+        </div>
+
+        <h3>🎯 Stage 1: Issue Intake & Triage</h3>
+
+        <div class="step">
+            <div class="step-header">Step 1: Receive Bug/Feature Report from User</div>
+            <div class="why">Users report issues through various channels (email, Teams, in-person). Standardizing intake ensures no details are lost and creates audit trail for VA compliance.</div>
+            <div class="what">Gathering structured information about the issue including: reporter contact info, severity, description, reproduction steps, screenshots, and expected vs actual behavior.</div>
+            <div class="how">
+                <strong>Information Collection:</strong>
+                <ol>
+                    <li>When user reports issue via email/Teams/in-person, note these details:
+                        <ul>
+                            <li><strong>Reporter Info:</strong> Name, email, department, phone</li>
+                            <li><strong>Severity:</strong> Critical / High / Medium / Low</li>
+                            <li><strong>Issue Type:</strong> Bug / Feature Request / Enhancement</li>
+                            <li><strong>Title:</strong> Brief summary (under 80 characters)</li>
+                            <li><strong>Description:</strong> Detailed explanation of the issue</li>
+                            <li><strong>Steps to Reproduce:</strong> Numbered steps to recreate the problem</li>
+                            <li><strong>Screenshots:</strong> Visual evidence (if applicable)</li>
+                            <li><strong>Expected Behavior:</strong> What should happen</li>
+                            <li><strong>Actual Behavior:</strong> What actually happens</li>
+                        </ul>
+                    </li>
+                    <li>If user provides incomplete info, ask clarifying questions immediately</li>
+                    <li>Save screenshots to <code>s:\path\to\screenshots\</code> or project's <code>assets\images\</code> folder</li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Telehealth Project Specific:</strong> For room booking issues, also capture: building name, room number, date/time of booking, manager involved in approval chain.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 2: Use VS Code Task to Create GitHub Issue</div>
+            <div class="why">Automates GitHub issue creation with proper formatting, labels, and metadata without leaving VS Code. Eliminates manual browser-based issue creation.</div>
+            <div class="what">Executes workspace-configured PowerShell script that uses GitHub API to create properly formatted issue with intake form data.</div>
+            <div class="how">
+                <strong>Using VS Code Task (Preferred Method):</strong>
+                <ol>
+                    <li>Press <code>Ctrl+Shift+P</code> → Type <code>Tasks: Run Task</code></li>
+                    <li>Select: <code>🆕 Intake: Create Issue</code></li>
+                    <li>Task will prompt for each field:
+                        <ul>
+                            <li>GitHub Token (or press Enter to use browser-based auth)</li>
+                            <li>Employee Name</li>
+                            <li>Employee Email</li>
+                            <li>Department</li>
+                            <li>Phone Number</li>
+                            <li>Severity (Critical/High/Medium/Low)</li>
+                            <li>Issue Title</li>
+                            <li>Issue Description</li>
+                            <li>Reproduction Steps</li>
+                            <li>Additional Notes</li>
+                            <li>Screenshot Path (optional)</li>
+                        </ul>
+                    </li>
+                    <li>Task creates issue and outputs: Issue number, URL, confirmation</li>
+                    <li>Copy issue number for next steps (e.g., <code>#42</code>)</li>
+                </ol>
+
+                <strong>Alternative: Use Copilot Chat:</strong>
+                <pre><code>@githubpr create new issue with title "Room booking fails for Aurora 120" and labels "bug,intake"</code></pre>
+            </div>
+            <div class="variations">
+                <strong>No Task Configured?</strong> Use <code>@githubpr</code> directly in Copilot Chat:
+                <pre><code>@githubpr create issue
+Title: [paste title]
+Labels: bug, intake
+Body: [paste full description with reporter info]</code></pre>
+            </div>
+        </div>
+
+        <div class="tip">
+            <strong>Pro Tip:</strong> Set environment variable <code>$env:GITHUB_TOKEN</code> in your PowerShell profile to avoid token prompts. Generate token at <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a> with <code>repo</code> scope.
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 3: Initial Triage with Copilot Agent</div>
+            <div class="why">Copilot can analyze the issue description and workspace context to suggest likely root causes, affected files, and investigation starting points before you manually search.</div>
+            <div class="what">Uses Copilot Agent mode with <code>@workspace</code> context to perform intelligent triage, identify related code areas, and create investigation plan.</div>
+            <div class="how">
+                <strong>Triage Process:</strong>
+                <ol>
+                    <li>Open Copilot Chat (<code>Ctrl+Alt+I</code>)</li>
+                    <li>Set mode to <strong>Agent</strong></li>
+                    <li>Use this prompt pattern:
+                        <pre><code>@workspace I received issue #42 about "Room booking fails for Aurora 120"
+
+User reports: [paste key details from issue]
+
+Please:
+1. Search the codebase for related files
+2. Identify likely root cause areas
+3. List files I should examine
+4. Suggest investigation approach</code></pre>
+                    </li>
+                    <li>Agent will autonomously:
+                        <ul>
+                            <li>Search workspace for relevant keywords</li>
+                            <li>Identify files containing room booking logic</li>
+                            <li>Analyze error patterns in code</li>
+                            <li>Provide structured investigation plan</li>
+                        </ul>
+                    </li>
+                    <li>Review Agent's findings and proceed to investigation stage</li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>For Power Platform Projects:</strong> Include context about whether issue is in Canvas App, Power Automate flow, or SharePoint:
+                <pre><code>@workspace Issue #42 is related to Canvas App room selection dropdown. Search Power Fx formulas in src/power-apps/ for room filtering logic.</code></pre>
+            </div>
+        </div>
+
+        <div class="best-practice">
+            After triage, add a comment to the GitHub issue with Copilot's findings: <code>@githubpr comment on issue #42 "Initial triage suggests issue in room filtering logic (files: src/power-apps/Screens/RoomSelection.fx)"</code>
+        </div>
+
+        <h3>🔍 Stage 2: Investigation & Implementation</h3>
+
+        <div class="step">
+            <div class="step-header">Step 4: Deep Dive Investigation with Copilot Agent</div>
+            <div class="why">Copilot Agent can autonomously read multiple files, trace logic flows, identify bugs, and understand complex code relationships faster than manual investigation.</div>
+            <div class="what">Uses Agent mode to perform comprehensive code analysis across the workspace, following function calls, examining data flows, and pinpointing the exact location and cause of issues.</div>
+            <div class="how">
+                <strong>Investigation Process:</strong>
+                <ol>
+                    <li>In Copilot Chat (Agent mode), use investigation prompt:
+                        <pre><code>@workspace Investigate issue #42: Room booking fails for Aurora 120
+
+Based on triage findings, examine:
+1. Room filtering logic in src/power-apps/Screens/RoomSelection.fx
+2. Data source queries for room availability
+3. Any hardcoded building/room references
+4. Validation rules that might reject "Aurora 120"
+
+Please analyze the code and identify the root cause.</code></pre>
+                    </li>
+                    <li>Agent will autonomously:
+                        <ul>
+                            <li>Read relevant source files</li>
+                            <li>Search for patterns and references</li>
+                            <li>Trace logic flows across multiple files</li>
+                            <li>Identify the specific line(s) causing the issue</li>
+                            <li>Explain the root cause in detail</li>
+                        </ul>
+                    </li>
+                    <li>Review Agent's analysis and ask follow-up questions if needed:
+                        <pre><code>Why would the filter reject "Aurora 120" specifically? Is it a case sensitivity issue?</code></pre>
+                    </li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>For Multi-Component Issues:</strong> Ask Agent to check interactions between components:
+                <pre><code>@workspace Check if this is a Canvas App issue, Power Automate flow issue, or SharePoint list schema issue. Trace the data flow from user input through all systems.</code></pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 5: Implement Fix with @workspace Context</div>
+            <div class="why">Copilot Agent can implement fixes across multiple files while maintaining code style, following project patterns, and ensuring consistency with existing codebase.</div>
+            <div class="what">Uses Agent mode to autonomously write code changes, update configurations, and modify files to resolve the identified issue while preserving existing functionality.</div>
+            <div class="how">
+                <strong>Fix Implementation:</strong>
+                <ol>
+                    <li>Request fix implementation from Agent:
+                        <pre><code>@workspace Fix issue #42
+
+Root cause: Room filter uses case-sensitive comparison and "Aurora 120" doesn't match "aurora 120" in data source.
+
+Please:
+1. Update room filtering logic to be case-insensitive
+2. Add defensive checks for null/undefined values
+3. Include inline comments explaining the fix
+4. Follow existing Power Fx code style in this workspace</code></pre>
+                    </li>
+                    <li>Agent will autonomously:
+                        <ul>
+                            <li>Locate the exact code requiring changes</li>
+                            <li>Generate fix using proper syntax and patterns</li>
+                            <li>Apply changes to appropriate file(s)</li>
+                            <li>Add explanatory comments</li>
+                            <li>Show you diff preview for review</li>
+                        </ul>
+                    </li>
+                    <li>Review proposed changes in diff editor</li>
+                    <li>Accept or request modifications:
+                        <pre><code>The fix looks good but can you also add error logging for debugging future issues?</code></pre>
+                    </li>
+                    <li>Agent will iterate on the fix until you approve</li>
+                </ol>
+
+                <div class="tip">
+                    <strong>Multi-file Fixes:</strong> Agent can handle complex changes across multiple files. Just describe what needs to change:
+                    <pre><code>@workspace Update both the Canvas App filtering logic AND the SharePoint list schema to ensure room names are stored consistently in Title Case format.</code></pre>
+                </div>
+            </div>
+            <div class="variations">
+                <strong>Power Platform Specific Fixes:</strong>
+                <ul>
+                    <li><strong>Canvas App Formula Fix:</strong> Agent edits unpacked .fx files in src/power-apps/</li>
+                    <li><strong>Power Automate Flow Fix:</strong> Agent modifies flow definition JSON in src/power-automate/</li>
+                    <li><strong>SharePoint Schema Fix:</strong> Agent updates list schema XML in src/sharepoint/</li>
+                </ul>
+                <strong>Note:</strong> For web-based editor changes (Canvas Apps/Flows), you'll need to manually apply Agent's suggestions in PowerApps Studio or Power Automate designer, then export updated artifacts.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 6: Test Changes Locally/In Dev Environment</div>
+            <div class="why">Testing verifies the fix resolves the reported issue without introducing regressions or breaking existing functionality.</div>
+            <div class="what">Validating the code changes by reproducing the original issue scenario and confirming the fix works as expected.</div>
+            <div class="how">
+                <strong>Testing Workflow:</strong>
+                <ol>
+                    <li><strong>For Power Platform Projects:</strong>
+                        <ul>
+                            <li>Pack modified source files back to .msapp:
+                                <pre><code>@terminal pac canvas pack --sources src/power-apps/TelehealthBookingApp --msapp TelehealthBooking.msapp</code></pre>
+                            </li>
+                            <li>Import to Dev environment via PowerApps Studio</li>
+                            <li>Test the specific scenario from issue #42</li>
+                            <li>Verify room "Aurora 120" now appears in filtered results</li>
+                        </ul>
+                    </li>
+                    <li><strong>For Code-based Projects:</strong>
+                        <ul>
+                            <li>Run unit tests: <code>@terminal npm test</code> or <code>@terminal pytest</code></li>
+                            <li>Start dev server: <code>@terminal npm run dev</code></li>
+                            <li>Manually test the reported scenario</li>
+                        </ul>
+                    </li>
+                    <li>Document test results:
+                        <pre><code>@githubpr comment on issue #42 "Fix implemented and tested in dev environment. Room 'Aurora 120' now appears correctly in filtered dropdown. Case-insensitive comparison working as expected."</code></pre>
+                    </li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Automated Testing:</strong> Ask Copilot to generate test cases:
+                <pre><code>@workspace Generate unit tests for the room filtering logic fix to prevent regression. Include test cases for: mixed case input, null values, special characters in room names.</code></pre>
+            </div>
+        </div>
+
+        <div class="warning">
+            For VA healthcare projects, always test in a non-production environment first. Never apply fixes directly to production Power Platform environments without proper testing and approval.
+        </div>
+
+        <h3>✅ Stage 3: Resolution & Publication</h3>
+
+        <div class="step">
+            <div class="step-header">Step 7: Document Resolution with Copilot</div>
+            <div class="why">Clear documentation ensures knowledge transfer, provides audit trail for VA compliance, and helps future troubleshooting of similar issues.</div>
+            <div class="what">Uses Copilot to generate comprehensive resolution documentation including root cause analysis, fix description, testing results, and implementation notes.</div>
+            <div class="how">
+                <strong>Documentation Process:</strong>
+                <ol>
+                    <li>Ask Copilot to generate resolution documentation:
+                        <pre><code>@workspace Generate resolution documentation for issue #42
+
+Include:
+1. Root cause summary
+2. Files modified with brief explanation
+3. Testing results
+4. Deployment notes for production
+5. Related issues or documentation updates needed
+
+Format as markdown for GitHub issue comment.</code></pre>
+                    </li>
+                    <li>Copilot will generate structured documentation like:
+                        <pre><code>## Resolution Summary
+
+**Root Cause:** Room filtering logic used case-sensitive comparison causing "Aurora 120" to fail match with "aurora 120" in data source.
+
+**Files Modified:**
+- `src/power-apps/Screens/RoomSelection.fx` - Updated Filter() formula to use Lower() function for case-insensitive comparison
+- Added null/undefined defensive checks
+
+**Testing Results:**
+✅ Room "Aurora 120" now appears in filtered dropdown
+✅ Case variations ("AURORA 120", "aurora 120") all work correctly
+✅ Existing room bookings unaffected
+✅ No regression in other building selections
+
+**Deployment Notes:**
+1. Export updated Canvas App from Dev environment
+2. Import to Test environment for UAT
+3. After approval, deploy to Production during maintenance window</code></pre>
+                    </li>
+                    <li>Review and refine documentation if needed</li>
+                    <li>Post to GitHub issue:
+                        <pre><code>@githubpr comment on issue #42 [paste generated documentation]</code></pre>
+                    </li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Alternative:</strong> Update workspace documentation:
+                <pre><code>@workspace Also update docs/known-issues.md with this resolution for future reference</code></pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 8: Close Issue Using @githubpr</div>
+            <div class="why">Automated issue closure with proper labeling maintains clean issue tracking and provides clear status to stakeholders without manual GitHub web interface interaction.</div>
+            <div class="what">Uses @githubpr participant to close the issue, apply resolution labels, and link to the commit that fixed it.</div>
+            <div class="how">
+                <strong>Issue Closure Process:</strong>
+                <ol>
+                    <li><strong>Method 1: Using Workspace Task (Recommended for Telehealth Project)</strong>
+                        <ul>
+                            <li>Press <code>Ctrl+Shift+P</code> → <code>Tasks: Run Task</code></li>
+                            <li>Select: <code>🆕 Intake: Close With Fix</code></li>
+                            <li>Provide when prompted:
+                                <ul>
+                                    <li>Issue number: <code>42</code></li>
+                                    <li>Fix commit reference: <code>HEAD</code> or specific commit SHA</li>
+                                    <li>Resolution notes: Brief summary</li>
+                                    <li>GitHub token (or press Enter for env variable)</li>
+                                </ul>
+                            </li>
+                            <li>Task automatically: adds comment, applies "fixed" label, closes issue</li>
+                        </ul>
+                    </li>
+                    <li><strong>Method 2: Using @githubpr Directly</strong>
+                        <pre><code>@githubpr close issue #42 with comment "Fixed in commit abc123. Room filtering now case-insensitive." and add label "fixed"</code></pre>
+                    </li>
+                    <li><strong>Method 3: Auto-Close Latest Open Issue</strong>
+                        <ul>
+                            <li>Run task: <code>⚡ Intake: Auto-Close Latest</code></li>
+                            <li>Automatically finds most recent open "intake" labeled issue and closes it</li>
+                        </ul>
+                    </li>
+                    <li>Verify closure in GitHub Pull Requests view (VS Code sidebar)</li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Batch Closure:</strong> If fix resolves multiple related issues:
+                <pre><code>@githubpr close issues #42 #43 #44 with comment "All fixed in commit abc123. Case-insensitive room filtering implemented."</code></pre>
+            </div>
+        </div>
+
+        <div class="tip">
+            For Telehealth Project: The workspace includes pre-configured VS Code tasks that handle the full issue lifecycle. Use <code>📘 Intake: Lifecycle Helper</code> task to see the recommended workflow steps.
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 9: Publish Updated Solution to Production</div>
+            <div class="why">Makes the fix available to end users and completes the issue resolution cycle. Proper deployment process ensures stability and rollback capability.</div>
+            <div class="what">Exports updated Power Platform solution, creates GitHub release, and deploys to production environment following change management procedures.</div>
+            <div class="how">
+                <strong>Publication Workflow:</strong>
+                <ol>
+                    <li><strong>For Power Platform Projects:</strong>
+                        <ul>
+                            <li>Export solution from Dev environment (manually in PowerApps/Power Automate)</li>
+                            <li>Save exported .zip to workspace: <code>releases/v0.9.x/TelehealthBooking_[version].zip</code></li>
+                            <li>Unpack for source control:
+                                <pre><code>@terminal pac solution unpack --zipfile releases/v0.9.42/TelehealthBooking_0_9_42.zip --folder src/ --processCanvasApps</code></pre>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Update CHANGELOG.md:</strong>
+                        <pre><code>@workspace Update CHANGELOG.md with v0.9.42 entry including:
+- Fixed: Room filtering now case-insensitive (Issue #42)
+- Changed: Enhanced room selection dropdown with defensive null checks
+- Closes: #42</code></pre>
+                    </li>
+                    <li><strong>Commit and Push Changes:</strong>
+                        <pre><code>@terminal git add -A
+@terminal git commit -m "Fix: Case-insensitive room filtering (Fixes #42)"
+@terminal git push origin main</code></pre>
+                        <strong>Alternative:</strong> Let Copilot handle git operations:
+                        <pre><code>@workspace Commit all changes with message "Fix: Case-insensitive room filtering (Fixes #42)" and push to origin/main</code></pre>
+                    </li>
+                    <li><strong>Create GitHub Release:</strong>
+                        <pre><code>@githubpr create release v0.9.42 with title "Room Booking Fixes - v0.9.42" and notes from CHANGELOG.md latest entry</code></pre>
+                    </li>
+                    <li><strong>Deploy to Production:</strong>
+                        <ul>
+                            <li>Import solution to Production Power Platform environment</li>
+                            <li>Verify functionality with smoke tests</li>
+                            <li>Notify stakeholders of deployment</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Automated Deployment Pipeline:</strong> For mature projects, consider GitHub Actions to automate deployment:
+                <pre><code>@workspace Create GitHub Actions workflow that automatically deploys to Test environment on push to main branch</code></pre>
+            </div>
+        </div>
+
+        <div class="best-practice">
+            <strong>Complete Workflow Summary:</strong> Issue reported → VS Code task creates GitHub issue → Copilot Agent investigates → Agent implements fix → Test in dev → Document resolution → @githubpr closes issue → Commit & push → Create release → Deploy to production. All steps executable from VS Code without browser context switching.
+        </div>
+
+        <div class="warning">
+            <strong>VA Compliance Note:</strong> For VA healthcare systems, ensure all deployments follow established change management procedures, including CAB approval for production changes and proper documentation in your change control system.
+        </div>
+
+        <!-- SECTION: Workflow 2 -->
+        <h2 id="section-workflow2">Workflow 2: General Development & Daily Progress</h2>
+
+        <div class="workflow-type">
+            <h3>📋 Overview</h3>
+            <p>This workflow covers the daily development cycle for general project work like adding new features, improving existing functionality, or making routine updates to Power Platform solutions. This workflow assumes you're working on planned enhancements rather than reactive bug fixes.</p>
+
+            <p><strong>Workflow Stages:</strong></p>
+            <ul>
+                <li><strong>Startup:</strong> Morning routine to review work and plan the day</li>
+                <li><strong>Web Editing:</strong> Making changes in Power Platform web editors</li>
+                <li><strong>Source Management:</strong> Unpacking artifacts and documenting changes</li>
+                <li><strong>Git Operations:</strong> End-of-day commits and releases</li>
+            </ul>
+        </div>
+
+        <h3>🌅 Morning Startup Routine</h3>
+
+        <div class="step">
+            <div class="step-header">Step 1: Launch VS Code and Open Workspace</div>
+            <div class="why">Starting in your project workspace ensures proper context for Copilot and immediate access to all project files, settings, and integrated tools.</div>
+            <div class="what">Opens the Telehealth project workspace in VS Code with all workspace-specific settings, extensions, and folder structure active.</div>
+            <div class="how">
+                <strong>Launch Process:</strong>
+                <ol>
+                    <li>Start computer and log in</li>
+                    <li>Open VS Code (Windows: Start menu → Visual Studio Code)</li>
+                    <li>Open workspace:
+                        <ul>
+                            <li>Method 1: <code>File → Open Recent → Telehealth Resources Project.code-workspace</code></li>
+                            <li>Method 2: <code>Ctrl+K Ctrl+O</code> → Navigate to workspace file</li>
+                            <li>Method 3: Double-click <code>Telehealth Resources Project.code-workspace</code> in File Explorer</li>
+                        </ul>
+                    </li>
+                    <li>Verify workspace loaded: Check bottom-left status bar shows workspace name</li>
+                    <li>Wait for extensions to activate (Copilot, GitHub Pull Requests, etc.)</li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Command Line Launch:</strong> Create desktop shortcut or PowerShell alias:
+                <pre><code>code "S:\Informatics\Data Team\Coder - Informatics\App Programing\Telehealth Schedule & Booking\Telehealth Resources Project.code-workspace"</code></pre>
+                <strong>PowerShell Profile Alias:</strong>
+                <pre><code>function Open-TelehealthWorkspace { code "S:\...\Telehealth Resources Project.code-workspace" }
+Set-Alias tele Open-TelehealthWorkspace</code></pre>
+                Then simply type <code>tele</code> in PowerShell to open workspace.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 2: Review Pending Work with @githubpr</div>
+            <div class="why">Copilot can quickly summarize pending issues, PRs, and project status without manually browsing GitHub web interface, saving time and providing AI-generated context.</div>
+            <div class="what">Uses @githubpr participant to query GitHub for open issues, PRs, recent activity, and project status, presenting a summary of what requires attention.</div>
+            <div class="how">
+                <strong>Status Review Process:</strong>
+                <ol>
+                    <li>Open Copilot Chat (<code>Ctrl+Alt+I</code>)</li>
+                    <li>Set mode to <strong>Agent</strong> for autonomous status checking</li>
+                    <li>Query for pending work:
+                        <pre><code>@githubpr Show me:
+1. All open issues assigned to me
+2. Any PRs awaiting my review
+3. Recent activity on the repository (last 24 hours)
+4. Any issues labeled "high priority" or "bug"</code></pre>
+                    </li>
+                    <li>Copilot will fetch and summarize:
+                        <ul>
+                            <li>List of open issues with titles and numbers</li>
+                            <li>PRs requiring review or attention</li>
+                            <li>Recent commits and changes</li>
+                            <li>Priority items needing immediate attention</li>
+                        </ul>
+                    </li>
+                    <li>Alternative focused queries:
+                        <pre><code>@githubpr What are today's priorities?</code></pre>
+                        <pre><code>@githubpr Show all open "intake" labeled issues</code></pre>
+                        <pre><code>@githubpr List issues I created in the last week</code></pre>
+                    </li>
+                </ol>
+
+                <div class="tip">
+                    <strong>Visual Review:</strong> Use GitHub Pull Requests sidebar view:
+                    <ul>
+                        <li>Click GitHub icon in Activity Bar (left side)</li>
+                        <li>Expand "Issues" and "Pull Requests" sections</li>
+                        <li>Review categorized lists: "Assigned To Me", "Created By Me", "Waiting For My Review"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="variations">
+                <strong>Team-wide Review:</strong> For managers or leads:
+                <pre><code>@githubpr Show all open issues and PRs for the entire team with status summary</code></pre>
+                <strong>Milestone Review:</strong>
+                <pre><code>@githubpr What's the status of milestone "v0.9 Release"? Show completion percentage and blocking issues.</code></pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 3: Plan Today's Work with Copilot Agent</div>
+            <div class="why">Copilot Agent can analyze project context, pending issues, and codebase state to suggest optimal task prioritization and identify dependencies you might miss.</div>
+            <div class="what">Uses Agent mode with @workspace context to create intelligent daily work plan based on project status, priorities, and logical task sequencing.</div>
+            <div class="how">
+                <strong>Planning Process:</strong>
+                <ol>
+                    <li>Request work plan from Agent:
+                        <pre><code>@workspace Based on open issues, recent commits, and project status, help me plan today's development work.
+
+Consider:
+1. Current open issues and their priorities
+2. Any incomplete features from previous commits
+3. Logical task dependencies
+4. Estimated time for each task
+
+Suggest task order and flag any blockers.</code></pre>
+                    </li>
+                    <li>Agent will analyze and provide:
+                        <ul>
+                            <li>Prioritized task list with reasoning</li>
+                            <li>Dependency identification (Task B requires Task A completion)</li>
+                            <li>Rough time estimates</li>
+                            <li>Potential blockers or risks</li>
+                            <li>Suggested break points for commits</li>
+                        </ul>
+                    </li>
+                    <li>Refine plan with follow-up questions:
+                        <pre><code>I want to focus on Canvas App improvements today. Which issues should I prioritize?</code></pre>
+                    </li>
+                    <li>Optional: Create TODO list for tracking:
+                        <pre><code>@workspace Create a TODO.md file in the workspace root with today's prioritized task list</code></pre>
+                    </li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Feature-Focused Planning:</strong>
+                <pre><code>@workspace I want to add a new Canvas App screen for manager approvals. What files will I need to modify? What's the implementation sequence?</code></pre>
+                <strong>Bug Fix Day:</strong>
+                <pre><code>@githubpr Show all open bugs sorted by severity. @workspace For each bug, estimate complexity and suggest which to tackle first.</code></pre>
+            </div>
+        </div>
+
+        <div class="best-practice">
+            Start each day with this 3-step routine: Open workspace → Review pending work with @githubpr → Plan tasks with Agent. This ensures you're always working on the right priorities with full context. Total time: ~5-10 minutes.
+        </div>
+
+        <h3>🌐 Web-Based Development (Power Platform)</h3>
+
+        <div class="step">
+            <div class="step-header">Step 4: Make Changes in Power Platform Web Editors</div>
+            <div class="why">Power Platform Canvas Apps and Power Automate flows are primarily edited in web-based designers, not in VS Code. You must make functional changes in these web tools before bringing source artifacts back to VS Code.</div>
+            <div class="what">Edit Canvas Apps in PowerApps Studio, modify flows in Power Automate designer, or update SharePoint lists in SharePoint admin center—all browser-based tools.</div>
+            <div class="how">
+                <strong>Canvas App Editing:</strong>
+                <ol>
+                    <li>Navigate to <a href="https://make.powerapps.com" target="_blank">make.powerapps.com</a></li>
+                    <li>Select your environment (Dev/Test/Production)</li>
+                    <li>Find and open your app: <strong>TelehealthBookingApp</strong></li>
+                    <li>Make your changes:
+                        <ul>
+                            <li><strong>Add Screen:</strong> Click + → New Screen → Choose template</li>
+                            <li><strong>Modify Formula:</strong> Select control → Edit formula bar (fx)</li>
+                            <li><strong>Add Control:</strong> Insert tab → Choose control type</li>
+                            <li><strong>Data Sources:</strong> Data tab → Add connections to SharePoint lists</li>
+                        </ul>
+                    </li>
+                    <li>Test changes: Use Play button (▶) to preview app functionality</li>
+                    <li>Save regularly: <code>File → Save</code></li>
+                </ol>
+
+                <strong>Power Automate Flow Editing:</strong>
+                <ol>
+                    <li>Navigate to <a href="https://make.powerautomate.com" target="_blank">make.powerautomate.com</a></li>
+                    <li>Select environment</li>
+                    <li>Find and edit your flow (e.g., <strong>RoomBookingApprovalFlow</strong>)</li>
+                    <li>Modify flow:
+                        <ul>
+                            <li><strong>Add Action:</strong> Click + → Choose action/connector</li>
+                            <li><strong>Edit Conditions:</strong> Click condition step → Modify logic</li>
+                            <li><strong>Parallel Branches:</strong> Add parallel branch for independent operations</li>
+                            <li><strong>Error Handling:</strong> Configure run after settings for try-catch patterns</li>
+                        </ul>
+                    </li>
+                    <li>Test flow: Click <strong>Test</strong> → Manual or Automatic</li>
+                    <li>Save: Flow auto-saves, verify "Saved" indicator appears</li>
+                </ol>
+
+                <div class="tip">
+                    <strong>Browser Tip:</strong> Keep VS Code open on one monitor, Power Platform editors on another for quick reference to existing code patterns from unpacked source files.
+                </div>
+            </div>
+            <div class="variations">
+                <strong>VS Code Integration (Limited):</strong> While you can't edit Canvas Apps directly in VS Code, you CAN:
+                <ul>
+                    <li>Read unpacked Power Fx formulas in <code>src/power-apps/</code> for reference</li>
+                    <li>Ask Copilot to generate formulas: <code>@workspace generate Power Fx formula for case-insensitive room filtering</code></li>
+                    <li>Copy generated formulas to PowerApps Studio</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 5: Test and Publish in Power Platform</div>
+            <div class="why">Testing in the actual runtime environment catches issues that offline source code analysis cannot detect, such as connector failures, permission issues, or data source problems.</div>
+            <div class="what">Execute end-to-end testing in Power Platform's preview/test modes, verify functionality, then publish to make changes available.</div>
+            <div class="how">
+                <strong>Canvas App Testing & Publishing:</strong>
+                <ol>
+                    <li><strong>Test in Studio:</strong>
+                        <ul>
+                            <li>Click Play button (▶) in PowerApps Studio</li>
+                            <li>Navigate through all screens affected by changes</li>
+                            <li>Test with real data from SharePoint lists</li>
+                            <li>Verify dropdown filters, form submissions, navigation</li>
+                            <li>Check on mobile preview (phone icon) if applicable</li>
+                        </ul>
+                    </li>
+                    <li><strong>Monitor for Errors:</strong>
+                        <ul>
+                            <li>View → App Checker (check icon, top-right)</li>
+                            <li>Review errors, warnings, and formula issues</li>
+                            <li>Fix any delegation warnings (critical for performance)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Publish:</strong>
+                        <ul>
+                            <li>Click <strong>File → Save</strong> (saves as draft)</li>
+                            <li>Click <strong>File → Publish</strong></li>
+                            <li>Add version notes: "Fixed room filtering case sensitivity"</li>
+                            <li>Click <strong>Publish this version</strong></li>
+                        </ul>
+                    </li>
+                    <li><strong>Verify Version:</strong> File → Versions → Confirm new version created</li>
+                </ol>
+
+                <strong>Power Automate Flow Testing & Publishing:</strong>
+                <ol>
+                    <li><strong>Test Flow:</strong>
+                        <ul>
+                            <li>Click <strong>Test</strong> button</li>
+                            <li>Choose "Manually" or "Automatically" with trigger data</li>
+                            <li>Monitor run progress in real-time</li>
+                            <li>Review each action's inputs/outputs</li>
+                            <li>Check for failures or unexpected results</li>
+                        </ul>
+                    </li>
+                    <li><strong>Review Run History:</strong>
+                        <ul>
+                            <li>Click run timestamp to see detailed execution log</li>
+                            <li>Verify all actions completed successfully</li>
+                            <li>Check approval actions reached correct managers</li>
+                        </ul>
+                    </li>
+                    <li><strong>Activate Flow:</strong>
+                        <ul>
+                            <li>Turn On flow (toggle in top-right)</li>
+                            <li>Flow automatically saves and publishes when turned on</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <div class="variations">
+                <strong>Environment Strategy:</strong> For production projects:
+                <ol>
+                    <li>Make and test changes in <strong>Dev</strong> environment</li>
+                    <li>Export solution and import to <strong>Test</strong> for UAT</li>
+                    <li>After approval, export and import to <strong>Production</strong></li>
+                    <li>Never edit Production directly</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 6: Export Solution Artifacts for Source Control</div>
+            <div class="why">Power Platform stores apps and flows as binary .msapp and .zip files. Exporting to workspace enables version control, code review, and CI/CD automation.</div>
+            <div class="what">Downloads published Canvas Apps as .msapp files and Power Automate flows as part of solution .zip exports to workspace for unpacking and git tracking.</div>
+            <div class="how">
+                <strong>Canvas App Export:</strong>
+                <ol>
+                    <li>In PowerApps Studio: <strong>File → Save As</strong></li>
+                    <li>Click <strong>This computer</strong></li>
+                    <li>Click <strong>Download</strong></li>
+                    <li>Save to workspace: <code>S:\...\Telehealth Schedule & Booking\releases\v0.9.x\TelehealthBookingApp.msapp</code></li>
+                    <li>Create versioned folder if needed: <code>releases\v0.9.43\</code></li>
+                </ol>
+
+                <strong>Solution Export (Recommended for Full Projects):</strong>
+                <ol>
+                    <li>Navigate to <a href="https://make.powerapps.com" target="_blank">make.powerapps.com</a></li>
+                    <li>Go to <strong>Solutions</strong> in left nav</li>
+                    <li>Select your solution: <strong>TelehealthBooking</strong></li>
+                    <li>Click <strong>Export solution</strong></li>
+                    <li>Choose version: <strong>Managed</strong> (for production) or <strong>Unmanaged</strong> (for dev)</li>
+                    <li>Click <strong>Export</strong></li>
+                    <li>Download completes → Save to workspace: <code>releases\v0.9.43\TelehealthBooking_0_9_43.zip</code></li>
+                </ol>
+
+                <div class="tip">
+                    <strong>Naming Convention:</strong> Use semantic versioning in filenames: <code>TelehealthBooking_0_9_43.zip</code> (replaces dots with underscores for Power Platform compatibility).
+                </div>
+            </div>
+            <div class="variations">
+                <strong>Automated Export (Advanced):</strong> Use Power Platform CLI:
+                <pre><code>@terminal pac solution export --name TelehealthBooking --path ./releases/v0.9.43/ --managed false</code></pre>
+                This requires pac CLI authentication to your environment.
+            </div>
+        </div>
+
+        <div class="warning">
+            <strong>Important:</strong> Always export from the SAME environment where you tested. Don't test in Dev but export from Test—versions may differ!
+        </div>
+
+        <h3>📦 Source Control & Documentation</h3>
+
+        <div class="step">
+            <div class="step-header">Step 7: Unpack Binary Artifacts Using Power Platform CLI</div>
+            <div class="why">Binary .msapp and .zip files cannot be diffed or version controlled effectively. Unpacking to source code format enables git tracking, code review, and Copilot analysis.</div>
+            <div class="what">Uses <code>pac</code> CLI to extract Canvas App formulas, flow definitions, and solution components into human-readable text files in <code>src/</code> directory.</div>
+            <div class="how">
+                <strong>Unpack Canvas App (.msapp):</strong>
+                <ol>
+                    <li>Open VS Code terminal (<code>Ctrl+`</code>)</li>
+                    <li>Ensure you're in workspace root:
+                        <pre><code>@terminal cd "S:\Informatics\Data Team\Coder - Informatics\App Programing\Telehealth Schedule & Booking"</code></pre>
+                    </li>
+                    <li>Unpack .msapp file:
+                        <pre><code>@terminal pac canvas unpack --msapp ./releases/v0.9.43/TelehealthBookingApp.msapp --sources ./src/power-apps/TelehealthBookingApp</code></pre>
+                    </li>
+                    <li>Verify unpacked structure:
+                        <ul>
+                            <li><code>src/power-apps/TelehealthBookingApp/Src/</code> - Screen and component .fx files</li>
+                            <li><code>src/power-apps/TelehealthBookingApp/DataSources/</code> - Connection definitions</li>
+                            <li><code>src/power-apps/TelehealthBookingApp/Properties.json</code> - App metadata</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <strong>Unpack Solution (.zip):</strong>
+                <ol>
+                    <li>Unpack entire solution including flows:
+                        <pre><code>@terminal pac solution unpack --zipfile ./releases/v0.9.43/TelehealthBooking_0_9_43.zip --folder ./src/ --processCanvasApps</code></pre>
+                    </li>
+                    <li>This unpacks:
+                        <ul>
+                            <li>Canvas Apps → <code>src/CanvasApps/</code></li>
+                            <li>Power Automate Flows → <code>src/Workflows/</code> (XML definition files)</li>
+                            <li>Solution XML → <code>src/solution.xml</code></li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="tip">
+                    <strong>Automation Tip:</strong> Let Copilot run the command for you:
+                    <pre><code>@terminal unpack the Canvas App from releases/v0.9.43/TelehealthBookingApp.msapp to src/power-apps/TelehealthBookingApp</code></pre>
+                    Copilot will construct and execute the correct pac command.
+                </div>
+            </div>
+            <div class="variations">
+                <strong>First-time Setup:</strong> If pac CLI not installed:
+                <pre><code>@terminal Install Power Platform CLI using: dotnet tool install --global Microsoft.PowerApps.CLI.Tool</code></pre>
+                Or download from <a href="https://aka.ms/PowerAppsCLI" target="_blank">aka.ms/PowerAppsCLI</a>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 8: Analyze Changes with Copilot @workspace</div>
+            <div class="why">Copilot can automatically identify what changed, generate documentation, and explain the impact of modifications without manual file-by-file comparison.</div>
+            <div class="what">Uses @workspace participant with git diff context to analyze changes, generate summaries, and identify affected functionality.</div>
+            <div class="how">
+                <strong>Change Analysis Process:</strong>
+                <ol>
+                    <li>Check what changed using git:
+                        <pre><code>@terminal git status</code></pre>
+                        <pre><code>@terminal git diff --stat</code></pre>
+                    </li>
+                    <li>Ask Copilot to analyze changes:
+                        <pre><code>@workspace Analyze the changes in src/power-apps/TelehealthBookingApp/
+
+What was modified?
+Which screens/controls were affected?
+Summarize the functional changes for documentation.
+Are there any potential breaking changes?</code></pre>
+                    </li>
+                    <li>Copilot will provide:
+                        <ul>
+                            <li>List of modified files with explanations</li>
+                            <li>Summary of functional changes</li>
+                            <li>Affected user workflows</li>
+                            <li>Potential risks or breaking changes</li>
+                        </ul>
+                    </li>
+                    <li>Request specific analysis:
+                        <pre><code>@workspace Compare the new room filtering logic to the old version. What exactly changed in the Filter() formula?</code></pre>
+                    </li>
+                </ol>
+
+                <div class="tip">
+                    <strong>Side-by-side Comparison:</strong> Use VS Code's git diff view:
+                    <ul>
+                        <li>Click file in Source Control view</li>
+                        <li>VS Code shows before/after side-by-side</li>
+                        <li>Ask Copilot about specific changes: <code>@workspace explain this change in RoomSelection.fx lines 45-52</code></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="variations">
+                <strong>Visual Diff Tool:</strong> For complex changes, use external diff tools:
+                <pre><code>@terminal code --diff ./src/power-apps/old_version.fx ./src/power-apps/new_version.fx</code></pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 9: Generate Documentation with Copilot</div>
+            <div class="why">Automated documentation ensures CHANGELOG, README, and technical docs stay current without manual writing effort, improving project maintainability.</div>
+            <div class="what">Uses Copilot Agent to generate or update project documentation based on code changes, creating commit-ready documentation files.</div>
+            <div class="how">
+                <strong>Documentation Generation Process:</strong>
+                <ol>
+                    <li><strong>Update CHANGELOG.md:</strong>
+                        <pre><code>@workspace Update CHANGELOG.md with today's changes.
+
+Format:
+## [v0.9.43] - 2025-11-19
+### Fixed
+- Room filtering now case-insensitive (Issue #42)
+### Changed
+- Enhanced dropdown with defensive null checks
+### Technical
+- Modified: src/power-apps/TelehealthBookingApp/Src/Screens/RoomSelection.fx</code></pre>
+                    </li>
+                    <li>Copilot will:
+                        <ul>
+                            <li>Read current CHANGELOG.md</li>
+                            <li>Add new entry with proper formatting</li>
+                            <li>Maintain version history order</li>
+                            <li>Apply your specified format</li>
+                        </ul>
+                    </li>
+                    <li><strong>Update Component README:</strong>
+                        <pre><code>@workspace Update src/power-apps/README.md to document the new room filtering approach. Include Power Fx code example and usage notes.</code></pre>
+                    </li>
+                    <li><strong>Generate Technical Documentation:</strong>
+                        <pre><code>@workspace Create technical documentation for the room booking workflow changes. Include:
+- Architecture diagram description
+- Data flow explanation
+- Changed components list
+- Testing requirements
+
+Save as docs/technical/room-booking-v0.9.43.md</code></pre>
+                    </li>
+                    <li><strong>Update Main README:</strong>
+                        <pre><code>@workspace Update README.md "Recent Changes" section with v0.9.43 highlights</code></pre>
+                    </li>
+                </ol>
+
+                <div class="best-practice">
+                    Generate documentation BEFORE committing. This ensures documentation is always in sync with code changes and provides better commit messages.
+                </div>
+            </div>
+            <div class="variations">
+                <strong>Batch Documentation Update:</strong>
+                <pre><code>@workspace Update all project documentation (CHANGELOG.md, README.md, src/power-apps/README.md) with today's changes to room filtering logic. Use consistent language across all files.</code></pre>
+                <strong>API Documentation:</strong> For code-based projects:
+                <pre><code>@workspace Generate JSDoc comments for all modified functions in src/utils/roomFilters.js</code></pre>
+            </div>
+        </div>
+
+        <div class="tip">
+            After unpacking and documentation, review all changes in VS Code's Source Control view (Ctrl+Shift+G) before committing. Copilot can explain any unexpected file changes.
+        </div>
+
+        <h3>🔄 End-of-Day Git & Release Workflow</h3>
+
+        <div class="step">
+            <div class="step-header">Step 10: Review Changes with @terminal and Git Status</div>
+            <div class="why">Before committing, verify exactly what files changed to avoid committing unintended modifications or missing critical files.</div>
+            <div class="what">Uses @terminal participant to check git status, review diffs, and ensure all desired changes are staged for commit.</div>
+            <div class="how">
+                <strong>Git Status Review:</strong>
+                <ol>
+                    <li>Check overall repository status:
+                        <pre><code>@terminal git status</code></pre>
+                    </li>
+                    <li>Copilot/terminal will show:
+                        <ul>
+                            <li>Modified files (red = unstaged, green = staged)</li>
+                            <li>Untracked files</li>
+                            <li>Deleted files</li>
+                            <li>Current branch information</li>
+                        </ul>
+                    </li>
+                    <li>Review summary of changes:
+                        <pre><code>@terminal git diff --stat</code></pre>
+                        Shows files changed with line count statistics
+                    </li>
+                    <li>Review specific file changes:
+                        <pre><code>@terminal git diff src/power-apps/TelehealthBookingApp/Src/Screens/RoomSelection.fx</code></pre>
+                    </li>
+                    <li>Alternative: Use VS Code Source Control view:
+                        <ul>
+                            <li>Open Source Control (<code>Ctrl+Shift+G</code>)</li>
+                            <li>See visual list of changed files</li>
+                            <li>Click any file to see side-by-side diff</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="tip">
+                    <strong>Ask Copilot About Changes:</strong>
+                    <pre><code>@workspace What changed in the repository since my last commit?</code></pre>
+                    Copilot will summarize modifications without you reading raw git diff output.
+                </div>
+            </div>
+            <div class="variations">
+                <strong>Check Specific Directories:</strong>
+                <pre><code>@terminal git status src/power-apps/</code></pre>
+                <strong>Compare to Remote:</strong>
+                <pre><code>@terminal git diff origin/main</code></pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 11: Stage Files and Generate Commit Message with Copilot</div>
+            <div class="why">Copilot can generate descriptive, convention-compliant commit messages based on actual code changes, saving time and ensuring consistency.</div>
+            <div class="what">Stages all changes (or selective files) and uses Copilot to generate semantic commit message following project conventions.</div>
+            <div class="how">
+                <strong>Staging and Commit Process:</strong>
+                <ol>
+                    <li><strong>Stage All Changes:</strong>
+                        <pre><code>@terminal git add -A</code></pre>
+                        Or use VS Code: Click + icon next to "Changes" in Source Control view
+                    </li>
+                    <li><strong>Stage Selective Files:</strong>
+                        <pre><code>@terminal git add src/power-apps/ CHANGELOG.md README.md</code></pre>
+                        Or in VS Code: Click + icon next to specific files
+                    </li>
+                    <li><strong>Generate Commit Message with Copilot:</strong>
+                        <pre><code>@workspace Generate a commit message for the staged changes.
+
+Follow this format:
+[Type]: [Brief description]
+
+[Detailed explanation]
+
+Closes: #[issue number if applicable]</code></pre>
+                    </li>
+                    <li>Copilot will analyze staged changes and generate message like:
+                        <pre><code>Fix: Case-insensitive room filtering for Aurora building rooms
+
+Updated room selection dropdown to use Lower() function for
+case-insensitive comparison. This prevents booking failures when
+room names have inconsistent capitalization in the data source.
+
+Changes:
+- Modified RoomSelection.fx Filter() formula
+- Added defensive null checks
+- Updated CHANGELOG.md with v0.9.43 entry
+
+Closes: #42</code></pre>
+                    </li>
+                    <li><strong>Commit with Generated Message:</strong>
+                        <ul>
+                            <li><strong>Method 1 - VS Code UI:</strong>
+                                <ul>
+                                    <li>Paste message into Source Control commit box</li>
+                                    <li>Click checkmark icon or <code>Ctrl+Enter</code></li>
+                                </ul>
+                            </li>
+                            <li><strong>Method 2 - Terminal:</strong>
+                                <pre><code>@terminal git commit -m "Fix: Case-insensitive room filtering for Aurora building rooms" -m "Updated room selection dropdown to use Lower() function..."</code></pre>
+                            </li>
+                            <li><strong>Method 3 - Let Copilot Commit:</strong>
+                                <pre><code>@workspace Commit all staged changes with the message you just generated</code></pre>
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <div class="best-practice">
+                    Use semantic commit prefixes: <code>Fix:</code>, <code>Feat:</code>, <code>Docs:</code>, <code>Refactor:</code>, <code>Test:</code>, <code>Chore:</code>. This helps with automated changelog generation and release notes.
+                </div>
+            </div>
+            <div class="variations">
+                <strong>Quick Commit:</strong> For simple changes:
+                <pre><code>@terminal git commit -am "Fix: Room filtering case sensitivity issue #42"</code></pre>
+                (<code>-a</code> stages all tracked files, <code>-m</code> provides message)
+
+                <strong>Amend Previous Commit:</strong> If you forgot something:
+                <pre><code>@terminal git commit --amend --no-edit</code></pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">Step 12: Push to GitHub and Create Release</div>
+            <div class="why">Pushing commits publishes your work to GitHub for backup, collaboration, and CI/CD triggers. Creating releases provides versioned snapshots for deployment.</div>
+            <div class="what">Pushes commits to remote repository and optionally creates GitHub release with release notes for significant updates.</div>
+            <div class="how">
+                <strong>Push to GitHub:</strong>
+                <ol>
+                    <li><strong>Push to Main Branch:</strong>
+                        <pre><code>@terminal git push origin main</code></pre>
+                        Or in VS Code: Click "..." menu in Source Control → Push
+                    </li>
+                    <li>Verify push success:
+                        <ul>
+                            <li>Terminal shows: "Branch 'main' set up to track 'origin/main'"</li>
+                            <li>No error messages</li>
+                            <li>Source Control view shows no "unpushed commits" indicator</li>
+                        </ul>
+                    </li>
+                    <li><strong>Alternative - Let Copilot Push:</strong>
+                        <pre><code>@terminal push all commits to origin/main</code></pre>
+                        Copilot constructs and runs the git push command
+                    </li>
+                </ol>
+
+                <strong>Create GitHub Release (for major updates):</strong>
+                <ol>
+                    <li><strong>Method 1 - Using @githubpr:</strong>
+                        <pre><code>@githubpr create release v0.9.43
+
+Title: Telehealth Booking Fixes - v0.9.43
+Body:
+## Fixed
+- Room filtering now case-insensitive (Issue #42)
+
+## Changed
+- Enhanced room selection with defensive checks
+
+## Technical Details
+- Modified Canvas App room filtering logic
+- Updated Power Fx formulas for better reliability
+
+Deployment: Ready for Test environment import</code></pre>
+                    </li>
+                    <li>Copilot/extension will:
+                        <ul>
+                            <li>Create git tag v0.9.43</li>
+                            <li>Push tag to GitHub</li>
+                            <li>Create GitHub release with your notes</li>
+                            <li>Attach release artifacts if specified</li>
+                        </ul>
+                    </li>
+                    <li><strong>Method 2 - Manual Tag + Release:</strong>
+                        <pre><code>@terminal git tag -a v0.9.43 -m "Release v0.9.43: Room booking fixes"
+@terminal git push origin v0.9.43</code></pre>
+                        Then use GitHub web UI to create release from tag
+                    </li>
+                    <li><strong>Method 3 - Full Automation:</strong>
+                        <pre><code>@workspace Create and push release v0.9.43 using CHANGELOG.md latest entry for release notes. Tag the current commit and push to GitHub.</code></pre>
+                        Agent will handle entire release workflow
+                    </li>
+                </ol>
+
+                <div class="tip">
+                    <strong>Attach Artifacts:</strong> Upload solution .zip files to release:
+                    <ul>
+                        <li>After release created, go to GitHub release page</li>
+                        <li>Edit release → Attach files</li>
+                        <li>Upload <code>TelehealthBooking_0_9_43.zip</code> from releases folder</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="variations">
+                <strong>Push to Branch (PR Workflow):</strong>
+                <pre><code>@terminal git checkout -b feature/room-filtering-fix
+@terminal git push origin feature/room-filtering-fix</code></pre>
+                Then create PR using @githubpr:
+                <pre><code>@githubpr create pull request from feature/room-filtering-fix to main with title "Fix: Case-insensitive room filtering"</code></pre>
+
+                <strong>Force Push (Caution):</strong> Only if you amended or rebased:
+                <pre><code>@terminal git push origin main --force-with-lease</code></pre>
+            </div>
+        </div>
+
+        <div class="best-practice">
+            <strong>Complete End-of-Day Workflow Summary:</strong> Review git status → Stage files → Generate commit message with Copilot → Commit → Push to GitHub → Create release for significant updates. Entire workflow can be driven from VS Code without switching to browser.
+        </div>
+
+        <div class="warning">
+            <strong>Before Pushing to Production:</strong> Ensure you've tested in Dev environment, documented changes in CHANGELOG.md, and received necessary approvals per VA change management procedures.
+        </div>
+
+        <!-- SECTION: Chat Participants -->
+        <h2 id="section-chat-participants">Copilot Chat Participants Reference</h2>
+
+        <p>Chat participants are specialized agents you can invoke with <code>@</code> prefix in Copilot Chat. Each participant has unique capabilities and context awareness optimized for specific tasks.</p>
+
+        <div class="workflow-type">
+            <h3>🎯 Quick Reference</h3>
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <thead style="background: #3498db; color: white;">
+                    <tr>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Participant</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Primary Use</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><code>@githubpr</code></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">GitHub operations</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Issues, PRs, releases</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><code>@workspace</code></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Codebase analysis</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">File operations, code understanding</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><code>@terminal</code></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Command execution</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Shell commands, CLI tools</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;"><code>@vscode</code></td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">Editor control</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">VS Code settings, extensions</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>🔧 @githubpr - GitHub Integration Participant</h3>
+
+        <div class="step">
+            <div class="step-header">Purpose & Capabilities</div>
+            <div class="what">
+                <code>@githubpr</code> provides direct integration with GitHub for managing issues, pull requests, and repository operations without leaving VS Code.
+            </div>
+
+            <strong>Key Capabilities:</strong>
+            <ul>
+                <li>Query and list issues/PRs with filtering</li>
+                <li>Create, update, and close issues</li>
+                <li>Manage PR reviews and comments</li>
+                <li>Create and manage releases</li>
+                <li>Add labels and manage milestones</li>
+                <li>Search repository content</li>
+            </ul>
+
+            <strong>Common Usage Patterns:</strong>
+            <pre><code>@githubpr list open issues
+@githubpr show issue #42
+@githubpr create issue with title "Room booking error" and label "bug"
+@githubpr comment on issue #42 "Fixed in latest commit"
+@githubpr close issue #42
+@githubpr list PRs awaiting my review
+@githubpr create release v0.9.43 with title "Bug fixes" and notes "..."
+@githubpr add label "priority-high" to issue #42</code></pre>
+
+            <div class="tip">
+                <strong>Power Tip:</strong> Combine with other participants:
+                <pre><code>@workspace analyze changes since last commit, then @githubpr create release v0.9.43 with those changes as release notes</code></pre>
+            </div>
+        </div>
+
+        <h3>📁 @workspace - Codebase Intelligence Participant</h3>
+
+        <div class="step">
+            <div class="step-header">Purpose & Capabilities</div>
+            <div class="what">
+                <code>@workspace</code> has deep understanding of your entire workspace, can read files, understand project structure, and analyze code relationships across multiple files.
+            </div>
+
+            <strong>Key Capabilities:</strong>
+            <ul>
+                <li>Search across all workspace files semantically</li>
+                <li>Understand code architecture and dependencies</li>
+                <li>Generate or modify multiple files</li>
+                <li>Analyze git changes and diffs</li>
+                <li>Create documentation based on code</li>
+                <li>Refactor code across files</li>
+            </ul>
+
+            <strong>Common Usage Patterns:</strong>
+            <pre><code>@workspace what is this project about?
+@workspace find all functions that handle room filtering
+@workspace explain the room booking workflow
+@workspace where is the error handling for failed bookings?
+@workspace create README.md documenting the project structure
+@workspace update all files with room filtering logic to be case-insensitive
+@workspace analyze changes in src/ and summarize them
+@workspace generate unit tests for room filtering functions</code></pre>
+
+            <strong>Advanced Patterns:</strong>
+            <pre><code>@workspace search for TODO comments and create GitHub issues for each
+@workspace compare the current room filtering approach to best practices
+@workspace refactor all Power Fx formulas to use consistent naming conventions
+@workspace create architectural diagram description for docs/architecture.md</code></pre>
+
+            <div class="tip">
+                <strong>Context Specificity:</strong> @workspace automatically includes context from:
+                <ul>
+                    <li>Currently open files</li>
+                    <li>Selected text in editor</li>
+                    <li>Recent file changes</li>
+                    <li>Workspace settings and configuration</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>💻 @terminal - Command Execution Participant</h3>
+
+        <div class="step">
+            <div class="step-header">Purpose & Capabilities</div>
+            <div class="what">
+                <code>@terminal</code> executes shell commands in VS Code's integrated terminal, interprets output, and can chain commands intelligently.
+            </div>
+
+            <strong>Key Capabilities:</strong>
+            <ul>
+                <li>Run PowerShell, bash, or cmd commands</li>
+                <li>Execute git operations</li>
+                <li>Run pac CLI commands for Power Platform</li>
+                <li>Install packages (npm, pip, dotnet, etc.)</li>
+                <li>Build and run scripts</li>
+                <li>Parse and explain command output</li>
+            </ul>
+
+            <strong>Common Usage Patterns:</strong>
+            <pre><code>@terminal git status
+@terminal pac canvas unpack --msapp file.msapp --sources ./src/
+@terminal npm install
+@terminal git diff --stat
+@terminal check if pac CLI is installed
+@terminal run the build script
+@terminal what does this error mean? [paste error]</code></pre>
+
+            <strong>Power Platform Specific:</strong>
+            <pre><code>@terminal pac auth list
+@terminal pac solution export --name TelehealthBooking --path ./releases/
+@terminal pac canvas pack --sources ./src/ --msapp ./output.msapp
+@terminal pac org who</code></pre>
+
+            <div class="tip">
+                <strong>Intelligent Execution:</strong> @terminal understands context:
+                <pre><code>@terminal unpack the canvas app from releases folder to src</code></pre>
+                Copilot will construct the correct pac command with proper paths.
+            </div>
+
+            <div class="warning">
+                <strong>Destructive Commands:</strong> @terminal will warn before executing potentially destructive operations like <code>rm -rf</code> or <code>git push --force</code>.
+            </div>
+        </div>
+
+        <h3>⚙️ @vscode - Editor Control Participant</h3>
+
+        <div class="step">
+            <div class="step-header">Purpose & Capabilities</div>
+            <div class="what">
+                <code>@vscode</code> controls VS Code itself—settings, extensions, workspace configuration, and editor behavior.
+            </div>
+
+            <strong>Key Capabilities:</strong>
+            <ul>
+                <li>Modify VS Code settings</li>
+                <li>Manage extensions</li>
+                <li>Configure workspace settings</li>
+                <li>Create or modify tasks</li>
+                <li>Adjust editor appearance and behavior</li>
+            </ul>
+
+            <strong>Common Usage Patterns:</strong>
+            <pre><code>@vscode enable auto-save
+@vscode set tab size to 4
+@vscode install extension for PowerShell
+@vscode create task to run npm build
+@vscode show available keyboard shortcuts
+@vscode configure editor to format on save
+@vscode what extensions are installed?
+@vscode change color theme to dark</code></pre>
+
+            <strong>Workspace Configuration:</strong>
+            <pre><code>@vscode add folder to workspace
+@vscode configure workspace settings for PowerShell
+@vscode create launch configuration for debugging
+@vscode set default terminal to PowerShell</code></pre>
+
+            <div class="tip">
+                <strong>Settings Discovery:</strong> Ask @vscode to explain settings:
+                <pre><code>@vscode what's the difference between user settings and workspace settings?
+@vscode show all Git-related settings</code></pre>
+            </div>
+        </div>
+
+        <h3>🔀 Combining Participants for Complex Workflows</h3>
+
+        <div class="step">
+            <div class="step-header">Multi-Participant Patterns</div>
+
+            <strong>Example Workflows:</strong>
+
+            <div class="workflow-type">
+                <strong>1. Full Release Workflow:</strong>
+                <pre><code>@terminal git status
+@workspace analyze changes and generate CHANGELOG entry
+@terminal git add -A
+@workspace generate commit message for staged changes
+@terminal git commit -m "[generated message]"
+@terminal git push origin main
+@githubpr create release v0.9.43 with CHANGELOG notes</code></pre>
+            </div>
+
+            <div class="workflow-type">
+                <strong>2. Bug Investigation & Fix:</strong>
+                <pre><code>@githubpr show issue #42 details
+@workspace search codebase for room filtering logic
+@workspace explain the bug in RoomSelection.fx
+@workspace implement fix for case-insensitive filtering
+@terminal pac canvas pack and test
+@githubpr comment on issue #42 "Fix implemented"
+@githubpr close issue #42</code></pre>
+            </div>
+
+            <div class="workflow-type">
+                <strong>3. Documentation Update:</strong>
+                <pre><code>@workspace what changed in src/power-apps/ since last commit?
+@workspace update README.md with these changes
+@workspace update CHANGELOG.md with v0.9.43 entry
+@terminal git add README.md CHANGELOG.md
+@terminal git commit -m "docs: Update documentation for v0.9.43"</code></pre>
+            </div>
+        </div>
+
+        <div class="best-practice">
+            <strong>Participant Selection Guide:</strong>
+            <ul>
+                <li>Use <code>@githubpr</code> for ANY GitHub-related task (issues, PRs, releases)</li>
+                <li>Use <code>@workspace</code> for code analysis, multi-file changes, documentation</li>
+                <li>Use <code>@terminal</code> for commands, CLI tools, and script execution</li>
+                <li>Use <code>@vscode</code> for editor configuration and workspace setup</li>
+            </ul>
+        </div>
+
+        <!-- SECTION: Power Platform -->
+        <h2 id="section-power-platform">Power Platform Specific Workflows</h2>
+
+        <p>These specialized workflows leverage Power Platform CLI (pac) and VS Code integration for Canvas App development, Power Automate flow management, and solution lifecycle automation. Follow these patterns for efficient Power Platform development within your autonomous Copilot workflow.</p>
+
+        <div class="step-box">
+            <h3>Power Platform Workflow 1: Canvas App Editing & Testing</h3>
+
+            <h4>Step 1: Open Canvas App in PowerApps Studio</h4>
+            <div class="why">
+                <strong>WHY:</strong> Canvas Apps must be edited in the web-based PowerApps Studio interface, not directly in VS Code. This step navigates you to the correct editing environment while maintaining your workspace context.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Opens PowerApps Studio in your default browser, navigates to your specific Canvas App, and prepares the editing environment for UI/formula changes.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In VS Code, open Copilot Chat (Ctrl+Alt+I)</li>
+                    <li>Type: <code>"Open PowerApps Studio for TelehealthBookingApp"</code></li>
+                    <li>Copilot will execute the workspace task: <strong>📱 Open PowerApps Studio</strong></li>
+                    <li>Browser opens to https://make.powerapps.com</li>
+                    <li>Navigate to <strong>Apps → TelehealthBookingApp → Edit</strong></li>
+                    <li>PowerApps Studio loads with your Canvas App</li>
+                </ol>
+            </div>
+            <div class="tip">
+                <strong>TIP:</strong> Keep VS Code open alongside PowerApps Studio so you can use @workspace for formula assistance and documentation reference while editing.
+            </div>
+            <div class="variations">
+                <strong>OTHER VARIATIONS:</strong>
+                <ul>
+                    <li><strong>Direct URL:</strong> Bookmark specific app edit URLs like <code>https://make.powerapps.com/environments/{env-id}/apps/{app-id}/edit</code></li>
+                    <li><strong>Using @terminal:</strong> Type <code>@terminal start https://make.powerapps.com</code> to open from Copilot Chat</li>
+                    <li><strong>VS Code Task:</strong> Press Ctrl+Shift+P → "Tasks: Run Task" → "📱 Open PowerApps Studio"</li>
+                </ul>
+            </div>
+
+            <h4>Step 2: Make Formula/UI Changes in Studio</h4>
+            <div class="why">
+                <strong>WHY:</strong> Canvas Apps use Power Fx formulas and visual controls that require the Studio's drag-and-drop interface and formula bar. VS Code cannot directly edit .msapp files.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Modifies control properties, formulas, data connections, and UI layout using PowerApps Studio's editing tools. Changes are auto-saved to the cloud-hosted app version.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In PowerApps Studio, select the control/screen to modify (e.g., <code>galRoomAvailability</code>)</li>
+                    <li>Use the property dropdown to select the property to change (e.g., <code>Items</code>)</li>
+                    <li>In the formula bar, enter or paste Power Fx formula (use @workspace in VS Code for formula assistance)</li>
+                    <li>Studio auto-saves changes (look for "Saved" indicator in top-right)</li>
+                    <li>Use Alt+Shift+F to format formulas in Studio's formula bar</li>
+                    <li>Add comments using <code>/* comment */</code> syntax for complex formulas</li>
+                </ol>
+            </div>
+            <div class="best-practice">
+                <strong>BEST PRACTICE:</strong> Before making changes, document the current formula/property value. Use VS Code to store formula snippets in <code>docs/powerApps-building-filter-formulas.md</code> for reference and version control.
+            </div>
+            <div class="variations">
+                <strong>OTHER VARIATIONS:</strong>
+                <ul>
+                    <li><strong>Formula Assistant:</strong> In VS Code, ask @workspace <code>"Provide delegation-friendly filter formula for room bookings"</code> then copy to Studio</li>
+                    <li><strong>Component Editing:</strong> Navigate to Components tab in Studio for reusable elements</li>
+                    <li><strong>Data Sources:</strong> Add/modify data connections via Data tab (SharePoint, SQL, etc.)</li>
+                </ul>
+            </div>
+
+            <h4>Step 3: Test in Play Mode</h4>
+            <div class="why">
+                <strong>WHY:</strong> Play mode simulates the live app experience, validates formulas, tests user interactions, and identifies runtime errors before publishing to users.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Activates Play mode in PowerApps Studio to interact with the app as end-users would, testing navigation, data operations, and formula logic.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In PowerApps Studio, click <strong>Play</strong> button (▶️) in top-right, or press Alt+Shift+P</li>
+                    <li>Test specific workflows (e.g., room booking, approval submission)</li>
+                    <li>Validate formulas execute correctly (check collection data, variable values)</li>
+                    <li>Test on different screen sizes using Studio's responsive preview</li>
+                    <li>Exit Play mode with Esc key or ✖️ button</li>
+                    <li>Review errors in App Checker panel (Alt+Shift+E)</li>
+                </ol>
+            </div>
+            <div class="warning">
+                <strong>WARNING:</strong> Play mode uses LIVE data connections. Test bookings/submissions will affect your SharePoint lists and trigger real Power Automate flows. Use test data or separate dev environment.
+            </div>
+            <div class="variations">
+                <strong>OTHER VARIATIONS:</strong>
+                <ul>
+                    <li><strong>Monitor Tool:</strong> Use Monitor (Alt+Shift+M) to debug formula execution and data calls in real-time</li>
+                    <li><strong>Mobile Preview:</strong> Click mobile phone icon in Studio to test mobile layouts</li>
+                    <li><strong>Browser Test:</strong> Click "Publish" → "Play" to test in separate browser tab</li>
+                </ul>
+            </div>
+
+            <h4>Step 4: Save & Publish Canvas App</h4>
+            <div class="why">
+                <strong>WHY:</strong> Saving creates a version checkpoint; publishing makes changes available to end-users. This maintains version history and enables rollback if needed.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Creates a new app version with your changes, publishes it to the environment, and makes it accessible to users with proper permissions.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In PowerApps Studio, click <strong>File</strong> tab in top-left</li>
+                    <li>Click <strong>Save</strong> (Ctrl+S)</li>
+                    <li>Add version notes describing changes (e.g., "Fixed room conflict detection formula")</li>
+                    <li>Click <strong>Save</strong> button to create version checkpoint</li>
+                    <li>Click <strong>Publish</strong> button</li>
+                    <li>Select <strong>Publish this version</strong> to make changes live</li>
+                    <li>Wait for "Published successfully" confirmation</li>
+                </ol>
+            </div>
+            <div class="tip">
+                <strong>TIP:</strong> Copy the version number from Studio (e.g., "2.1.5") to reference in your CHANGELOG.md and git commit messages for traceability.
+            </div>
+
+            <h4>Step 5: Export & Unpack for Version Control</h4>
+            <div class="why">
+                <strong>WHY:</strong> Canvas Apps are stored as binary .msapp files. Unpacking converts them to readable source files (.fx, .json, .yaml) that can be version-controlled in Git and reviewed in VS Code.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Downloads the .msapp file from PowerApps, uses pac CLI to unpack it into source code format, and stores the unpacked files in your workspace's src/power-apps/ directory.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In PowerApps Studio, click <strong>File → Export → Package (.msapp)</strong></li>
+                    <li>Save file to your workspace's <code>src/power-apps/</code> directory</li>
+                    <li>Return to VS Code</li>
+                    <li>In Copilot Chat, type: <code>@terminal unpack the TelehealthBookingApp.msapp file</code></li>
+                    <li>Copilot generates and executes pac CLI command:
+                        <pre>pac canvas unpack --msapp ./src/power-apps/TelehealthBookingApp.msapp --sources ./src/power-apps/TelehealthBookingApp/Source</pre>
+                    </li>
+                    <li>Verify unpacked source files appear in <code>src/power-apps/TelehealthBookingApp/Source/</code></li>
+                    <li>Commit changes to Git with descriptive message referencing Canvas App version</li>
+                </ol>
+            </div>
+            <div class="best-practice">
+                <strong>BEST PRACTICE:</strong> Store unpacked source files in version control, NOT the binary .msapp file. This enables code review, diff comparison, and collaboration. Delete .msapp after unpacking to avoid confusion.
+            </div>
+            <div class="variations">
+                <strong>OTHER VARIATIONS:</strong>
+                <ul>
+                    <li><strong>Automated Script:</strong> Create PowerShell script that downloads latest app version, unpacks, and commits in one command</li>
+                    <li><strong>Manual pac CLI:</strong> Run <code>@terminal pac canvas unpack --msapp [path] --sources [path]</code> directly</li>
+                    <li><strong>Workspace Task:</strong> Create VS Code task for one-click app unpacking</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Power Platform Workflow 2: Power Automate Flow Management</h3>
+
+            <h4>Step 1: Open Flow Designer</h4>
+            <div class="why">
+                <strong>WHY:</strong> Power Automate flows require the web-based designer for visual workflow creation, connector configuration, and expression editing.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Navigates to Power Automate portal and opens the specific flow in edit mode for modification.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In VS Code Copilot Chat, type: <code>"Open Power Automate designer"</code></li>
+                    <li>Copilot executes workspace task: <strong>⚡ Open Power Automate</strong></li>
+                    <li>Browser opens to https://make.powerautomate.com</li>
+                    <li>Navigate to <strong>My flows → [Flow Name] → Edit</strong></li>
+                    <li>Flow designer loads with your workflow</li>
+                </ol>
+            </div>
+            <div class="tip">
+                <strong>TIP:</strong> Use @workspace in VS Code to ask about flow patterns, expression syntax, and connector documentation while editing in the browser.
+            </div>
+
+            <h4>Step 2: Modify Flow Actions & Expressions</h4>
+            <div class="why">
+                <strong>WHY:</strong> Flows automate business processes (approvals, notifications, data operations). Changes here update workflow logic, routing rules, and integration behavior.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Edits flow triggers, actions, conditions, loops, and dynamic expressions to implement required automation logic.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>Click action card to expand and edit properties</li>
+                    <li>Use dynamic content picker to reference previous action outputs</li>
+                    <li>Write expressions using Power Automate expression language (e.g., <code>formatDateTime(utcNow(), 'yyyy-MM-dd')</code>)</li>
+                    <li>Add conditions, loops (Apply to each), parallel branches as needed</li>
+                    <li>Configure error handling: click <strong>... → Configure run after</strong> for each action</li>
+                    <li>Add descriptive action names (not "Compose 1", use "Format booking date")</li>
+                    <li>Save flow frequently (Ctrl+S or top-right Save button)</li>
+                </ol>
+            </div>
+            <div class="best-practice">
+                <strong>BEST PRACTICE:</strong> Document complex expressions with comments in VS Code's <code>src/power-automate/flow-expressions.md</code> file for reference. Power Automate doesn't support inline comments in expressions.
+            </div>
+
+            <h4>Step 3: Test Flow with Sample Data</h4>
+            <div class="why">
+                <strong>WHY:</strong> Flow testing validates logic, identifies errors, and ensures proper connector behavior before deploying to production.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Executes the flow using test trigger data, monitors action execution, reviews outputs, and validates success/failure paths.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In flow designer, click <strong>Test</strong> button (top-right)</li>
+                    <li>Select <strong>Manually</strong> or <strong>Automatically</strong> (using recent trigger data)</li>
+                    <li>Click <strong>Test</strong> and trigger the flow (e.g., submit form, manual trigger)</li>
+                    <li>Monitor action execution in real-time (green checkmarks = success, red X = error)</li>
+                    <li>Click each action to review inputs/outputs and execution details</li>
+                    <li>Validate email notifications, SharePoint updates, approval requests as expected</li>
+                    <li>Fix errors and retest until all actions succeed</li>
+                </ol>
+            </div>
+            <div class="warning">
+                <strong>WARNING:</strong> Flow testing uses LIVE connections and will send real emails, create SharePoint items, etc. Use test accounts and separate dev environment to avoid affecting production data.
+            </div>
+
+            <h4>Step 4: Export Flow Definition</h4>
+            <div class="why">
+                <strong>WHY:</strong> Exporting flow definitions as JSON enables version control, documentation, backup, and deployment automation across environments.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Downloads flow as ZIP package containing JSON definition, connection references, and metadata for storage in your workspace repository.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In Power Automate portal (https://make.powerautomate.com), navigate to <strong>My flows</strong></li>
+                    <li>Click <strong>... (three dots)</strong> next to flow name → <strong>Export → Package (.zip)</strong></li>
+                    <li>Configure export settings:
+                        <ul>
+                            <li>Review package details and dependencies</li>
+                            <li>Select "Create as new" for connections (preserves connection references)</li>
+                            <li>Add export comments/notes for traceability</li>
+                        </ul>
+                    </li>
+                    <li>Click <strong>Export</strong> and save ZIP to <code>src/power-automate/[FlowName]/</code></li>
+                    <li>Extract ZIP contents to review JSON definition files</li>
+                    <li>Commit to Git with message: <code>"Export [FlowName] v[Version] - [Changes]"</code></li>
+                </ol>
+            </div>
+            <div class="tip">
+                <strong>TIP:</strong> Use @workspace in VS Code to ask: <code>"Document the logic changes in this flow export"</code> while reviewing the JSON definition.
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Power Platform Workflow 3: pac CLI Automation</h3>
+
+            <h4>Step 1: Authenticate pac CLI</h4>
+            <div class="why">
+                <strong>WHY:</strong> pac CLI requires authentication to your Power Platform environment to execute commands for app packing, solution management, and deployment operations.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Establishes authenticated connection between your local pac CLI tool and your Power Platform environment using interactive login or service principal credentials.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In VS Code Copilot Chat, type: <code>@terminal authenticate pac CLI to my Power Platform environment</code></li>
+                    <li>Copilot generates command:
+                        <pre>pac auth create --environment https://[your-environment].crm.dynamics.com</pre>
+                    </li>
+                    <li>Browser opens for interactive login (use your M365 credentials)</li>
+                    <li>Complete authentication in browser</li>
+                    <li>Return to VS Code terminal, verify success message: <code>"Authentication profile created successfully"</code></li>
+                    <li>Validate connection: <code>@terminal pac org who</code> (displays current environment details)</li>
+                </ol>
+            </div>
+            <div class="tip">
+                <strong>TIP:</strong> Save your environment URL in VS Code settings or workspace variables for quick authentication. Use <code>pac auth list</code> to see all authentication profiles.
+            </div>
+            <div class="variations">
+                <strong>OTHER VARIATIONS:</strong>
+                <ul>
+                    <li><strong>Service Principal:</strong> Use <code>pac auth create --tenant [tenant-id] --applicationId [app-id] --clientSecret [secret]</code> for CI/CD pipelines</li>
+                    <li><strong>Named Profile:</strong> Add <code>--name "Dev Environment"</code> to create multiple profiles for different environments</li>
+                    <li><strong>Government Cloud:</strong> Use <code>--cloud UsGov</code> flag for VA Government Cloud environments</li>
+                </ul>
+            </div>
+
+            <h4>Step 2: Unpack Canvas App for Source Control</h4>
+            <div class="why">
+                <strong>WHY:</strong> Binary .msapp files cannot be reviewed, diffed, or merged in Git. Unpacking converts them to human-readable source files (.fx formulas, .json metadata, .yaml configs) for proper version control.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Uses pac CLI to decompose .msapp binary into directory structure of source files that can be reviewed in VS Code and tracked in Git.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>Download/export .msapp file from PowerApps Studio to <code>src/power-apps/</code></li>
+                    <li>In VS Code Copilot Chat, type: <code>@terminal unpack TelehealthBookingApp.msapp to source files</code></li>
+                    <li>Copilot generates and executes:
+                        <pre>pac canvas unpack --msapp ./src/power-apps/TelehealthBookingApp.msapp --sources ./src/power-apps/TelehealthBookingApp/Source</pre>
+                    </li>
+                    <li>Verify unpacked structure appears:
+                        <ul>
+                            <li><code>Src/</code> - Screen and control definitions (.fx Power Fx formulas)</li>
+                            <li><code>DataSources/</code> - Connection metadata (.json)</li>
+                            <li><code>Properties/</code> - App properties and settings (.json)</li>
+                            <li><code>Resources/</code> - Images, icons, media files</li>
+                        </ul>
+                    </li>
+                    <li>Delete original .msapp file (not needed for version control)</li>
+                    <li>Commit unpacked source files to Git</li>
+                </ol>
+            </div>
+            <div class="best-practice">
+                <strong>BEST PRACTICE:</strong> Add .msapp files to .gitignore to prevent accidentally committing binary files. Only version control unpacked source directories.
+            </div>
+
+            <h4>Step 3: Pack Source Files to .msapp</h4>
+            <div class="why">
+                <strong>WHY:</strong> To deploy or import Canvas Apps, you need the .msapp binary format. Packing rebuilds the .msapp from version-controlled source files for deployment to other environments.
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Uses pac CLI to compile source directory structure back into a deployable .msapp package for import into Power Platform environments.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li>In VS Code Copilot Chat, type: <code>@terminal pack source files to deployable .msapp</code></li>
+                    <li>Copilot generates and executes:
+                        <pre>pac canvas pack --sources ./src/power-apps/TelehealthBookingApp/Source --msapp ./releases/TelehealthBookingApp_v0.9.5.msapp</pre>
+                    </li>
+                    <li>Verify .msapp created in <code>releases/</code> directory</li>
+                    <li>Test .msapp by importing to test environment via PowerApps Studio</li>
+                    <li>Store release .msapp in <code>releases/v0.9.x/</code> with version number in filename</li>
+                </ol>
+            </div>
+            <div class="tip">
+                <strong>TIP:</strong> Use semantic versioning in .msapp filenames (e.g., <code>TelehealthBookingApp_v0.9.5.msapp</code>) to track releases alongside Git tags and CHANGELOG entries.
+            </div>
+
+            <h4>Step 4: Solution Export & Import Automation</h4>
+            <div class="why">
+                <strong>WHY:</strong> Solutions package multiple Power Platform components (apps, flows, entities) together for coordinated deployment across environments (Dev → Test → Prod).
+            </div>
+            <div class="what">
+                <strong>WHAT:</strong> Uses pac CLI to export complete solution packages from source environment and import them into target environments with proper dependency resolution.
+            </div>
+            <div class="how">
+                <strong>HOW:</strong>
+                <ol>
+                    <li><strong>Export Solution from Dev:</strong>
+                        <ul>
+                            <li>In VS Code Copilot Chat: <code>@terminal export TelehealthBooking solution as managed</code></li>
+                            <li>Copilot executes:
+                                <pre>pac solution export --name TelehealthBooking --path ./releases/TelehealthBooking_managed.zip --managed true</pre>
+                            </li>
+                            <li>Verify ZIP file created in <code>releases/</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Import Solution to Target Environment:</strong>
+                        <ul>
+                            <li>Switch pac auth profile: <code>@terminal pac auth select --name "Test Environment"</code></li>
+                            <li>Import solution: <code>@terminal import solution to test environment</code></li>
+                            <li>Copilot executes:
+                                <pre>pac solution import --path ./releases/TelehealthBooking_managed.zip --activate-plugins --publish-changes</pre>
+                            </li>
+                            <li>Monitor import progress in terminal output</li>
+                            <li>Validate deployment in target environment via Power Platform admin center</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <div class="warning">
+                <strong>WARNING:</strong> Always export as MANAGED solutions for Test/Prod environments. Unmanaged solutions should only be used in Dev environment. Managed solutions cannot be modified in target environment, ensuring integrity.
+            </div>
+            <div class="variations">
+                <strong>OTHER VARIATIONS:</strong>
+                <ul>
+                    <li><strong>Unpack Solution:</strong> <code>pac solution unpack --zipfile [path] --folder [output-dir]</code> to version control solution XML</li>
+                    <li><strong>List Solutions:</strong> <code>@terminal pac solution list</code> to see all solutions in current environment</li>
+                    <li><strong>Upgrade Solution:</strong> Use <code>--import-mode Upgrade</code> flag for updating existing solutions</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Power Platform Workflow 4: End-to-End Development Cycle</h3>
+
+            <p>This comprehensive workflow integrates all previous Power Platform workflows into a complete development cycle from change request through production deployment.</p>
+
+            <h4>Complete Cycle Overview:</h4>
+            <ol style="margin-left: 20px;">
+                <li><strong>Receive Change Request</strong> (GitHub issue via intake workflow)</li>
+                <li><strong>Edit Canvas App</strong> in PowerApps Studio (UI/formula changes)</li>
+                <li><strong>Test in Play Mode</strong> and Monitor tool</li>
+                <li><strong>Save & Publish</strong> app version with descriptive notes</li>
+                <li><strong>Export & Unpack .msapp</strong> to source files using pac CLI</li>
+                <li><strong>Commit Source to Git</strong> with issue reference and CHANGELOG update</li>
+                <li><strong>Update Power Automate Flows</strong> if needed (approval routing, notifications)</li>
+                <li><strong>Export Flow Definitions</strong> as JSON for version control</li>
+                <li><strong>Pack Solution</strong> using pac CLI for deployment</li>
+                <li><strong>Deploy to Test Environment</strong> via pac solution import</li>
+                <li><strong>User Acceptance Testing</strong> in test environment</li>
+                <li><strong>Deploy to Production</strong> using managed solution import</li>
+                <li><strong>Close GitHub Issue</strong> with deployment confirmation</li>
+            </ol>
+
+            <div class="best-practice">
+                <strong>BEST PRACTICE:</strong> Use @githubpr participant to automate issue tracking throughout this cycle. Ask Copilot to "link this Canvas App change to GitHub issue #[num]" for traceability.
+            </div>
+        </div>
+
+        <!-- SECTION: Troubleshooting -->
+        <h2 id="section-troubleshooting">Troubleshooting & Common Issues</h2>
+
+        <p>This section provides solutions to common problems encountered during autonomous Copilot workflows. Use these troubleshooting patterns to quickly resolve issues and maintain development momentum.</p>
+
+        <div class="step-box">
+            <h3>Issue 1: GitHub Authentication Failures</h3>
+
+            <div class="what">
+                <strong>SYMPTOMS:</strong>
+                <ul>
+                    <li>@githubpr participant returns "Not authenticated" or "Unable to access repository" errors</li>
+                    <li>VS Code shows "Sign in to use GitHub Pull Requests" notification</li>
+                    <li>GitHub tasks fail with 401 Unauthorized errors</li>
+                    <li>Cannot create issues, read PRs, or access repository information</li>
+                </ul>
+            </div>
+
+            <div class="how">
+                <strong>SOLUTION:</strong>
+                <ol>
+                    <li><strong>Re-authenticate GitHub Account:</strong>
+                        <ul>
+                            <li>Click bottom-left account icon in VS Code → "Sign in to Sync Settings"</li>
+                            <li>Select "Sign in with GitHub"</li>
+                            <li>Browser opens for GitHub authorization</li>
+                            <li>Grant VS Code permissions to access repositories</li>
+                            <li>Return to VS Code, verify account name appears in status bar</li>
+                        </ul>
+                    </li>
+                    <li><strong>Verify GitHub Extension Status:</strong>
+                        <ul>
+                            <li>Open Extensions view (Ctrl+Shift+X)</li>
+                            <li>Search for "GitHub Pull Requests and Issues"</li>
+                            <li>Verify extension is enabled (not disabled or requiring reload)</li>
+                            <li>Check extension version (update if outdated)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Clear GitHub Credentials Cache:</strong>
+                        <ul>
+                            <li>Press Ctrl+Shift+P → "GitHub: Sign Out"</li>
+                            <li>Press Ctrl+Shift+P → "GitHub: Sign In"</li>
+                            <li>Complete authentication flow again</li>
+                        </ul>
+                    </li>
+                    <li><strong>Verify Repository Permissions:</strong>
+                        <ul>
+                            <li>Visit https://github.com/settings/tokens in browser</li>
+                            <li>Check personal access token has required scopes: <code>repo</code>, <code>read:org</code></li>
+                            <li>If token expired, generate new token and re-authenticate VS Code</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="tip">
+                <strong>PREVENTION TIP:</strong> Enable "Trust this extension" for GitHub Pull Requests extension in workspace settings to avoid re-authentication prompts.
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Issue 2: Copilot Extension Conflicts</h3>
+
+            <div class="what">
+                <strong>SYMPTOMS:</strong>
+                <ul>
+                    <li>Copilot Chat participant (@workspace, @githubpr) not available in suggestions</li>
+                    <li>"Copilot is not responding" or timeout errors</li>
+                    <li>Chat panel opens but shows "Unable to load participants" message</li>
+                    <li>Extension icon shows warning or error indicator</li>
+                </ul>
+            </div>
+
+            <div class="how">
+                <strong>SOLUTION:</strong>
+                <ol>
+                    <li><strong>Reload VS Code Window:</strong>
+                        <ul>
+                            <li>Press Ctrl+Shift+P → "Developer: Reload Window"</li>
+                            <li>Wait for all extensions to reload</li>
+                            <li>Test Copilot Chat (Ctrl+Alt+I) with simple query</li>
+                        </ul>
+                    </li>
+                    <li><strong>Check Extension Compatibility:</strong>
+                        <ul>
+                            <li>Open Extensions view (Ctrl+Shift+X)</li>
+                            <li>Search for "GitHub Copilot Chat"</li>
+                            <li>Check "Details" tab for known compatibility issues</li>
+                            <li>Verify VS Code version meets minimum requirements (usually latest stable)</li>
+                            <li>Update VS Code if needed: Help → Check for Updates</li>
+                        </ul>
+                    </li>
+                    <li><strong>Disable Conflicting Extensions:</strong>
+                        <ul>
+                            <li>Common conflicts: other AI assistants (Tabnine, Kite), alternative chat extensions</li>
+                            <li>Temporarily disable suspected conflicting extensions</li>
+                            <li>Reload window and test Copilot functionality</li>
+                            <li>Re-enable extensions one at a time to identify conflict</li>
+                        </ul>
+                    </li>
+                    <li><strong>Clear Extension Cache:</strong>
+                        <ul>
+                            <li>Press Ctrl+Shift+P → "Developer: Reload Window with Extensions Disabled"</li>
+                            <li>Press Ctrl+Shift+P → "Developer: Reload Window"</li>
+                            <li>This forces extensions to reinitialize from clean state</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="warning">
+                <strong>WARNING:</strong> If issues persist after these steps, uninstall and reinstall GitHub Copilot Chat extension. Export your workspace settings first to preserve configurations.
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Issue 3: Workspace Context Not Available</h3>
+
+            <div class="what">
+                <strong>SYMPTOMS:</strong>
+                <ul>
+                    <li>@workspace participant returns "No workspace context found" or generic responses</li>
+                    <li>Copilot doesn't recognize files, functions, or project-specific code</li>
+                    <li>Semantic search returns empty or irrelevant results</li>
+                    <li>Code suggestions don't match project patterns or conventions</li>
+                </ul>
+            </div>
+
+            <div class="how">
+                <strong>SOLUTION:</strong>
+                <ol>
+                    <li><strong>Verify Workspace is Open:</strong>
+                        <ul>
+                            <li>Check bottom-left corner shows workspace name (not just folder name)</li>
+                            <li>If folder is open instead of workspace: File → Open Workspace from File</li>
+                            <li>Select <code>Telehealth Resources Project.code-workspace</code></li>
+                            <li>VS Code reloads with full workspace context</li>
+                        </ul>
+                    </li>
+                    <li><strong>Rebuild Workspace Index:</strong>
+                        <ul>
+                            <li>Press Ctrl+Shift+P → "Developer: Reload Window"</li>
+                            <li>Wait 30-60 seconds for indexing to complete (check bottom status bar for progress)</li>
+                            <li>Test @workspace with specific query: <code>"Find the room booking form in Canvas App"</code></li>
+                        </ul>
+                    </li>
+                    <li><strong>Check .gitignore and File Exclusions:</strong>
+                        <ul>
+                            <li>Open <code>.gitignore</code> file in workspace root</li>
+                            <li>Verify important source files are NOT excluded (e.g., <code>src/</code> directories)</li>
+                            <li>Check VS Code settings: Files → Exclude patterns</li>
+                            <li>Remove exclusions that hide relevant code from Copilot indexing</li>
+                        </ul>
+                    </li>
+                    <li><strong>Provide Explicit Context in Queries:</strong>
+                        <ul>
+                            <li>Instead of: <code>"How does booking work?"</code></li>
+                            <li>Use: <code>"@workspace How does the room booking workflow work in TelehealthBookingApp Canvas App?"</code></li>
+                            <li>Reference specific files: <code>"@workspace Explain the formula in src/power-apps/.../galRoomAvailability.Items"</code></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="best-practice">
+                <strong>BEST PRACTICE:</strong> Keep workspace file structure organized with clear directory naming. Copilot indexes based on file names, paths, and content - descriptive names improve context quality.
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Issue 4: pac CLI Authentication Errors</h3>
+
+            <div class="what">
+                <strong>SYMPTOMS:</strong>
+                <ul>
+                    <li><code>pac canvas unpack</code> or <code>pac solution export</code> fails with "Not authenticated" error</li>
+                    <li><code>pac auth list</code> shows no authentication profiles</li>
+                    <li>Commands return "Unable to connect to Power Platform environment" messages</li>
+                    <li>Authentication browser window opens but doesn't complete login flow</li>
+                </ul>
+            </div>
+
+            <div class="how">
+                <strong>SOLUTION:</strong>
+                <ol>
+                    <li><strong>Create New Authentication Profile:</strong>
+                        <ul>
+                            <li>In VS Code terminal, run:
+                                <pre>pac auth create --environment https://[your-environment].crm.dynamics.com</pre>
+                            </li>
+                            <li>Browser opens for interactive login</li>
+                            <li>Use correct M365 credentials (same as PowerApps Studio access)</li>
+                            <li>Grant permissions when prompted</li>
+                            <li>Verify success: <code>pac auth list</code> shows new profile with green checkmark</li>
+                        </ul>
+                    </li>
+                    <li><strong>Select Correct Authentication Profile:</strong>
+                        <ul>
+                            <li>If multiple profiles exist: <code>pac auth select --index [number]</code></li>
+                            <li>Or use named profile: <code>pac auth select --name "Dev Environment"</code></li>
+                            <li>Verify active profile: <code>pac org who</code> (displays current environment)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Clear Expired Tokens:</strong>
+                        <ul>
+                            <li>Delete expired profile: <code>pac auth delete --index [number]</code></li>
+                            <li>Recreate with fresh authentication: <code>pac auth create</code></li>
+                            <li>Tokens typically expire after 90 days - re-authenticate periodically</li>
+                        </ul>
+                    </li>
+                    <li><strong>Verify Environment URL:</strong>
+                        <ul>
+                            <li>Find correct URL: Open https://make.powerapps.com</li>
+                            <li>Click gear icon → Session details → Instance url</li>
+                            <li>Use exact URL format: <code>https://[org-name].[region].dynamics.com</code></li>
+                            <li>For VA Gov Cloud: <code>https://[org-name].crm9.dynamics.com</code></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="tip">
+                <strong>TIP:</strong> Save environment URLs in VS Code workspace settings JSON for quick reference:
+                <pre>{
+    "powerPlatform.environments": {
+        "dev": "https://dev-hines.crm9.dynamics.com",
+        "test": "https://test-hines.crm9.dynamics.com",
+        "prod": "https://hines.crm9.dynamics.com"
+    }
+}</pre>
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Issue 5: Canvas App Unpacking Failures</h3>
+
+            <div class="what">
+                <strong>SYMPTOMS:</strong>
+                <ul>
+                    <li><code>pac canvas unpack</code> returns error: "The .msapp file is corrupted or invalid"</li>
+                    <li>Unpacking completes but source files are missing or incomplete</li>
+                    <li>Error: "Unable to parse .msapp file format" or version compatibility issues</li>
+                    <li>Unpacked files contain unreadable binary or garbled content</li>
+                </ul>
+            </div>
+
+            <div class="how">
+                <strong>SOLUTION:</strong>
+                <ol>
+                    <li><strong>Verify .msapp File Integrity:</strong>
+                        <ul>
+                            <li>Check file size (should be several MB for typical Canvas App)</li>
+                            <li>Re-export from PowerApps Studio: File → Export → Package (.msapp)</li>
+                            <li>Use "Save As" download (not browser preview) to avoid truncation</li>
+                            <li>Verify download completed successfully (no partial downloads)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Update pac CLI to Latest Version:</strong>
+                        <ul>
+                            <li>Check current version: <code>pac -v</code></li>
+                            <li>Update with .NET tool: <code>dotnet tool update -g Microsoft.PowerApps.CLI.Tool</code></li>
+                            <li>Or download installer from https://aka.ms/PowerAppsCLI</li>
+                            <li>Verify updated: <code>pac -v</code> (should show latest version, e.g., 1.30+)</li>
+                            <li>Retry unpacking with updated CLI</li>
+                        </ul>
+                    </li>
+                    <li><strong>Use Clean Output Directory:</strong>
+                        <ul>
+                            <li>Delete existing unpacked source directory if present</li>
+                            <li>Create fresh output directory: <code>mkdir ./src/power-apps/TelehealthBookingApp/Source</code></li>
+                            <li>Run unpack command with clean destination:
+                                <pre>pac canvas unpack --msapp [input.msapp] --sources [clean-directory]</pre>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Check Canvas App Format Version:</strong>
+                        <ul>
+                            <li>In PowerApps Studio, click File → Settings → Upcoming features</li>
+                            <li>Disable experimental features that may cause compatibility issues</li>
+                            <li>Save and re-export .msapp</li>
+                            <li>Older pac CLI versions may not support newest app format versions</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="warning">
+                <strong>WARNING:</strong> Always keep a backup copy of working .msapp files before unpacking. Unpacking process is non-destructive, but having backup ensures you can restore if issues occur.
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Issue 6: Git Merge Conflicts in Power Fx Files</h3>
+
+            <div class="what">
+                <strong>SYMPTOMS:</strong>
+                <ul>
+                    <li>Git shows merge conflicts in .fx files (Power Fx formulas) after pulling changes</li>
+                    <li>VS Code highlights conflict markers in Canvas App source files</li>
+                    <li>Unable to pack .msapp due to invalid .fx syntax from unresolved conflicts</li>
+                    <li>Multiple developers edited same control properties/formulas simultaneously</li>
+                </ul>
+            </div>
+
+            <div class="how">
+                <strong>SOLUTION:</strong>
+                <ol>
+                    <li><strong>Identify Conflicting Files:</strong>
+                        <ul>
+                            <li>Run: <code>git status</code> to see conflicted files</li>
+                            <li>Look for files in <code>src/power-apps/.../Src/</code> directory (control definitions)</li>
+                            <li>Open conflicted .fx files in VS Code (conflicts shown with <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> markers)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Analyze Conflict Context:</strong>
+                        <ul>
+                            <li>Use @workspace in Copilot Chat: <code>"Explain this Power Fx merge conflict and recommend resolution"</code></li>
+                            <li>Copilot analyzes both formula versions and suggests which to keep or how to merge</li>
+                            <li>Consider business logic: which version implements correct behavior?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Resolve with VS Code Merge Editor:</strong>
+                        <ul>
+                            <li>Click "Resolve in Merge Editor" button in VS Code</li>
+                            <li>Review "Current" (your changes) vs "Incoming" (pulled changes)</li>
+                            <li>Select appropriate version or manually combine formulas</li>
+                            <li>Validate Power Fx syntax (no unmatched parentheses, correct function names)</li>
+                            <li>Click "Complete Merge" button</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Merged Canvas App:</strong>
+                        <ul>
+                            <li>Pack source files to .msapp: <code>pac canvas pack --sources [src-dir] --msapp [output.msapp]</code></li>
+                            <li>Import to test environment via PowerApps Studio</li>
+                            <li>Test affected controls/screens to ensure formulas work correctly</li>
+                            <li>If errors, review and adjust merged formulas</li>
+                        </ul>
+                    </li>
+                    <li><strong>Commit Resolved Conflict:</strong>
+                        <ul>
+                            <li>Stage resolved files: <code>git add [conflicted-files]</code></li>
+                            <li>Complete merge: <code>git commit -m "Resolved merge conflict in [control-name] formula"</code></li>
+                            <li>Push to remote: <code>git push</code></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="best-practice">
+                <strong>BEST PRACTICE:</strong> To minimize merge conflicts, coordinate Canvas App editing among team members. Use feature branches for separate screens/components, and communicate via GitHub issues before editing shared controls.
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Issue 7: Copilot Response Length Limits</h3>
+
+            <div class="what">
+                <strong>SYMPTOMS:</strong>
+                <ul>
+                    <li>Copilot responses are truncated mid-sentence or mid-code block</li>
+                    <li>Large code generation requests return incomplete implementations</li>
+                    <li>Documentation requests cut off without all sections completed</li>
+                    <li>Error message: "Response too long, please try a more specific query"</li>
+                </ul>
+            </div>
+
+            <div class="how">
+                <strong>SOLUTION:</strong>
+                <ol>
+                    <li><strong>Break Large Requests into Smaller Tasks:</strong>
+                        <ul>
+                            <li>Instead of: <code>"Create complete Canvas App with all screens and formulas"</code></li>
+                            <li>Use: <code>"Create home screen layout"</code> → <code>"Add room booking form"</code> → <code>"Implement conflict detection formula"</code></li>
+                            <li>Complete one section, verify, then request next section</li>
+                        </ul>
+                    </li>
+                    <li><strong>Ask for Continuation:</strong>
+                        <ul>
+                            <li>When response truncates, immediately type: <code>"Continue from where you stopped"</code></li>
+                            <li>Copilot resumes from truncation point with remaining content</li>
+                            <li>Repeat until complete content received</li>
+                        </ul>
+                    </li>
+                    <li><strong>Request Outline First, Then Details:</strong>
+                        <ul>
+                            <li>First query: <code>"Provide outline of steps for implementing room booking workflow"</code></li>
+                            <li>Review outline, select specific step</li>
+                            <li>Follow-up query: <code>"Implement step 3 in detail with complete code"</code></li>
+                            <li>Iterate through each step individually</li>
+                        </ul>
+                    </li>
+                    <li><strong>Use File References Instead of Inline Content:</strong>
+                        <ul>
+                            <li>For large code: <code>"Create the formula in src/power-apps/formulas/roomFiltering.fx"</code></li>
+                            <li>Copilot creates separate file instead of inline response (avoids length limits)</li>
+                            <li>Review file content in VS Code editor (no response length restrictions)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="tip">
+                <strong>TIP:</strong> For comprehensive documentation like this guide, explicitly request: <code>"Break this into multiple responses/sections to avoid length limits"</code>. Copilot will plan incremental delivery.
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Issue 8: Power Automate Flow Import Errors</h3>
+
+            <div class="what">
+                <strong>SYMPTOMS:</strong>
+                <ul>
+                    <li>Imported flow shows errors for connections or missing dependencies</li>
+                    <li>Actions marked with warning: "Connection not configured"</li>
+                    <li>Flow won't save: "Invalid action configuration" or "Missing required parameters"</li>
+                    <li>Environment-specific references fail after importing to different environment</li>
+                </ul>
+            </div>
+
+            <div class="how">
+                <strong>SOLUTION:</strong>
+                <ol>
+                    <li><strong>Reconfigure Connections After Import:</strong>
+                        <ul>
+                            <li>Open imported flow in edit mode</li>
+                            <li>Each connection action shows warning icon</li>
+                            <li>Click action → Select connection dropdown → "Add new connection"</li>
+                            <li>Authenticate with target environment credentials</li>
+                            <li>Repeat for all connection actions (SharePoint, Office 365, Approvals, etc.)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Update Environment-Specific References:</strong>
+                        <ul>
+                            <li>SharePoint site URLs: Update to target environment's SharePoint</li>
+                            <li>List/library names: Verify they exist in target environment with same schema</li>
+                            <li>User emails/groups: Update to target environment's users (test vs prod accounts)</li>
+                            <li>Canvas App IDs: If flow launches app, update app reference to target environment's version</li>
+                        </ul>
+                    </li>
+                    <li><strong>Use Connection References in Flows:</strong>
+                        <ul>
+                            <li>When creating flows, use solution-aware flows with connection references</li>
+                            <li>Connection references abstract environment-specific details</li>
+                            <li>During solution import, configure connection references once (not in every action)</li>
+                            <li>Future imports automatically use configured connection references</li>
+                        </ul>
+                    </li>
+                    <li><strong>Validate Flow Before Activation:</strong>
+                        <ul>
+                            <li>After reconfiguring, click "Flow checker" (top-right)</li>
+                            <li>Resolve all errors and warnings</li>
+                            <li>Test flow with sample data before turning on</li>
+                            <li>Monitor first live execution to confirm correct behavior</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="best-practice">
+                <strong>BEST PRACTICE:</strong> Package flows in solutions with connection references and environment variables. This reduces configuration effort when deploying across Dev/Test/Prod environments.
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Quick Reference: Error Message Decoder</h3>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                <thead>
+                    <tr style="background-color: #2d2d30; color: #e0e0e0;">
+                        <th style="padding: 10px; border: 1px solid #555; text-align: left;">Error Message</th>
+                        <th style="padding: 10px; border: 1px solid #555; text-align: left;">Cause</th>
+                        <th style="padding: 10px; border: 1px solid #555; text-align: left;">Quick Fix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><code>401 Unauthorized</code></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Authentication expired or invalid</td>
+                        <td style="padding: 8px; border: 1px solid #555;">Re-authenticate GitHub/pac CLI</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><code>Delegation warning</code></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Power Fx formula not delegable to data source</td>
+                        <td style="padding: 8px; border: 1px solid #555;">Rewrite using delegable functions (avoid Filter with complex logic)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><code>Copilot not available</code></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Extension conflict or not loaded</td>
+                        <td style="padding: 8px; border: 1px solid #555;">Reload window (Ctrl+Shift+P → Developer: Reload Window)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><code>The .msapp file is corrupted</code></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Incomplete download or invalid file</td>
+                        <td style="padding: 8px; border: 1px solid #555;">Re-export from PowerApps Studio, verify file size</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><code>Git merge conflict</code></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Simultaneous edits to same file</td>
+                        <td style="padding: 8px; border: 1px solid #555;">Use VS Code Merge Editor, resolve manually</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><code>Connection not configured</code></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Flow imported without connections</td>
+                        <td style="padding: 8px; border: 1px solid #555;">Edit flow, add new connection for each action</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><code>Unable to connect to environment</code></td>
+                        <td style="padding: 8px; border: 1px solid #555;">pac CLI not authenticated or wrong URL</td>
+                        <td style="padding: 8px; border: 1px solid #555;">Run <code>pac auth create</code> with correct environment URL</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><code>Response too long</code></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Copilot output exceeds length limit</td>
+                        <td style="padding: 8px; border: 1px solid #555;">Ask for continuation or break into smaller requests</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECTION: Resources -->
+        <h2 id="section-resources">Additional Resources & References</h2>
+
+        <p>This section provides curated external resources for deepening your understanding of autonomous Copilot workflows, Power Platform development, and modern ALM practices. Bookmark these links for ongoing reference and continuous learning.</p>
+
+        <div class="step-box">
+            <h3>Official Microsoft Documentation</h3>
+
+            <h4>GitHub Copilot & VS Code Extensions</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>GitHub Copilot Documentation:</strong> <a href="https://docs.github.com/copilot" target="_blank">https://docs.github.com/copilot</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Comprehensive guide to Copilot features, chat participants, and best practices</span>
+                </li>
+                <li><strong>VS Code Copilot Chat:</strong> <a href="https://code.visualstudio.com/docs/copilot/copilot-chat" target="_blank">https://code.visualstudio.com/docs/copilot/copilot-chat</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Detailed documentation on using @workspace, @terminal, @vscode, and other participants</span>
+                </li>
+                <li><strong>GitHub Pull Requests Extension:</strong> <a href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github" target="_blank">VS Code Marketplace - GitHub Pull Requests</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Extension documentation and feature overview for @githubpr participant</span>
+                </li>
+                <li><strong>VS Code Extension API:</strong> <a href="https://code.visualstudio.com/api" target="_blank">https://code.visualstudio.com/api</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">For understanding VS Code automation capabilities and extension development</span>
+                </li>
+            </ul>
+
+            <h4>Power Platform & pac CLI</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Power Apps Documentation:</strong> <a href="https://learn.microsoft.com/power-apps" target="_blank">https://learn.microsoft.com/power-apps</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Official Power Apps documentation with Canvas App tutorials and Power Fx reference</span>
+                </li>
+                <li><strong>Power Automate Documentation:</strong> <a href="https://learn.microsoft.com/power-automate" target="_blank">https://learn.microsoft.com/power-automate</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Flow creation guides, connector references, and expression language documentation</span>
+                </li>
+                <li><strong>Power Platform CLI (pac) Reference:</strong> <a href="https://learn.microsoft.com/power-platform/developer/cli/introduction" target="_blank">https://learn.microsoft.com/power-platform/developer/cli/introduction</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Complete pac CLI command reference, authentication, canvas pack/unpack, solution management</span>
+                </li>
+                <li><strong>Power Fx Formula Reference:</strong> <a href="https://learn.microsoft.com/power-platform/power-fx/formula-reference" target="_blank">https://learn.microsoft.com/power-platform/power-fx/formula-reference</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Comprehensive Power Fx function documentation with delegation information</span>
+                </li>
+                <li><strong>Application Lifecycle Management (ALM):</strong> <a href="https://learn.microsoft.com/power-platform/alm" target="_blank">https://learn.microsoft.com/power-platform/alm</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Best practices for solution management, environment strategy, and deployment pipelines</span>
+                </li>
+                <li><strong>Power Platform Center of Excellence (CoE) Starter Kit:</strong> <a href="https://learn.microsoft.com/power-platform/guidance/coe/starter-kit" target="_blank">https://learn.microsoft.com/power-platform/guidance/coe/starter-kit</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Enterprise governance and management toolkit for Power Platform deployments</span>
+                </li>
+            </ul>
+
+            <h4>Git & GitHub</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>GitHub Docs:</strong> <a href="https://docs.github.com" target="_blank">https://docs.github.com</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Complete GitHub documentation covering repositories, pull requests, issues, and actions</span>
+                </li>
+                <li><strong>Pro Git Book (Free):</strong> <a href="https://git-scm.com/book/en/v2" target="_blank">https://git-scm.com/book/en/v2</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Comprehensive Git reference from basics to advanced workflows</span>
+                </li>
+                <li><strong>GitHub Actions Documentation:</strong> <a href="https://docs.github.com/actions" target="_blank">https://docs.github.com/actions</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">CI/CD automation for testing and deploying Power Platform solutions</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <h3>Video Tutorials & Learning Paths</h3>
+
+            <h4>GitHub Copilot & VS Code</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>GitHub Copilot in VS Code:</strong> <a href="https://www.youtube.com/results?search_query=github+copilot+vscode+tutorial" target="_blank">YouTube - GitHub Copilot Tutorials</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Video tutorials on using Copilot, chat participants, and agent mode effectively</span>
+                </li>
+                <li><strong>Microsoft Learn: GitHub Copilot Learning Path:</strong> <a href="https://learn.microsoft.com/training/paths/copilot" target="_blank">https://learn.microsoft.com/training/paths/copilot</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Structured learning modules with hands-on exercises for GitHub Copilot mastery</span>
+                </li>
+            </ul>
+
+            <h4>Power Platform Development</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Microsoft Learn: Power Apps Learning Path:</strong> <a href="https://learn.microsoft.com/training/powerplatform/power-apps" target="_blank">https://learn.microsoft.com/training/powerplatform/power-apps</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Free guided learning paths for Canvas Apps, Power Fx, and responsive design</span>
+                </li>
+                <li><strong>Microsoft Learn: Power Automate Learning Path:</strong> <a href="https://learn.microsoft.com/training/powerplatform/power-automate" target="_blank">https://learn.microsoft.com/training/powerplatform/power-automate</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Flow creation, approval workflows, and advanced automation techniques</span>
+                </li>
+                <li><strong>Power Platform YouTube Channel:</strong> <a href="https://www.youtube.com/@MicrosoftPowerPlatform" target="_blank">@MicrosoftPowerPlatform</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Official video tutorials, feature announcements, and best practices from Microsoft</span>
+                </li>
+                <li><strong>Shane Young's PowerApps YouTube:</strong> <a href="https://www.youtube.com/@ShaneYoungCloud" target="_blank">@ShaneYoungCloud</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Popular community resource with practical Canvas App tutorials and tips</span>
+                </li>
+            </ul>
+
+            <h4>ALM & DevOps for Power Platform</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Power Platform ALM Deep Dive:</strong> <a href="https://www.youtube.com/results?search_query=power+platform+alm+tutorial" target="_blank">YouTube - Power Platform ALM</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Video guides on solution packaging, environment management, and deployment automation</span>
+                </li>
+                <li><strong>Microsoft Learn: Power Platform ALM:</strong> <a href="https://learn.microsoft.com/training/modules/manage-solutions-power-automate" target="_blank">https://learn.microsoft.com/training/modules/manage-solutions-power-automate</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Structured training on solution lifecycle management and deployment strategies</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <h3>Community Resources & Tools</h3>
+
+            <h4>Power Platform Community</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Power Apps Community Forums:</strong> <a href="https://powerusers.microsoft.com/t5/Power-Apps-Community/ct-p/PowerApps1" target="_blank">https://powerusers.microsoft.com/t5/Power-Apps-Community/ct-p/PowerApps1</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Active community for troubleshooting, sharing solutions, and learning from peers</span>
+                </li>
+                <li><strong>Power Platform Ideas Portal:</strong> <a href="https://ideas.powerapps.com" target="_blank">https://ideas.powerapps.com</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Submit feature requests and vote on upcoming Power Platform capabilities</span>
+                </li>
+                <li><strong>Power CAT (Customer Advisory Team) Blog:</strong> <a href="https://powerapps.microsoft.com/blog/category/power-cat" target="_blank">https://powerapps.microsoft.com/blog/category/power-cat</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Advanced technical articles and best practices from Microsoft's Power Platform experts</span>
+                </li>
+            </ul>
+
+            <h4>GitHub & Open Source Tools</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Power Platform Build Tools (GitHub Actions):</strong> <a href="https://github.com/microsoft/powerplatform-actions" target="_blank">https://github.com/microsoft/powerplatform-actions</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Official GitHub Actions for automating Power Platform CI/CD pipelines</span>
+                </li>
+                <li><strong>Power Platform ALM Toolkit:</strong> <a href="https://github.com/microsoft/coe-starter-kit" target="_blank">https://github.com/microsoft/coe-starter-kit</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Open-source governance and management tools for enterprise Power Platform deployments</span>
+                </li>
+                <li><strong>Canvas App Source Control Templates:</strong> <a href="https://github.com/topics/canvas-apps" target="_blank">GitHub Topics: Canvas Apps</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Community examples and starter templates for Canvas App development</span>
+                </li>
+            </ul>
+
+            <h4>VS Code Productivity Extensions</h4>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>GitLens:</strong> <a href="https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens" target="_blank">VS Code Marketplace</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Enhanced Git visualization for understanding code history and collaboration</span>
+                </li>
+                <li><strong>PowerShell Extension:</strong> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell" target="_blank">VS Code Marketplace</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Essential for pac CLI automation and PowerShell scripting</span>
+                </li>
+                <li><strong>Markdown All in One:</strong> <a href="https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one" target="_blank">VS Code Marketplace</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Productivity features for editing CHANGELOG.md and documentation files</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <h3>Healthcare & Government Compliance Resources</h3>
+
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Microsoft 365 Government (GCC High):</strong> <a href="https://learn.microsoft.com/microsoft-365/compliance/offering-dod-disa-l2-l4-l5" target="_blank">https://learn.microsoft.com/microsoft-365/compliance/offering-dod-disa-l2-l4-l5</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Compliance documentation for VA Government Cloud deployments and FedRAMP High requirements</span>
+                </li>
+                <li><strong>Power Platform Healthcare Solutions:</strong> <a href="https://learn.microsoft.com/industry/healthcare/overview" target="_blank">https://learn.microsoft.com/industry/healthcare/overview</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Industry-specific guidance for healthcare application development on Power Platform</span>
+                </li>
+                <li><strong>Power Apps Compliance & Security:</strong> <a href="https://learn.microsoft.com/power-platform/admin/wp-compliance-data-privacy" target="_blank">https://learn.microsoft.com/power-platform/admin/wp-compliance-data-privacy</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Data privacy, compliance certifications, and security best practices for Power Platform</span>
+                </li>
+                <li><strong>Accessibility Guidelines (WCAG 2.1):</strong> <a href="https://www.w3.org/WAI/WCAG21/quickref" target="_blank">https://www.w3.org/WAI/WCAG21/quickref</a>
+                    <br><span style="font-size: 0.9em; color: #a0a0a0;">Quick reference for implementing accessibility features in Canvas Apps (Section 508 compliance)</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <h3>Project-Specific Documentation (Workspace Files)</h3>
+
+            <p>These documents within your Telehealth Resources Project workspace provide project-specific context and implementation details:</p>
+
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>CHANGELOG.md:</strong> Complete project history with 95+ incremental releases and CR traceability</li>
+                <li><strong>README.md:</strong> Project overview, architecture, and setup instructions</li>
+                <li><strong>docs/powerApps-building-filter-formulas.md:</strong> Collection of tested Power Fx formulas for room booking logic</li>
+                <li><strong>docs/sharepoint-dynamic-grouping-urls.md:</strong> SharePoint view configurations and list schema documentation</li>
+                <li><strong>docs/SECURITY.md:</strong> Security policies, vulnerability reporting, and compliance requirements</li>
+                <li><strong>docs/CONTRIBUTING.md:</strong> Contribution guidelines for team collaboration on the project</li>
+                <li><strong>.github/copilot-instructions.md:</strong> Custom Copilot instructions specific to this project's patterns and preferences</li>
+                <li><strong>scripts/README.md:</strong> Documentation for PowerShell automation scripts and VS Code tasks</li>
+            </ul>
+
+            <div class="tip">
+                <strong>TIP:</strong> Use @workspace in Copilot Chat to query these workspace-specific documents. Example: <code>"@workspace What are the required Power Fx formula patterns for room booking?"</code>
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Recommended Learning Path for Beginners</h3>
+
+            <p>If you're new to autonomous Copilot workflows and Power Platform development, follow this structured learning sequence:</p>
+
+            <ol style="margin-left: 20px; line-height: 1.8;">
+                <li><strong>Week 1: VS Code & GitHub Copilot Foundations</strong>
+                    <ul>
+                        <li>Complete "GitHub Copilot Fundamentals" on Microsoft Learn</li>
+                        <li>Practice using @workspace, @terminal, @vscode participants daily</li>
+                        <li>Experiment with simple queries: file searches, code explanations, formula assistance</li>
+                    </ul>
+                </li>
+                <li><strong>Week 2: Git & GitHub Workflow Mastery</strong>
+                    <ul>
+                        <li>Read first 3 chapters of Pro Git book</li>
+                        <li>Practice: create branch, commit changes with CHANGELOG updates, create pull request</li>
+                        <li>Use @githubpr participant for issue tracking and PR management</li>
+                    </ul>
+                </li>
+                <li><strong>Week 3: Power Platform Basics</strong>
+                    <ul>
+                        <li>Complete "Create a Canvas App" learning path on Microsoft Learn</li>
+                        <li>Build simple app: data source connection, form, gallery, basic navigation</li>
+                        <li>Practice: save, publish, export, unpack .msapp using pac CLI</li>
+                    </ul>
+                </li>
+                <li><strong>Week 4: Power Automate & Integration</strong>
+                    <ul>
+                        <li>Complete "Automate a business process" learning path</li>
+                        <li>Create test flow: SharePoint trigger → Approval → Update item</li>
+                        <li>Export flow definition and commit to Git repository</li>
+                    </ul>
+                </li>
+                <li><strong>Week 5: ALM & Solution Management</strong>
+                    <ul>
+                        <li>Study Power Platform ALM documentation and CoE Starter Kit</li>
+                        <li>Practice: create solution, add components, export managed solution</li>
+                        <li>Deploy solution to test environment using pac CLI</li>
+                    </ul>
+                </li>
+                <li><strong>Week 6: End-to-End Project Workflow</strong>
+                    <ul>
+                        <li>Simulate complete development cycle using Workflow 1 and 2 from this guide</li>
+                        <li>Create GitHub issue → Implement fix in Canvas App → Test → Commit → PR → Close issue</li>
+                        <li>Document learnings in workspace docs/ directory</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="best-practice">
+                <strong>BEST PRACTICE:</strong> Keep a daily development journal using Copilot Chat. Ask @workspace to "Document today's progress in docs/logs/" with summary of what you learned and accomplished. Builds valuable reference documentation over time.
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Quick Access Links Summary</h3>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                <thead>
+                    <tr style="background-color: #2d2d30; color: #e0e0e0;">
+                        <th style="padding: 10px; border: 1px solid #555; text-align: left;">Portal/Tool</th>
+                        <th style="padding: 10px; border: 1px solid #555; text-align: left;">URL</th>
+                        <th style="padding: 10px; border: 1px solid #555; text-align: left;">Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><strong>PowerApps Studio</strong></td>
+                        <td style="padding: 8px; border: 1px solid #555;"><a href="https://make.powerapps.com" target="_blank">make.powerapps.com</a></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Canvas App editing and publishing</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><strong>Power Automate</strong></td>
+                        <td style="padding: 8px; border: 1px solid #555;"><a href="https://make.powerautomate.com" target="_blank">make.powerautomate.com</a></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Flow creation and management</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><strong>Power Platform Admin</strong></td>
+                        <td style="padding: 8px; border: 1px solid #555;"><a href="https://admin.powerplatform.microsoft.com" target="_blank">admin.powerplatform.microsoft.com</a></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Environment and solution management</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><strong>SharePoint Admin</strong></td>
+                        <td style="padding: 8px; border: 1px solid #555;"><a href="https://admin.microsoft.com/sharepoint" target="_blank">admin.microsoft.com/sharepoint</a></td>
+                        <td style="padding: 8px; border: 1px solid #555;">SharePoint list and site management</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><strong>GitHub Repository</strong></td>
+                        <td style="padding: 8px; border: 1px solid #555;"><a href="https://github.com/KCoderVA/Telehealth-Scheduling-App" target="_blank">github.com/KCoderVA/Telehealth-Scheduling-App</a></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Source control and issue tracking</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><strong>pac CLI Downloads</strong></td>
+                        <td style="padding: 8px; border: 1px solid #555;"><a href="https://aka.ms/PowerAppsCLI" target="_blank">aka.ms/PowerAppsCLI</a></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Power Platform CLI installer</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><strong>VS Code Download</strong></td>
+                        <td style="padding: 8px; border: 1px solid #555;"><a href="https://code.visualstudio.com" target="_blank">code.visualstudio.com</a></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Visual Studio Code installer</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #555;"><strong>Git Downloads</strong></td>
+                        <td style="padding: 8px; border: 1px solid #555;"><a href="https://git-scm.com" target="_blank">git-scm.com</a></td>
+                        <td style="padding: 8px; border: 1px solid #555;">Git version control installer</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>
