@@ -42,15 +42,15 @@ code "Telehealth Resources Project.code-workspace"
 
 ## Development Workflow
 
-### 1. Power Platform Development
+# 2. Power Platform Development
 ```powershell
 # Start development session
 # Use VS Code Task: "Open All Power Platform Tools"
 
 # For PowerApps:
 # 1. Design in PowerApps Studio (make.powerapps.com)
-# 2. Export .msapp files to /src/power-apps/v0.3.x/v0.3.3/.msapp/
-# 3. Use Power Platform CLI to maintain /src/power-apps/v0.3.x/v0.3.3/.unpacked/ source files
+# 2. Export .msapp files to /src/power-apps/v0.3.x/v0.3.4/.msapp/
+# 3. Use Power Platform CLI to maintain /src/power-apps/v0.3.x/v0.3.4/.unpacked/ source files
 # 4. Test with HTML Previewer tool
 
 # For Power Automate:
@@ -237,4 +237,4 @@ Include before/after screenshots for UI changes
 By contributing to this project, you agree that your contributions will be licensed under the Apache License 2.0.
 
 ---
-*Last Updated: July 18, 2025*
+*Last Updated: November 21, 2025*

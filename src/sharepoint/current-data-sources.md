@@ -1,177 +1,175 @@
-# SharePoint Data Sources Documentation
+# SharePoint Data Source Schemas (v0.3.4)
+
+This document details the data schemas for the primary CSV files used as data sources in the Telehealth Room Booking application. These files are located in the `src/sharepoint/` directory and its subfolders.
+
+**Last Updated**: 2025-11-21
 
 ## Connected SharePoint Site
-**URL**: https://dvagov.sharepoint.com/sites/vhahin/svc/ci/TelehealthTeamApp
+**URL**: `https://dvagov.sharepoint.com/sites/vhahin/svc/ci/TelehealthTeamApp`
 **Environment**: VA Government Cloud
 
-## SharePoint Lists Structure
+---
 
-### 1. List_Desks (Master Room/Desk Data)
-**List ID**: `09770055-3583-4d23-92fd-65cc81f2cc18`
-**Purpose**: Master inventory of available rooms and desks
+## 1. App User List (`/App_User_List/App_User_List.csv`)
+**Purpose**: Master list of application users, their roles, permissions, and contact information.
 
-**Recommended Field Structure**:
-```xml
-<Field Name="DeskID" Type="Text" Required="TRUE" />
-<Field Name="DeskName" Type="Text" Required="TRUE" />
-<Field Name="Location" Type="Choice">
-    <CHOICES>
-        <CHOICE>Main Hospital</CHOICE>
-        <CHOICE>Building A</CHOICE>
-        <CHOICE>Building B</CHOICE>
-        <CHOICE>Telehealth Suite</CHOICE>
-    </CHOICES>
-</Field>
-<Field Name="RoomNumber" Type="Text" />
-<Field Name="Capacity" Type="Number" />
-<Field Name="Equipment" Type="MultiChoice">
-    <CHOICES>
-        <CHOICE>Video Conferencing</CHOICE>
-        <CHOICE>Dual Monitors</CHOICE>
-        <CHOICE>Whiteboard</CHOICE>
-        <CHOICE>Medical Equipment</CHOICE>
-    </CHOICES>
-</Field>
-<Field Name="Status" Type="Choice" Default="Available">
-    <CHOICES>
-        <CHOICE>Available</CHOICE>
-        <CHOICE>Maintenance</CHOICE>
-        <CHOICE>Out of Service</CHOICE>
-    </CHOICES>
-</Field>
-<Field Name="Notes" Type="Note" />
-```
+**Schema**:
+-   `Email_Person` (User)
+-   `AccessLevel_Choice` (Choice)
+-   `GivenName_Text` (Text)
+-   `Surname_Text` (Text)
+-   `NetworkAccount_Text` (Text)
+-   `Manager_Email_Person` (User)
+-   `Approver_Email_Person` (User)
+-   `AccessReviewOverdue_Choice` (Choice)
+-   `AccessStart_dateTime` (DateTime)
+-   `AccessStop_dateTime` (DateTime)
+-   `DisplayName_Text` (Text)
+-   `PreferredName_Text` (Text)
+-   `MailNickname_Text` (Text)
+-   `JobTitle_Text` (Text)
+-   `UserPrincipleName_Text` (Text)
+-   `mobilePhone_Text` (Text)
+-   `TelephoneNumber_Text` (Text)
+-   `BusinessPhones_Text` (Text)
+-   `Department_Text` (Text)
+-   `OfficeLocation_Text` (Text)
+-   `CompanyName_Text` (Text)
+-   `StreetAddress_Text` (Text)
+-   `City_Text` (Text)
+-   `State_Text` (Text)
+-   `PostalCode_Text` (Text)
+-   `Country_Text` (Text)
+-   `FullAddress_Text` (Text)
+-   `Id_Text` (Text)
+-   `PreferredLanguage_Text` (Text)
+-   `MySite_Text` (Text)
+-   `AboutMe_Text` (Text)
+-   `Birthday_Text` (Text)
+-   `HireDate_Text` (Text)
+-   `UserType_Text` (Text)
+-   `Email_Text` (Text)
+-   `Mail_Text` (Text)
+-   `AccessLevel_Text` (Text)
+-   `Approver_Email_Text` (Text)
+-   `Approver_DisplayName_Text` (Text)
+-   `AccessStart_Text` (Text)
+-   `AccessStop_Text` (Text)
+-   `Manager_Email_Text` (Text)
+-   `Manager_DisplayName_Text` (Text)
+-   `Manager_JobTitle_Text` (Text)
+-   `Manager_FullAddress_Text` (Text)
+-   `utcNow()_value` (Text)
+-   `addMinutes(utcNow(),10)` (Text)
+-   `modificationAutoTriggered_Choice` (Choice)
+-   `Title` (Text)
+-   `Modified` (DateTime)
+-   `Content Type` (Computed)
 
-### 2. List_DeskReservations (Booking Requests)
-**List ID**: `b3c3f13a-091b-4c06-a04e-658ea71f297c`
-**Purpose**: Track all booking requests and reservations
+---
 
-**Recommended Field Structure**:
-```xml
-<Field Name="ReservationID" Type="Counter" PrimaryKey="TRUE" />
-<Field Name="DeskID" Type="Lookup" List="List_Desks" ShowField="DeskName" />
-<Field Name="RequesterEmail" Type="User" />
-<Field Name="BookingDate" Type="DateTime" Format="DateOnly" />
-<Field Name="StartTime" Type="DateTime" Format="TimeOnly" />
-<Field Name="EndTime" Type="DateTime" Format="TimeOnly" />
-<Field Name="Duration" Type="Calculated" Formula="=[EndTime]-[StartTime]" />
-<Field Name="Purpose" Type="Note" />
-<Field Name="ContactNumber" Type="Text" />
-<Field Name="ApprovalStatus" Type="Choice" Default="Pending">
-    <CHOICES>
-        <CHOICE>Pending</CHOICE>
-        <CHOICE>Approved</CHOICE>
-        <CHOICE>Rejected</CHOICE>
-        <CHOICE>Cancelled</CHOICE>
-    </CHOICES>
-</Field>
-<Field Name="BookedFor" Type="User" />
-<Field Name="SubmittedDate" Type="DateTime" Default="[today]" />
-<Field Name="ApprovalDate" Type="DateTime" />
-<Field Name="ApproverComments" Type="Note" />
-```
+## 2. Master Schedule (`/MasterSchedule/TelehealthMasterSched_CombiTable.csv`)
+**Purpose**: Combined master schedule containing room information and all booking records.
 
-### 3. List_DeskAdmin (Administrative Settings)
-**List ID**: `eeefdaf4-6df3-4bfd-95ad-f34f98871328`
-**Purpose**: Administrative configuration and user permissions
+**Schema**:
+-   `Title` (Text)
+-   `CBOC_Name_text` (Text)
+-   `Room_number` (Number)
+-   `Room_Name_text` (Text)
+-   `Room_Alias_number` (Number)
+-   `Room_Extension_number` (Number)
+-   `Room_IPaddress_text` (Text)
+-   `Modified_Type` (Text)
+-   `Modified_Status_DateTime` (Text)
+-   `Modified_Status_Text` (Text)
+-   `Modified_Submitted_DateTime` (Text)
+-   `Modified_SubmitterEmail_text` (Text)
+-   `Modified_SubmitterComment_text` (Text)
+-   `Modified_Approval_DateTime` (Text)
+-   `Modified_ApproverEmail_text` (Text)
+-   `Modified_Approval_Comments` (Text)
+-   `Expiration_Start_Date` (DateTime)
+-   `Expiration_Stop_DateTime` (Text)
+-   `TimeSlot_Start_text` (Text)
+-   `TimeSlot_Start_number` (Number)
+-   `Day_Monday_text` (Text)
+-   `Day_Tuesday_text` (Text)
+-   `Day_Wednesday_text` (Text)
+-   `Day_Thursday_text` (Text)
+-   `Day_Friday_text` (Text)
+-   `TimeSlot_text` (Text)
+-   `TCT_Name_text` (Text)
+-   `TCT_Email_text` (Text)
+-   `TCT_Phone_number` (Number)
+-   `TCT_Cell_text` (Text)
+-   `TCT_Cell_number` (Number)
+-   `CNM_Name_text` (Text)
+-   `CNM_Email_text` (Text)
+-   `CNM_Phone_number` (Number)
+-   `CNM_Cell_text` (Text)
+-   `CNM_Cell_number` (Number)
+-   `FTC_Name_text` (Text)
+-   `FTC_Email_text` (Text)
+-   `FTC_Phone_number` (Number)
+-   `FTC_Cell_text` (Text)
+-   `FTC_Cell_number` (Number)
+-   `Modified` (DateTime)
+-   `RoomActive_text` (Text)
+-   `ItemID` (Computed)
 
-**Recommended Field Structure**:
-```xml
-<Field Name="UserEmail" Type="User" />
-<Field Name="Role" Type="Choice">
-    <CHOICES>
-        <CHOICE>Staff</CHOICE>
-        <CHOICE>Manager</CHOICE>
-        <CHOICE>Administrator</CHOICE>
-    </CHOICES>
-</Field>
-<Field Name="Department" Type="Choice">
-    <CHOICES>
-        <CHOICE>Telehealth</CHOICE>
-        <CHOICE>Clinical Informatics</CHOICE>
-        <CHOICE>Administration</CHOICE>
-    </CHOICES>
-</Field>
-<Field Name="BuildingAccess" Type="MultiChoice">
-    <CHOICES>
-        <CHOICE>Main Hospital</CHOICE>
-        <CHOICE>Building A</CHOICE>
-        <CHOICE>Building B</CHOICE>
-        <CHOICE>All Buildings</CHOICE>
-    </CHOICES>
-</Field>
-<Field Name="CanApprove" Type="Boolean" Default="FALSE" />
-<Field Name="CanManageDesks" Type="Boolean" Default="FALSE" />
-<Field Name="NotificationPreferences" Type="Choice" Default="Email">
-    <CHOICES>
-        <CHOICE>Email</CHOICE>
-        <CHOICE>Teams</CHOICE>
-        <CHOICE>Both</CHOICE>
-        <CHOICE>None</CHOICE>
-    </CHOICES>
-</Field>
-```
+---
 
-## Excel Integration Tables
+## 3. Reservation Log (`/ReservationLog/App_ReservationLog.csv`)
+**Purpose**: An audit trail and log of all reservation activities, including submissions, approvals, and modifications.
 
-### Aurora120 Table
-**Table ID**: `{33971B6B-6240-4C4B-8395-806991AC34EA}`
-**Purpose**: Historical booking data bridge
-
-### Aurora121 Table
-**Table ID**: `{831F3501-8383-4758-A54A-C83FE145AA19}`
-**Purpose**: Room/resource master data bridge
-
-## Migration Recommendations
-
-### Phase 1: Data Analysis
-1. **Export Current Lists**: Use SharePoint export to CSV
-2. **Analyze Data Patterns**: Identify field usage and relationships
-3. **Clean Data**: Remove duplicates and inconsistencies
-
-### Phase 2: Schema Enhancement
-1. **Add Missing Fields**: Approval status, manager assignments
-2. **Create Lookup Relationships**: Link reservations to desks
-3. **Add Calculated Fields**: Duration, conflict detection
-
-### Phase 3: Permission Setup
-1. **Create Security Groups**: Staff, Managers, Admins
-2. **Set List Permissions**: Read/write access by role
-3. **Configure Approval Workflows**: Manager approval chains
-
-## PowerShell Migration Scripts
-
-### Export Current Data
-```powershell
-# Connect to SharePoint
-Connect-PnPOnline -Url "https://dvagov.sharepoint.com/sites/vhahin/svc/ci/TelehealthTeamApp"
-
-# Export existing lists
-Get-PnPListItem -List "List_Desks" | Export-Csv "migration_desks.csv"
-Get-PnPListItem -List "List_DeskReservations" | Export-Csv "migration_reservations.csv"
-Get-PnPListItem -List "List_DeskAdmin" | Export-Csv "migration_admin.csv"
-```
-
-### Create Enhanced Lists
-```powershell
-# Create new enhanced list structure
-$newListTemplate = @{
-    Title = "TelehealthRooms"
-    Template = "GenericList"
-    Fields = @(
-        @{Name="RoomName"; Type="Text"; Required=$true},
-        @{Name="Building"; Type="Choice"; Choices=@("Main","BuildingA","BuildingB")},
-        @{Name="Equipment"; Type="MultiChoice"; Choices=@("Video","Monitors","Whiteboard")}
-    )
-}
-
-New-PnPList @newListTemplate
-```
-
-## Next Steps for Development
-
-1. **Review Current Data**: Access VA SharePoint site to analyze existing data
-2. **Document Business Rules**: Understand current booking processes
-3. **Plan Data Migration**: Design migration strategy for enhanced lists
-4. **Update PowerApp**: Modify app to use new list structure
-5. **Add Approval Workflow**: Implement Power Automate approval process
+**Schema**:
+-   `Title` (Text)
+-   `Modified` (DateTime)
+-   `CBOC_Name_text` (Text)
+-   `Room_number` (Number)
+-   `Room_Name_text` (Text)
+-   `Room_Alias_number` (Number)
+-   `Room_Extension_number` (Number)
+-   `Room_IPaddress_text` (Text)
+-   `Modified_Type` (Text)
+-   `Modified_Status_DateTime` (Text)
+-   `Modified_Status_Text` (Text)
+-   `Modified_Submitted_DateTime` (Text)
+-   `Modified_SubmitterEmail_text` (Text)
+-   `Modified_SubmitterComment_text` (Text)
+-   `Modified_Approval_DateTime` (Text)
+-   `Modified_ApproverEmail_text` (Text)
+-   `Modified_Approval_Comments` (Text)
+-   `Expiration_Start_DateTime` (Text)
+-   `Expiration_Stop_DateTime` (Text)
+-   `TimeSlot_Start_time` (Number)
+-   `TimeSlot_End_time` (Number)
+-   `TimeSlot_Start_text` (Text)
+-   `TimeSlot_Start_number` (Number)
+-   `Day_Monday_text` (Text)
+-   `Day_Tuesday_text` (Text)
+-   `Day_Wednesday_text` (Text)
+-   `Day_Thursday_text` (Text)
+-   `Day_Friday_text` (Text)
+-   `TimeSlot_text` (Text)
+-   `TCT_Name_text` (Text)
+-   `TCT_Email_text` (Text)
+-   `TCT_Phone_number` (Number)
+-   `TCT_Cell_text` (Text)
+-   `TCT_Cell_number` (Number)
+-   `CNM_Name_text` (Text)
+-   `CNM_Email_text` (Text)
+-   `CNM_Phone_number` (Number)
+-   `CNM_Cell_text` (Text)
+-   `CNM_Cell_number` (Number)
+-   `FTC_Name_text` (Text)
+-   `FTC_Email_text` (Text)
+-   `FTC_Phone_number` (Number)
+-   `FTC_Cell_text2` (Text)
+-   `FTC_Cell_number` (Number)
+-   `reservationStatus_Choice` (Choice)
+-   `selectedClinicalStaff_email` (Text)
+-   `Modified_DayOfWeek` (Text)
+-   `Modified_ClinicLocationName` (Text)
+-   `Modified_Submitted_CombiTable_RowNumber` (Number)
+-   `ItemID` (Computed)

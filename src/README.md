@@ -9,8 +9,8 @@ src/
 ├── power-apps/          # PowerApps Canvas App components (version-controlled)
 │   ├── v0.1.x/         # Legacy versions (archived)
 │   │   └── v0.1.3/     # Version 0.1.3 (archived)
-│   └── v0.3.x/         # Current development branch (promoted 2025-10-21; v0.2.x now prior lineage)
-│       └── v0.3.3/     # Version 0.3.3 release (October 28, 2025)
+│   └── v0.3.x/         # Current development branch (promoted 2025-11-21; v0.3.4)
+│       └── v0.3.4/     # Version 0.3.4 release (November 21, 2025)
 │           ├── .unpacked/   # Power Platform CLI source files
 │           ├── .zip/        # Archive packages for deployment
 │           └── .msapp/      # Binary application files
@@ -44,7 +44,7 @@ src/
 ## Key Features
 
 ### Production-Ready Components
-- **578 Telehealth Resource App v0.3.3**: Adds Issue Intake automation scripts, diagnostic artifact generation; builds upon dynamic grid & approval flow (October 28, 2025)
+- **578 Telehealth Resource App v0.3.4**: Adds Issue Intake automation scripts, diagnostic artifact generation; builds upon dynamic grid & approval flow (November 21, 2025)
 - **Version-Controlled Source**: Power Platform CLI integration for collaborative development
 - **SharePoint Integration**: 3 lists + Excel Online bridge for data management (2.85+ MB active data)
 - **Security Model**: VA Government Cloud compliance with role-based access and HIPAA compliance

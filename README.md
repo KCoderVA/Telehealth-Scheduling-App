@@ -287,10 +287,10 @@ This automation reduces intake handling overhead and provides auditable, reprodu
 
 ### Common Questions
 
-**Q: Can I delete a pull request from GitHub?**  
+**Q: Can I delete a pull request from GitHub?**
 A: No, GitHub does not allow pull requests to be permanently deleted. This is by design to maintain audit trails and git history integrity. See [GitHub PR Deletion FAQ](docs/GitHub-PR-Deletion-FAQ.md) for detailed explanation.
 
-**Q: How do I report issues or bugs?**  
+**Q: How do I report issues or bugs?**
 A: Use the automated issue intake script (`scripts/pwsh/intake-create-issue.ps1`) or manually create a GitHub issue with the appropriate labels.
 
 ## Contributors

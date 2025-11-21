@@ -237,4 +237,4 @@ If you discover a security vulnerability in our public-facing components:
 ---
 *This security policy is reviewed and updated quarterly to ensure compliance with evolving threats and regulations.*
 
-*Last Updated: July 18, 2025*
+*Last Updated: November 21, 2025*

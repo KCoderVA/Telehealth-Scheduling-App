@@ -68,7 +68,7 @@ assets/
 - **Export presentation formats (.pdf, .mp4) for distribution**: Stakeholder-ready formats for meetings and training
 - **Optimize file sizes for GitHub repository storage**: Current total asset size: 2.85+ MB with efficient organization
 - **Document asset relationships and dependencies**: Cross-references to documentation in `/docs/` and source code in `/src/`
-- **Version Control**: Asset versioning aligned with project releases (currently v0.3.2)
+- **Version Control**: Asset versioning aligned with project releases (currently v0.3.4)
 - **Integration with Documentation**: Assets support technical analysis, user guides, and stakeholder presentations
 
 ### Quality Standards
@@ -82,7 +82,7 @@ assets/
 ## Integration with Project Documentation
 - **Assets support documentation in `/docs/` directory**: Visual materials enhance technical specifications and user guides
 - **Screenshots referenced in technical analysis reports**: UI documentation supporting development and testing
-- **Presentations align with project milestones in CHANGELOG.md**: Executive briefings synchronized with version releases (v0.3.2)
+- **Presentations align with project milestones in CHANGELOG.md**: Executive briefings synchronized with version releases (v0.3.4)
 - **Video content supplements user training materials**: Interactive demonstrations for healthcare staff adoption
 - **PowerBI Integration**: Analytics dashboards linked from project homepage at [GitHub Pages](https://kcoderva.github.io/Telehealth-Scheduling-App/)
 - **Cross-Reference Architecture**: Assets directly support source code documentation in `/src/README.md` and project governance in `/docs/README.md`
