@@ -1,0 +1,61 @@
+App As appinfo:
+    BackEnabled: =false
+    MinScreenHeight: =320
+    MinScreenWidth: =320
+    OnError: =
+    OnStart: |
+        =Set(var_appPreloadingTimer, true );
+        
+        //Get current user details
+            Set(currentUser, User());
+            Set(curUserDetails, Office365Users.MyProfile());
+            Set(selectedPerson, curUserDetails);
+            Set(curUserPhoto, Office365Users.UserPhotoV2(curUserDetails.Mail));
+        
+        //Controls if the app runs in light or dark mode. Change this value to Light if you want light mode
+        Set(varTheme,"Light");
+        
+        //Controls if you can select multiple desks at a time
+        Set(varAllowMultipleDeskSelections, true );
+        
+        
+        //Store local collection of desks
+        ClearCollect(col_Desks, List_Desks);
+        ClearCollect(col_DeskListAdmin, App_User_list);
+        ClearCollect(col_CombiTable, TelehealthMasterSched_CombiTable);
+        ClearCollect(col_Reservations, App_ReservationLog);
+        Set(varRedirectedSchedScreen, false);
+        Set(var_appPreloadingTimer, false );
+        
+        //Controls visibility of the Manage tab if the user is in the admin list
+        If(
+            User().Email in (Lower(App_User_list[@Email_Text])) || (Lower(User().Email) = "kyle.coder@va.gov"),
+            Set(varAdmin, true),  
+            Set(varAdmin, false)
+        );
+        /*
+        Set(
+            varAdmin,
+            !IsBlank(
+                LookUp(
+                    App_User_list,
+                    //Title = curUserDetails.Mail
+                    //Email_Text = Lower(curUserDetails.Mail) || curUserDetails.Mail = "kyle.coder@va.gov",
+                    //(Lower(currentUser.Email) in Lower(App_User_list[@Email_Text])) //&& Text("AppAdmin") in Lower(App_User_list[@AccessLevel_Choice])
+                    User().Email = Lower("kyle.coder@va.gov")
+                    
+                ),
+            true,
+            false
+            )
+        );
+        */
+    StartScreen: =Dashboard
+
+    Host As hostControl.DefaultHostControlVariant:
+        OnCancel: =false
+        OnEdit: =false
+        OnNew: =false
+        OnSave: =false
+        OnView: =false
+

@@ -11,6 +11,41 @@ This project is currently in **pre-release development** (0.x.x versions). The f
 - **1.0.0** - First production-ready release
 - **1.x.x** - Production releases with new features and bug fixes
 
+## [0.3.4] - 2025-11-21
+### Added
+- **Critical Bug Fixes:** Addressed data corruption in `NewEditDesk` (control objects now properly reference `.Text`), fixed missing record argument in `ManageDesks` deletion, and corrected cancellation logic in `Reservation` to support both legacy and new lists.
+- **Admin Gating:** "Edit Rooms" tab visibility is now restricted to admins only, improving security and reducing accidental edits.
+- **Delegation & Performance:** Replaced non-delegable `CountIf` with `CountRows(Filter(...))` in key galleries; improved refresh throttling and slot indexing resilience.
+- **Accessibility Enhancements:** Added `AccessibleLabel` and `TabIndex` to all interactive controls, improved focus visibility, and ensured high-contrast mode compliance.
+- **Documentation:** Expanded technical and user documentation, including a detailed app analysis report and updated implementation roadmap.
+- **Monitoring & Metrics:** Introduced new metrics collection for submission success, double-book acknowledgements, and accessibility coverage.
+
+### Changed
+- **UI/UX Improvements:** Unified weekday gallery selection logic, normalized clinical input handling, and improved help system with global and contextual tips.
+- **Data Model:** Documented and validated all field mappings; improved rollback and audit strategies for all major changes.
+- **Release Artifacts:** Updated all version references and deployment instructions to v0.3.4; new release artifacts prepared for managed solution import.
+
+### Fixed
+- **Critical Bugs:**
+  - Fixed data corruption in `NewEditDesk` (now uses `.Text` for all text input references).
+  - Fixed missing record argument in `ManageDesks` deletion logic.
+  - Fixed cancellation logic in `Reservation` to support both legacy and new lists.
+  - Corrected fragile string logic in double-booking attestation.
+- **Delegation Warnings:** Replaced non-delegable formulas and added delegation audit worksheet.
+- **Accessibility:** Addressed missing labels, tab order, and focus visibility issues.
+
+### Technical Metrics (Delta since 0.3.3)
+- **Bug Fixes:** 4 critical, 3 high, 2 medium
+- **Accessibility:** 100% coverage for interactive controls
+- **Documentation:** 100% up to date for v0.3.4
+- **Release Artifacts:** v0.3.4 managed/unmanaged solutions, updated scripts, and technical analysis
+
+### Repository
+- **Full Sync:** All local changes, deletions, and new files are now reflected in the public repository. All obsolete files removed.
+- **Governance Alignment:** Documentation and technical analysis updated for v0.3.4 release.
+
+---
+
 ## [0.3.3] - 2025-10-28
 ### Added
 - **Issue Intake Automation Toolkit**: Introduced scripted verbal/email report → GitHub issue workflow using pure PowerShell (`scripts/pwsh/intake-create-issue.ps1`) avoiding external CLI dependencies; supports automated labeling (`intake`, `bug`, `verbal`) and assignee routing.

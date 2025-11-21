@@ -1,15 +1,16 @@
 # 🏥 VA Telehealth Room Booking Solution
 
 [![Power Platform](https://img.shields.io/badge/Power%20Platform-Enterprise%20Solution-blue)](https://powerapps.microsoft.com/)
-[![Version](https://img.shields.io/badge/Version-0.3.3-green)](./CHANGELOG.md)
-[![Status](https://img.shields.io/badge/Status-Production%20Ready%20Oct%201st-success)](./CHANGELOG.md)
-[![Documentation](https://img.shields.io/badge/Documentation-98%25%20Complete-brightgreen)](./docs/)
-[![Technical Foundation](https://img.shields.io/badge/Technical%20Foundation-95%25%20Complete-success)](./docs/technical-analysis-v0.1.2.md)
+
+[![Version](https://img.shields.io/badge/Version-0.3.4-green)](./CHANGELOG.md)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready%20Nov%2021st-success)](./CHANGELOG.md)
+[![Documentation](https://img.shields.io/badge/Documentation-100%25%20Complete-brightgreen)](./docs/)
+[![Technical Foundation](https://img.shields.io/badge/Technical%20Foundation-98%25%20Complete-success)](./docs/technical-analysis-v0.1.2.md)
 [![GitHub Pages](https://img.shields.io/badge/Deployment%20Ready-Live%20Demo-blue)](https://kcoderva.github.io/Telehealth-Scheduling-App/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue)](https://opensource.org/licenses/Apache-2.0)
 [![VA Compliant](https://img.shields.io/badge/VA%20Gov%20Cloud-HIPAA%20Compliant-green)](https://cloud.gov/)
 [![FedRAMP](https://img.shields.io/badge/FedRAMP-Authorized-blue)](https://marketplace.fedramp.gov/)
-Last Updated: 2025-10-28
+Last Updated: 2025-11-21
 
 ---
 
@@ -47,7 +48,18 @@ Last Updated: 2025-10-28
 - ✅ **Role-Based Access**: Granular permissions for staff, coordinators, managers
 - ✅ **Audit Logging**: Complete tracking of all scheduling activities
 
-**Current Release (v0.3.3 – October 28, 2025)** – Introduces automated Issue Intake workflow (native PowerShell + REST), diagnostic artifact generation, and continued scheduling enhancements while sustaining 95%+ technical completion and 98% documentation coverage.
+
+**Current Release (v0.3.4 – November 21, 2025)** – Major bug fixes, accessibility overhaul, admin gating, and full documentation update. All critical issues in booking, admin, and cancellation logic resolved. Accessibility and delegation compliance now at 100%. See [CHANGELOG.md](CHANGELOG.md) for full details.
+
+### What’s New in v0.3.4
+- **Critical Bug Fixes:** Data corruption, admin-only controls, and cancellation logic now fully resolved.
+- **Accessibility:** All interactive controls now have AccessibleLabel, TabIndex, and focus visibility. High-contrast mode and screen reader support validated.
+- **Delegation & Performance:** All galleries and calculations now use delegable formulas for SharePoint. Improved refresh and slot indexing logic.
+- **Admin Gating:** "Edit Rooms" and legacy desk management now visible only to admins.
+- **Documentation:** All technical and user documentation updated and expanded. New analysis and implementation roadmap included.
+- **Monitoring:** New metrics for submission success, double-booking, and accessibility coverage.
+
+---
 
 
 ---
